@@ -2,7 +2,7 @@
 <?php
 
 $required = [
-    'Core.php'
+    'Core.php', 'Vendor/autoload.php'
 ];
 $loaded = false;
 
