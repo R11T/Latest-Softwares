@@ -1,48 +1,77 @@
 <?php
+/**
+ * @licence GPL-v2
+ */
 namespace Tests\Units\App;
-
-require_once dirname(dirname(dirname(__DIR__))) . '/App/Router.php';
-require_once dirname(dirname(dirname(__DIR__))) . '/App/Helpers/Displayer.php';
 
 use \atoum;
 use \App\Router as _Router;
-use \App\Exception\LogicException;
 
+/**
+ * Unit testing on the routing service
+ *
+ * @since 0.1
+ * @author Romain L.
+ * @see \App\Router
+ */
 class Router extends \atoum
 {
-    private $router = null;
-
-    const SCRIPT = 'latest-softwares';
-
-    public function beforeTestMethod()
-    {
-        $this->router = new _Router();
-    }
     /**
-     * There is only one function in Router class, used as the front controller. These tests cases look for explore all decision tree nodes
+     * Script name called, software's entry point
      *
-     *
+     * @var string
+     * @access public
      */
-    public function testRoutingWithBadScriptCalled()
+    const SCRIPT_NAME = 'latest-softwares';
+
+    /**
+     * Tests if getController instanciates action parameter
+     *
+     * @return void
+     * @access public
+     */
+    public function testGetController()
     {
-        $this->exception(
-            function () {
-                $this->router->routing(['badScript'], 1);
-            }
-        )->isInstanceOf(LogicException)
-         ->hasMessage('Bad script called');
+        $parameters = [self::SCRIPT_NAME, 'mock\\Main', 'get'];
+        $request    = new \mock\App\Libraries\Io\Request($parameters, count($parameters));
+        $router     = new _Router($request);
+
+        $this->object($router->getController())->isInstanceOf('mock\\Main');
     }
 
-    public function testRoutingHelp()
+    /**
+     * Tests if getAction returns method given to request
+     *
+     * @return void
+     * @access public
+     */
+    public function testGetAction()
     {
-        $this->output(
-            function () {
-                $this->router->routing([self::SCRIPT, '-h'], 2);
-            })->contains('Help');
+        $parameters = [self::SCRIPT_NAME, 'mock\\Main', 'get'];
+        $request    = new \mock\App\Libraries\Io\Request($parameters, count($parameters));
+        $router     = new _Router($request);
+
+        $this->string($router->getAction())->isIdenticalTo('get');
     }
 
-    /*public function testRoutingWithTypeOfSoftware()
+    /**
+     * Tests if controller triggers action
+     *
+     * @return void
+     * @access public
+     */
+    public function testRun()
     {
-        
-    }*/
+        $controller = new \mock\App\Controllers\Main;
+        $action     = 'get';
+        $request    = new \mock\App\Libraries\Io\Request([], 3);
+        $router     = new \mock\App\Router($request);
+        $router->getMockController()->getController = $controller;
+        $router->getMockController()->getAction = $action;
+        $controller->getMockController()->$action = true;
+
+        $this->when(
+            $router->run()
+        )->mock($controller)->call($action)->once();
+    }
 }

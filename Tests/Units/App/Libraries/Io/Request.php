@@ -41,14 +41,30 @@ class Request extends \atoum
     }
     
     /**
+     * Tests constructor with no method
+     *
+     * @return void
+     * @access public
+     */
+    public function test__constructWithoutMethod()
+    {
+        $parameters = [self::SCRIPT_NAME, 'action'];
+
+        $this->exception(function () use ($parameters) {
+            new _Request($parameters, count($parameters));
+        })->isInstanceOf('\BadFunctionCallException')
+        ->hasMessage('No method specified');
+    }
+
+    /**
      * Tests getAction with action
      *
      * @return void
      * @access public
      */
-    public function testgetActionWithAction()
+    public function testGetAction()
     {
-        $parameters = [self::SCRIPT_NAME, 'action'];
+        $parameters = [self::SCRIPT_NAME, 'action', 'method'];
         $request    = new _Request($parameters, count($parameters));
 
         $this->string($request->getAction())->isIdenticalTo('action');
@@ -60,28 +76,11 @@ class Request extends \atoum
      * @return void
      * @access public
      */
-    public function testgetMethodWithMethod()
+    public function testGetMethod()
     {
         $parameters = [self::SCRIPT_NAME, 'action', 'method'];
         $request    = new _Request($parameters, count($parameters));
 
         $this->string($request->getMethod())->isIdenticalTo('method');
-    }
-    
-    /**
-     * Tests getMethod with no method
-     *
-     * @return void
-     * @access public
-     */
-    public function testgetMethodWithoutMethod()
-    {
-        $parameters = [self::SCRIPT_NAME, 'action'];
-        $request    = new _Request($parameters, count($parameters));
-
-        $this->exception(function () use ($request) {
-            $request->getMethod();
-            })->isInstanceOf('\BadFunctionCallException')
-            ->hasMessage('No method specified');
     }
 }

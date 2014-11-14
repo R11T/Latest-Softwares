@@ -64,8 +64,10 @@ class Request
      */
     public function __construct(array $argv, $argc)
     {
-        if (1 === count($argv)) {
+        if (1 === $argc) {
             throw new \BadFunctionCallException('None args specified');
+        } elseif (2 === $argc) {
+            throw new \BadFunctionCallException('No method specified');
         }
         $this->argv = $argv;
         $this->argc = $argc;
@@ -91,9 +93,6 @@ class Request
      */
     public function getMethod()
     {
-        if (!isset($this->argv[self::METHOD])) {
-            throw new \BadFunctionCallException('No method specified');
-        }
         return $this->argv[self::METHOD];
     }
 

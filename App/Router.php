@@ -1,27 +1,76 @@
 <?php
+/**
+ * @licence GPL-v2
+ */
 namespace App;
 
-use \Exception\LogicException;
 use \App\Controllers\Main;
 use \App\Helpers;
 
+/**
+ * Routing service
+ * Execute controller/action/parameters sequence understood by Request
+ *
+ * @since 0.1
+ * @author Romain L.
+ * @see \Tests\Units\App\Router
+ */
 class Router
 {
-    public function routing(array $argv, $argc)
+    /**
+     * Request object, that's it which understand parameters given to script
+     *
+     * @var Libraries\Io\Request
+     * @access private
+     */
+    private $request;
+
+    /**
+     * __construct()
+     *
+     * @param Libraries\Io\Request $request
+     *
+     * @access public
+     */
+    public function __construct(Libraries\Io\Request $request)
     {
-        list($script, $action, $param) = $argv;
-        if ('latest-softwares' !== $script && './latest-softwares' !== $script) {
-            throw new \LogicException('Bad script called');
-        }
-        switch ($options) {
-            case 'help':
-                Helpers\Displayer::display('-----Help-----');
-                Helpers\Displayer::display('Availables options:');
-                Helpers\Displayer::display('-h: This help');
-                break;
-            
-            default:
-               call_user_func_array([new Main(), $action], [$param]); 
-        }
+        $this->request = $request;
+    }
+
+    /**
+     * Returns an action controller instanciation
+     *
+     * @return Controllers\Main
+     * @access public
+     */
+    public function getController()
+    {
+        $controllerName = $this->request->getAction();
+        $controller = new $controllerName();
+        return $controller;
+    }
+
+    /**
+     * Returns action requested
+     *
+     * @return string
+     * @access public
+     */
+    public function getAction()
+    {
+        return $this->request->getMethod();
+    }
+
+    /**
+     * Run the controller with action/method requested
+     *
+     * @return void
+     * @access public
+     */
+    public function run()
+    {
+        $controller = $this->getController();
+        $action = $this->getAction();
+        $controller->$action();
     }
 }
