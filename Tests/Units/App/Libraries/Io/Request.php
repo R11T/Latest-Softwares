@@ -25,22 +25,6 @@ class Request extends \atoum
     const SCRIPT_NAME = 'latest-softwares';
 
     /**
-     * Tests __construct when script called without args
-     *
-     * @return void
-     * @access public
-     */
-    public function test__constructWithoutArgs()
-    {
-        $parameters = [self::SCRIPT_NAME];
-
-        $this->exception(function () use ($parameters) {
-            new _Request($parameters, count($parameters));
-        })->isInstanceOf('\BadFunctionCallException')
-        ->hasMessage('None args specified');
-    }
-    
-    /**
      * Tests constructor with no method
      *
      * @return void
@@ -48,39 +32,25 @@ class Request extends \atoum
      */
     public function test__constructWithoutMethod()
     {
-        $parameters = [self::SCRIPT_NAME, 'action'];
+        $parameters = [self::SCRIPT_NAME];
 
         $this->exception(function () use ($parameters) {
             new _Request($parameters, count($parameters));
         })->isInstanceOf('\BadFunctionCallException')
-        ->hasMessage('No method specified');
+        ->hasMessage('No action specified');
     }
 
     /**
-     * Tests getAction with action
+     * Tests getAction with an action
      *
      * @return void
      * @access public
      */
     public function testGetAction()
     {
-        $parameters = [self::SCRIPT_NAME, 'action', 'method'];
+        $parameters = [self::SCRIPT_NAME, 'action'];
         $request    = new _Request($parameters, count($parameters));
 
         $this->string($request->getAction())->isIdenticalTo('action');
-    }
-
-    /**
-     * Tests getMethod with method
-     *
-     * @return void
-     * @access public
-     */
-    public function testGetMethod()
-    {
-        $parameters = [self::SCRIPT_NAME, 'action', 'method'];
-        $request    = new _Request($parameters, count($parameters));
-
-        $this->string($request->getMethod())->isIdenticalTo('method');
     }
 }

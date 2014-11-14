@@ -44,15 +44,6 @@ class Request
     const ACTION = 1;
 
     /**
-     * In the argv, offset of method argument
-     *
-     * @var int
-     *
-     * @access public
-     */
-    const METHOD = 2;
-
-    /**
      * Request constructor (you don't say ?)
      * Sets request's attributes
      *
@@ -65,9 +56,7 @@ class Request
     public function __construct(array $argv, $argc)
     {
         if (1 === $argc) {
-            throw new \BadFunctionCallException('None args specified');
-        } elseif (2 === $argc) {
-            throw new \BadFunctionCallException('No method specified');
+            throw new \BadFunctionCallException('No action specified');
         }
         $this->argv = $argv;
         $this->argc = $argc;
@@ -82,18 +71,6 @@ class Request
     public function getAction()
     {
         return $this->argv[self::ACTION];
-    }
-
-    /**
-     * Returns method requested by the user
-     *
-     * @return string
-     * @access public
-     * @throw \BadFunctionCallException if there's no such method
-     */
-    public function getMethod()
-    {
-        return $this->argv[self::METHOD];
     }
 
     // TODO: array_slice for params…
