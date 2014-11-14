@@ -51,7 +51,7 @@ class Chrome implements \App\Libraries\Interfaces\Software
         }, explode(',', $matches[1]));
     }
 
-    protected function setReleaseVersion()
+    public function setReleaseVersion()
     {
         preg_match($this->regexReleaseVersion, $this->file, $matches);
         $this->data['release']['latest']['version']['major'] = $matches[1];

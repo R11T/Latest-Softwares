@@ -17,6 +17,29 @@ if (!$loaded) {
     echo "All required dependencies can't be loaded, aborting\n";
     exit;
 }
+ try {
+     $request = new \App\Libraries\Io\Request($argv, $argc);
+     \App\Singleton::request((new \App\Libraries\Io\Request($argv, $argc)));
+     //\App\Singleton::response((new \App\Libraries\Io\Response()));
+     \App\Singleton::router((new \App\Router($request)));
 
-$router = new \App\Router();
-$router->routing($argv, $argc);
+ } catch (\Exception $e) {
+     \App\Helpers\Displayer::display('Fatal error : ' . $e->getMessage());
+     exit(1);
+ }
+/*Singleton::request($request);
+Singleton::reponse($response);
+Singleton::router($router);
+Singleton::request();
+Singleton::get('router');
+Singleton::set('router', $router);
+Singleton::set('router', $router);
+*/
+$controller = new \App\Main();
+//$router = new \App\Router($request);
+$controller->run();
+/*try {
+    $router->init($argv, $argc);
+} catch (\BadFunctionCallException $e) {
+    echo $e->getMessage() . ", exiting\n";
+}*/
