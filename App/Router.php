@@ -4,9 +4,6 @@
  */
 namespace App;
 
-use \App\Controllers\Main;
-use \App\Helpers;
-
 /**
  * Routing service
  * Execute controller/action/parameters sequence understood by Request
@@ -38,19 +35,6 @@ class Router
     }
 
     /**
-     * Returns an action controller instanciation
-     *
-     * @return Controllers\Main
-     * @access public
-     */
-    public function getController()
-    {
-        $controllerName = $this->request->getAction();
-        $controller = new $controllerName();
-        return $controller;
-    }
-
-    /**
      * Returns action requested
      *
      * @return string
@@ -58,19 +42,6 @@ class Router
      */
     public function getAction()
     {
-        return $this->request->getMethod();
-    }
-
-    /**
-     * Run the controller with action/method requested
-     *
-     * @return void
-     * @access public
-     */
-    public function run()
-    {
-        $controller = $this->getController();
-        $action = $this->getAction();
-        $controller->$action();
+        return $this->request->getAction();
     }
 }
