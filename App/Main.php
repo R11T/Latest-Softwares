@@ -4,8 +4,21 @@ namespace App;
 use \App\Libraries;
 use \App\Helpers\Displayer;
 
+/**
+ * Main controller
+ *
+ * @since 0.1
+ * @author Romain L.
+ * @see \Tests\Units\Main
+ */
 class Main
 {
+	/**
+	 * Execute script action, giving results to \Response
+	 *
+	 * @return void
+	 * @access public
+	 */
     public function run()
     {
         $router = Singleton::router();
@@ -15,14 +28,9 @@ class Main
         } else {
             $this->help();
         }
-        
-
-        // try, with the info given by router, to call an action
-        // that method give its return to response object
-        // if not [se vautre], set method help content into response
     }
 
-    public function get($softwareType = '')
+    protected function get($softwareType = '')
     {
         /*if ('' !== $softwareType) {
             //self::testExistenceFactoryOfType($software);
@@ -48,14 +56,22 @@ class Main
         Displayer::display('Tadaaam');
     }
 
-    public function help()
+    protected function help()
     {
-        Displayer::display('-----Help-----');
-        Displayer::display('Availables options:');
-        Displayer::display('-h: This help');
+    	$response = Singleton::response();
+    	//$response->writeHelp();
+    	$response->write('----Help----');
+    	$response->write('Usage : {script_name} action [parameters]');
+
+    	$response->write('Availables actions :');
+    	$response->write('help : This help');
+    	$response->write('get [parameters] : Get latest information…');
+        /*Displayer::display('-----Help-----');
+        Displayer::display('Availables actionns:');
+        Displayer::display('-h: This help');*/
     }
 
-    private function update($type)
+    protected function update($type)
     {
 
     }
