@@ -15,12 +15,12 @@ foreach ($required as $file) {
 
 if (!$loaded) {
     echo "All required dependencies can't be loaded, aborting\n";
-    exit;
+    exit (1);
 }
  try {
      $request = new \App\Libraries\Io\Request($argv, $argc);
      \App\Singleton::request((new \App\Libraries\Io\Request($argv, $argc)));
-     //\App\Singleton::response((new \App\Libraries\Io\Response()));
+     \App\Singleton::response((new \App\Libraries\Io\Response()));
      \App\Singleton::router((new \App\Router($request)));
 
  } catch (\Exception $e) {
