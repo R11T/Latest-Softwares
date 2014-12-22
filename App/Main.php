@@ -2,7 +2,7 @@
 namespace App;
 
 use \App\Libraries;
-use \App\Helpers\Displayer;
+//use \App\Helpers\Displayer;
 
 /**
  * Main controller
@@ -23,56 +23,94 @@ class Main
     {
         $router = Singleton::router();
         $action = $router->getAction();
+        $query  = $router->getQuery();
         if (is_callable([$this, $action])) {
-            $this->$action();
+            $this->$action($query);
         } else {
             $this->help();
         }
     }
 
-    protected function get($softwareType = '')
+    /**
+     * Display latests data form database
+     *
+     * @param string|null $softwareType
+     *
+     * @return void
+     * @access private
+     */
+    private function get($softwareType = null)
     {
-        /*if ('' !== $softwareType) {
-            //self::testExistenceFactoryOfType($software);
-            // Factories\FactoriesFactory::getAllName();
-            // in_array()…
-            switch ($softwareType) {
-                case 'office':
-                    // $factory = Factories\Type\Office::get()
-                    break;
-                case 'browsers':
-                    $factory = Factories\Type\Browsers::getAll();
-                    break;
+        if (null === $softwareType) {
+            throw new \BadFunctionCallException('No software type specified');
+        } else {
+            $response = Singleton::response();
+            $softwareType = ucfirst($softwareType);
+            $softwareClass = MODEL_NS . $softwareType;
+            if (is_dir(MODEL_DIR . $softwareType) && class_exists($softwareClass)) {
+                $data = file_get_contents(ROOT_DIR . $softwareType . '.json');
+                $response->display($data);
+            } else {
+                throw new \BadFunctionCallException('Software Type doesn\'t exist');
             }
-            var_dump($factory);
-        //} else {
-        //    $factory = Factories\FactoriesFactory::getFactories();
-        }*/
-        /*$factory = Libraries\Factory::get($softwareType);
-        $softwares = json_encode($factory->getSoftwares());
-        var_dump($softwares);
-        $tmp = 'browsers.json';
-        file_put_contents($tmp, $softwares);*/
-        Displayer::display('Tadaaam');
+        }
     }
 
-    protected function help()
+    /**
+     * Refresh data
+     *
+     * @param string $softwareType
+     *
+     * @return void
+     * @access private
+     */
+    private function update($softwareType = null)
     {
-    	$response = Singleton::response();
-    	//$response->writeHelp();
-    	$response->write('----Help----');
-    	$response->write('Usage : {script_name} action [parameters]');
-
-    	$response->write('Availables actions :');
-    	$response->write('help : This help');
-    	$response->write('get [parameters] : Get latest information…');
-        /*Displayer::display('-----Help-----');
-        Displayer::display('Availables actionns:');
-        Displayer::display('-h: This help');*/
+        if (null === $softwareType) {
+            throw new \BadFunctionCallException('No software type specified');
+        } else {
+            $response = Singleton::response();
+            $softwareType = ucfirst($softwareType);
+            $softwareClass = MODEL_NS . $softwareType;
+            if (is_dir(MODEL_DIR . $softwareType) && class_exists($softwareClass)) {
+                $db = new \PDO('sqlite:foo.sqlite');
+                $db->query('CREATE TABLE IF NOT EXISTS software (software_id int unsigned auto_increment not null,
+                software_name varchar(50) not null default \'\',
+                software_version int unsigned not null default 0)');
+                $response->display('none error');
+                //$data = file_get_contents(ROOT_DIR . $softwareType . '.json');
+                //$response->display($data);
+            } else {
+                throw new \BadFunctionCallException('Software Type doesn\'t exist');
+            }
+        }
     }
 
-    protected function update($type)
+    /**
+     * Display help
+     *
+     * @param string $query
+     *
+     * @return void
+     * @access private
+     */
+    private function help($query = null)
     {
-
+        $response = Singleton::response();
+        $help = [
+            '---- Help ----',
+            'Usage : {script_name} action [parameters]',
+            'Availables actions :',
+            'help : This help',
+            'get [parameters] : Get latest information…',
+            'parameters : ? for listing parameters allowed',
+            "\n",
+        ];
+        $response->display($help);
     }
+    /*private function add()
+    {
+        // with software type and software name, create new software class
+        // with software type only, create new software type class
+    }*/
 }

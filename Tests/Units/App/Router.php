@@ -38,4 +38,19 @@ class Router extends \atoum
 
         $this->string($router->getAction())->isIdenticalTo('get');
     }
+
+    /**
+     * Tests if getQuery returns query given to request
+     *
+     * @return void
+     * @access public
+     */
+     public function testGetQuery()
+     {
+        $parameters = [self::SCRIPT_NAME, 'get', 'query'];
+        $request    = new \mock\App\Libraries\Io\Request($parameters, count($parameters));
+        $router     = new _Router($request);
+
+        $this->string($router->getQuery())->isIdenticalTo('query');
+     }
 }
