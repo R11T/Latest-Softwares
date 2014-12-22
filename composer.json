@@ -1,7 +1,4 @@
 {
-	"require": {
-		"atoum/atoum" : "dev-master"
-	},
     "autoload": {
         "psr-4": {
             "": "."
