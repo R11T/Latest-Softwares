@@ -35,13 +35,22 @@ class Request
     private $argc;
 
     /**
-     * In the argv, offset of action argument
+     * In the argv, action arg's offset
      *
      * @var int
      *
      * @access public
      */
     const ACTION = 1;
+
+    /**
+     * In the argv, query arg's offset
+     *
+     * @var int
+     *
+     * @access public
+     */
+     const QUERY = 2;
 
     /**
      * Request constructor (you don't say ?)
@@ -72,6 +81,17 @@ class Request
     {
         return $this->argv[self::ACTION];
     }
+
+    /**
+     * Returns query
+     *
+     * @return string|null if query doesn't exist
+     * @access public
+     */
+     public function getQuery()
+     {
+        return isset($this->argv[self::QUERY]) ? $this->argv[self::QUERY] : null;
+     }
 
     // TODO: array_slice for params…
 }

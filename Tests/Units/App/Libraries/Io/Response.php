@@ -17,32 +17,28 @@ use \App\Libraries\Io\Response as _Response;
  class Response extends atoum
  {
  	/**
- 	 * Tests setting a warning response type
+ 	 * Tests displaying data as a string
  	 *
  	 * @return void
  	 * @access public
  	 */
- 	 public function testSetWarning()
+ 	 public function testDisplayWithString()
  	 {
+        $data     = 'This is a string';
  	 	$response = new _Response();
 
- 	 	$response->setWarning();
-
- 	 	$this->integer($response->getType())->isIdenticalTo(_Response::WARNING);
- 	 	
+        $this->output(function () use ($response, $data) {
+            $response->display($data);
+        })->isIdenticalTo("This is a string\n");
  	 }
 
- 	/**
- 	 */
- 	 public function testWrite()
- 	 {
- 	 	$response = new _Response();
- 	 	$response->write('all went well');
+     public function testDisplayWithArray()
+     {
+        $data     = ['Allons-y', 'Geronimo'];
+        $response = new _Response();
 
- 	 	$out = $response->sendOutput();
-
- 	 	$this->array($out)->size->isIdenticalTo(1);
- 	 	$this->string($out[0])->isIdenticalTo('all went well');
- 	 	// string, type, append
- 	 }
+        $this->output(function () use ($response, $data) {
+            $response->display($data);
+        })->isIdenticalTo("Allons-y\nGeronimo\n");
+     }
  }

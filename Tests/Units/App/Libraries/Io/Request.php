@@ -25,19 +25,18 @@ class Request extends \atoum
     const SCRIPT_NAME = 'latest-softwares';
 
     /**
-     * Tests constructor with no method
+     * Tests constructor with no action
      *
      * @return void
      * @access public
      */
-    public function test__constructWithoutMethod()
+    public function test__constructWithoutAction()
     {
         $parameters = [self::SCRIPT_NAME];
 
         $this->exception(function () use ($parameters) {
             new _Request($parameters, count($parameters));
-        })->isInstanceOf('\BadFunctionCallException')
-        ->hasMessage('No action specified');
+        })->isInstanceOf('\BadFunctionCallException');
     }
 
     /**
@@ -53,4 +52,32 @@ class Request extends \atoum
 
         $this->string($request->getAction())->isIdenticalTo('action');
     }
+
+    /**
+     * Tests getQuery with a query
+     *
+     * @return void
+     * @access public
+     */
+     public function testGetQueryWithQuery()
+     {
+        $params  = [self::SCRIPT_NAME, 'action', 'query'];
+        $request = new _Request($params, count($params));
+
+        $this->string($request->getQuery())->isIdenticalTo('query');
+     }
+
+    /**
+     * Tests getQuery without a query
+     *
+     * @return void
+     * @access public
+     */
+     public function testGetQueryWithoutQuery()
+     {
+        $params  = [self::SCRIPT_NAME, 'action'];
+        $request = new _Request($params, count($params));
+
+        $this->variable($request->getQuery())->isNull();
+     }
 }
