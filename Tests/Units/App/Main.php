@@ -48,25 +48,9 @@ class Main extends TestCase
 	 * @return void
 	 * @access public
 	 */
-	 public function testRunHelp()
-	 {
-	    Singleton::router()->getMockController()->getAction = 'unknown';
-        Singleton::router()->getMockController()->getQuery  = null;
-
-        $this->output(function () {
-            $this->main->run();
-        })->contains('--- Help ----');
-	 }
-
-    /**
-     * Tests calling existent method
-     *
-     * @return void
-     * @access public
-     */
-    public function testRunCallableMethod()
-    {
-	    Singleton::router()->getMockController()->getAction = 'help';
+	public function testRunHelp()
+	{
+        Singleton::router()->getMockController()->getAction = 'help';
         Singleton::router()->getMockController()->getQuery  = null;
 
         $this->output(function () {
@@ -75,66 +59,50 @@ class Main extends TestCase
     }
 
     /**
-     * Tests getting data with softwareType is null
+     * Tests running a callable action without query
      *
      * @return void
      * @access public
      */
-     public function testGetSoftwareTypeNull()
-     {
+    public function testRunWithQueryNull()
+    {
         Singleton::router()->getMockController()->getAction = 'get';
         Singleton::router()->getMockController()->getQuery  = null;
 
         $this->exception(function () {
             $this->main->run();
-        })->isInstanceOf('\BadFunctionCallException');
-     }
+        })->isInstanceOf('\InvalidArgumentException');
+    }
 
     /**
-     * Tests getting existent softwareType
+     * Tests running with a non existent class called
      *
      * @return void
      * @access public
      */
-    public function testGetWithExistentSoftwareType()
+    public function testRunWithNonExistentClass()
     {
         Singleton::router()->getMockController()->getAction = 'get';
-        Singleton::router()->getMockController()->getQuery  = 'browsers';
-
-        $data = $this->outputToString([$this->main, 'run']);
-
-        $this->boolean($this->isJson($data))->isTrue();
-	}
-
-    /**
-     * Tests getting non existent softwareType
-     *
-     * @return void
-     * @access public
-     */
-    public function testGetWithNonExistentSoftwareType()
-    {
-	    Singleton::router()->getMockController()->getAction = 'get';
         Singleton::router()->getMockController()->getQuery  = 'Fantastic!';
 
         $this->exception(function () {
             $this->main->run();
-        })->isInstanceOf('\BadFunctionCallException');
-	}
+        })->isInstanceOf('\DomainException');
+    }
 
     /**
-     * Tests updating data without software type
+     * Tests running with existent class called
      *
      * @return void
      * @access public
      */
-     public function testUpdateWithoutSoftwareType()
-     {
-        Singleton::router()->getMockController()->getAction = 'update';
-        Singleton::router()->getMockController()->getQuery  = null;
+    public function testRunWithExistentClass()
+    {
+        Singleton::router()->getMockController()->getAction = 'get';
+        Singleton::router()->getMockController()->getQuery  = 'browser';
 
-        $this->exception(function () {
-            $this->main->run();
-        })->isInstanceOf('\BadFunctionCallException');
-     }
+        $this->when(function () {
+            $this->outputToString([$this->main, 'run']);
+        })->mock(Singleton::response())->call('display')->once();
+    }
 }

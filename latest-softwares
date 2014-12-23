@@ -18,10 +18,16 @@ try {
     \App\Singleton::db()->exec('PRAGMA foreign_keys=ON');
 
 } catch (\Exception $e) {
-    \App\Helpers\Displayer::display('Fatal error : ' . $e->getMessage());
+    \App\Singleton::response()->display('Fatal error : ' . $e->getMessage());
     exit(1);
 }
-$controller = new \App\Main();
-$controller->run();
+
+try {
+    $controller = new \App\Main();
+    $controller->run();
+} catch (\Exception $e) {
+    \App\Singleton::response()->display('Error : ' . $e->getMessage() . "\nTry typing <help>");
+    exit(1);
+}
 
 // That's all folks !

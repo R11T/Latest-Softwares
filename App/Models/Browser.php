@@ -30,4 +30,9 @@ class Browser extends Software
     {
         $this->dao = $dao;
     }
+
+    public function get()
+    {
+        return 'It works !';
+    }
 }

@@ -2,19 +2,18 @@
 namespace App;
 
 use \App\Libraries;
-//use \App\Helpers\Displayer;
 
 /**
  * Main controller
  *
  * @since 0.1
  * @author Romain L.
- * @see \Tests\Units\Main
+ * @see \Tests\Units\App\Main
  */
 class Main
 {
 	/**
-	 * Execute script action, giving results to \Response
+	 * Execute script action
 	 *
 	 * @return void
 	 * @access public
@@ -24,35 +23,19 @@ class Main
         $router = Singleton::router();
         $action = $router->getAction();
         $query  = $router->getQuery();
-        if (is_callable([$this, $action])) {
-            $this->$action($query);
-        } else {
-            $this->help();
-        }
-    }
-
-    /**
-     * Display latests data form database
-     *
-     * @param string|null $softwareType
-     *
-     * @return void
-     * @access private
-     */
-    private function get($softwareType = null)
-    {
-        if (null === $softwareType) {
-            throw new \BadFunctionCallException('No software type specified');
-        } else {
-            $response = Singleton::response();
-            $softwareType = ucfirst($softwareType);
-            $softwareClass = MODEL_NS . $softwareType;
-            if (is_dir(MODEL_DIR . $softwareType) && class_exists($softwareClass)) {
-                $data = file_get_contents(ROOT_DIR . $softwareType . '.json');
-                $response->display($data);
+        if ('help' !== $action) {
+            if (null !== $query) {
+                $conNS = CONTROLLER_NS . ucfirst($query);
+                if (is_callable([$conNS, $action])) {
+                    Singleton::response()->display((new $conNS)->$action());
+                } else {
+                    throw new \DomainException('Software Type doesn\'t exist');
+                }
             } else {
-                throw new \BadFunctionCallException('Software Type doesn\'t exist');
+                throw new \InvalidArgumentException('Parameter unknown');
             }
+        } else {
+            Singleton::response()->display($this->help());
         }
     }
 
@@ -64,7 +47,7 @@ class Main
      * @return void
      * @access private
      */
-    private function update($softwareType = null)
+    private function update($softwareType = null)// rename to push
     {
         if (null === $softwareType) {
             throw new \BadFunctionCallException('No software type specified');
@@ -92,25 +75,23 @@ class Main
      *
      * @param string $query
      *
-     * @return void
+     * @return array
      * @access private
      */
     private function help($query = null)
     {
-        $response = Singleton::response();
-        $help = [
+        return [
             '---- Help ----',
             'Usage : {script_name} action [parameters]',
             'Availables actions :',
             'help : This help',
             'get [parameters] : Get latest information…',
             'parameters : ? for listing parameters allowed',
-            "\n",
+            '',
         ];
-        $response->display($help);
     }
 
-    private function create()
+    private function create() // rename to post
     {
         // create a new table from a predefined schema (it has to stick to call methods, interface with inheritance can force this)
         // append softwareType table
@@ -140,7 +121,7 @@ class Main
         var_dump($res);
     }
     
-    private function add()
+    private function add() // refacto with above
     {
         // with software type and software name, create new software class
         // with software type only, create new software type class
@@ -157,5 +138,11 @@ class Main
             INSERT INTO software (type_id, software_name, software_last_update) VALUES (1, "chrome", ' . time() . ');
         ');
         var_dump($res);
+    }
+
+    private function verifConsistency()
+    {
+        // check if all classes are present, callable and match to db informations
+        // ensure that there's no residue of work undone
     }
 }
