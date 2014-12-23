@@ -44,4 +44,14 @@ class Router
     {
         return $this->request->getAction();
     }
+
+    /**
+     * Returns query requested
+     *
+     * @return string|null if query doesn't exist
+     */
+     public function getQuery()
+     {
+        return $this->request->getQuery();
+     }
 }

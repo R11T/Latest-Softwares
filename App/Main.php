@@ -57,7 +57,7 @@ class Main
     }
 
     /**
-     * Refresh data
+     * Refresh database' data
      *
      * @param string $softwareType
      *
@@ -73,11 +73,13 @@ class Main
             $softwareType = ucfirst($softwareType);
             $softwareClass = MODEL_NS . $softwareType;
             if (is_dir(MODEL_DIR . $softwareType) && class_exists($softwareClass)) {
-                $db = new \PDO('sqlite:foo.sqlite');
-                $db->query('CREATE TABLE IF NOT EXISTS software (software_id int unsigned auto_increment not null,
-                software_name varchar(50) not null default \'\',
-                software_version int unsigned not null default 0)');
-                $response->display('none error');
+                $db = Singleton::db();
+                //$db->query('INSERT INTO software VALUES("", "chrome", 11)');
+                $res = $db->query('SELECT * from software');
+                foreach ($res as $data) {
+                    $response->display([$data['software_id'], $data['software_name'], $data['software_version']]);
+                }
+
                 //$data = file_get_contents(ROOT_DIR . $softwareType . '.json');
                 //$response->display($data);
             } else {
@@ -107,6 +109,18 @@ class Main
             "\n",
         ];
         $response->display($help);
+    }
+
+    private function create()
+    {
+        // create a new table from a predefined schema (it has to stick to call methods, interface with inheritance can force this)
+        // append softwareType table
+        // and new softwareType class
+        // and add new software example class
+        $db = Singleton::db();
+                $db->query('CREATE TABLE IF NOT EXISTS software (software_id int unsigned auto_increment not null,
+                software_name varchar(50) not null default \'\',
+                software_version int unsigned not null default 0)');
     }
     /*private function add()
     {
