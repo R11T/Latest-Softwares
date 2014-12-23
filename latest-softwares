@@ -15,6 +15,7 @@ try {
     \App\Singleton::response((new \App\Libraries\Io\Response()));
     \App\Singleton::router((new \App\Router($request)));
     \App\Singleton::db(new \App\Libraries\Db(DATA_DIR . 'db.sqlite'));
+    \App\Singleton::db()->exec('PRAGMA foreign_keys=ON');
 
 } catch (\Exception $e) {
     \App\Helpers\Displayer::display('Fatal error : ' . $e->getMessage());

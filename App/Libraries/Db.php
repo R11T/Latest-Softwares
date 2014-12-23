@@ -14,4 +14,6 @@ class Db extends \PDO
     {
         parent::__construct('sqlite:' . $filename);
     }
+
+    //TODO:  transaction with multiqueries system
 }

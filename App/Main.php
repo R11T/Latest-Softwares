@@ -74,10 +74,9 @@ class Main
             $softwareClass = MODEL_NS . $softwareType;
             if (is_dir(MODEL_DIR . $softwareType) && class_exists($softwareClass)) {
                 $db = Singleton::db();
-                //$db->query('INSERT INTO software VALUES("", "chrome", 11)');
                 $res = $db->query('SELECT * from software');
-                foreach ($res as $data) {
-                    $response->display([$data['software_id'], $data['software_name'], $data['software_version']]);
+                foreach ($res->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+                    $response->display($row['software_name']);
                 }
 
                 //$data = file_get_contents(ROOT_DIR . $softwareType . '.json');
@@ -117,14 +116,46 @@ class Main
         // append softwareType table
         // and new softwareType class
         // and add new software example class
-        $db = Singleton::db();
-                $db->query('CREATE TABLE IF NOT EXISTS software (software_id int unsigned auto_increment not null,
-                software_name varchar(50) not null default \'\',
-                software_version int unsigned not null default 0)');
+        $db  = Singleton::db();
+        $res = $db->query('DROP TABLE IF EXISTS type');
+        $res = $db->query('
+            CREATE TABLE type (type_id INTEGER PRIMARY KEY,
+            type_name TEXT NOT NULL DEFAULT \'\',
+            type_last_update INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP);
+        ');
+        $res = $db->query('CREATE UNIQUE INDEX type_name ON type(type_name)');
+        var_dump($res);
+        $res = $db->query('DROP TABLE IF EXISTS software');
+        $res = $db->query('CREATE TABLE test(a integer)');
+        var_dump($res);
+        $res = $db->query('
+            CREATE TABLE software (software_id INTEGER PRIMARY KEY,
+            type_id INTEGER NOT NULL,
+            software_name TEXT NOT NULL DEFAULT \'\',
+            software_last_update INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (type_id) REFERENCES type(type_id)
+            );
+        ');
+        $res = $db->query('CREATE UNIQUE INDEX software_name ON software(software_name)');
+        var_dump($res);
     }
-    /*private function add()
+    
+    private function add()
     {
         // with software type and software name, create new software class
         // with software type only, create new software type class
-    }*/
+        // for the momentn we will only add a new browser : 1/ into the db 2/ in order to expect class with its name (and with its inheritance)
+        $db  = Singleton::db();
+        $res = $db->query('DELETE FROM software');
+        $res = $db->query('DELETE FROM type');
+        $res = $db->query('
+            INSERT INTO type (type_name, type_last_update) VALUES ("browser", ' . time() . ');
+        ');
+
+        var_dump($res);
+        $res = $db->query('
+            INSERT INTO software (type_id, software_name, software_last_update) VALUES (1, "chrome", ' . time() . ');
+        ');
+        var_dump($res);
+    }
 }
