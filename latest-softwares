@@ -2,44 +2,25 @@
 <?php
 
 $required = [
-    'Core.php', 'Vendor/autoload.php'
+    'Const.php', 'Vendor/autoload.php'
 ];
-$loaded = false;
 
-foreach ($required as $file) {
-    if (file_exists($file)) {
-        $loaded  = true;
-        require_once $file;
-    }
+require_once 'dependencies.php';
+
+loadDependencies($required);
+
+try {
+    $request = new \App\Libraries\Io\Request($argv, $argc);
+    \App\Singleton::request((new \App\Libraries\Io\Request($argv, $argc)));
+    \App\Singleton::response((new \App\Libraries\Io\Response()));
+    \App\Singleton::router((new \App\Router($request)));
+    \App\Singleton::db(new \App\Libraries\Db(DATA_DIR . 'db.sqlite'));
+
+} catch (\Exception $e) {
+    \App\Helpers\Displayer::display('Fatal error : ' . $e->getMessage());
+    exit(1);
 }
-
-if (!$loaded) {
-    echo "All required dependencies can't be loaded, aborting\n";
-    exit (1);
-}
- try {
-     $request = new \App\Libraries\Io\Request($argv, $argc);
-     \App\Singleton::request((new \App\Libraries\Io\Request($argv, $argc)));
-     \App\Singleton::response((new \App\Libraries\Io\Response()));
-     \App\Singleton::router((new \App\Router($request)));
-
- } catch (\Exception $e) {
-     \App\Helpers\Displayer::display('Fatal error : ' . $e->getMessage());
-     exit(1);
- }
-/*Singleton::request($request);
-Singleton::reponse($response);
-Singleton::router($router);
-Singleton::request();
-Singleton::get('router');
-Singleton::set('router', $router);
-Singleton::set('router', $router);
-*/
 $controller = new \App\Main();
-//$router = new \App\Router($request);
 $controller->run();
-/*try {
-    $router->init($argv, $argc);
-} catch (\BadFunctionCallException $e) {
-    echo $e->getMessage() . ", exiting\n";
-}*/
+
+// That's all folks !
