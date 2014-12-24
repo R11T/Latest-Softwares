@@ -5,7 +5,7 @@
 namespace Tests\Units\App;
 
 use \Tests\Units\TestCase;
-use \App\Singleton;
+use \App\Singleton as Singleton;
 use \App\Main as _Main;
 
 /**
@@ -59,6 +59,22 @@ class Main extends TestCase
     }
 
     /**
+     * Tests running non callable action
+     *
+     * @return void
+     * @access public
+     */
+     public function testRunNonCallable()
+     {
+        Singleton::router()->getMockController()->getAction = 'test';
+        Singleton::router()->getMockController()->getQuery  = null;
+
+        $this->exception(function () {
+            $this->main->run();
+        })->isInstanceOf('\InvalidArgumentException');
+     }
+
+    /**
      * Tests running a callable action without query
      *
      * @return void
@@ -74,35 +90,24 @@ class Main extends TestCase
         })->isInstanceOf('\InvalidArgumentException');
     }
 
+    // TODO: test run whun function is called
+
     /**
-     * Tests running with a non existent class called
+     * Tests get with class doesn't exist
      *
      * @return void
      * @access public
      */
-    public function testRunWithNonExistentClass()
+    public function testGetWithNonExistentClass()
     {
         Singleton::router()->getMockController()->getAction = 'get';
-        Singleton::router()->getMockController()->getQuery  = 'Fantastic!';
+        Singleton::router()->getMockController()->getQuery  = 'browsers';
 
         $this->exception(function () {
             $this->main->run();
         })->isInstanceOf('\DomainException');
     }
 
-    /**
-     * Tests running with existent class called
-     *
-     * @return void
-     * @access public
-     */
-    public function testRunWithExistentClass()
-    {
-        Singleton::router()->getMockController()->getAction = 'get';
-        Singleton::router()->getMockController()->getQuery  = 'browser';
-
-        $this->when(function () {
-            $this->outputToString([$this->main, 'run']);
-        })->mock(Singleton::response())->call('display')->once();
-    }
+    // TODO: test get non callable method
+    // TODO: test get without talking to db
 }

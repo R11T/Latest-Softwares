@@ -13,30 +13,74 @@ use \App\Libraries;
 class Main
 {
 	/**
-	 * Execute script action
-	 *
-	 * @return void
-	 * @access public
-	 */
+     * Execute script action
+     *
+     * @return void
+     * @access public
+     * @throws \InvalidArgumentException if action is forbidden
+     * @throws \InvalidArgumentException if query is empty
+     */
     public function run()
     {
         $router = Singleton::router();
         $action = $router->getAction();
         $query  = $router->getQuery();
         if ('help' !== $action) {
-            if (null !== $query) {
-                $conNS = CONTROLLER_NS . ucfirst($query);
-                if (is_callable([$conNS, $action])) {
-                    Singleton::response()->display((new $conNS)->$action());
+            if (is_callable([$this, $action])) {
+                if (null !== $query) {
+                    Singleton::response()->display(call_user_func_array([$this, $action], [$query]));
                 } else {
-                    throw new \DomainException('Software Type doesn\'t exist');
+                    throw new \InvalidArgumentException('Query must not be empty');
                 }
             } else {
-                throw new \InvalidArgumentException('Parameter unknown');
+                throw new \InvalidArgumentException('Action isn\'t a REST method');
             }
         } else {
             Singleton::response()->display($this->help());
         }
+    }
+
+    /**
+     * Execute GET method, in a RESTful meaning
+     *
+     * @param string $query Element wanted
+     *
+     * @return array
+     * @access private
+     * @throws \DomainException if the controller doesn't exist
+     * @throws \InvalidArgumentException if the controller doesn't implement GET
+     */
+    protected function get($query)
+    {
+        $conNS = $this->getControllerName($query);
+        if (class_exists($conNS)) {
+            if (is_callable([$conNS, 'get'])) {
+                $dao   = $this->getDaoName($query);
+                $model = $this->getModelName($query);
+                Singleton::dao((new $dao()));
+                Singleton::model((new $model()));
+                return (new $conNS())->get();
+            } else {
+                throw new \InvalidArgumentException($conNS . ' doesn\'t implement requested action');
+            }
+        } else {
+            throw new \DomainException($conNS . ' doesn\'t exist');
+        }
+    }
+
+    private function getControllerName($name)
+    {
+        return CONTROLLER_NS . ucfirst($name);
+    }
+
+    private function getModelName($name)
+    {
+        return MODEL_NS . ucfirst($name);
+    }
+
+    private function getDaoName($name)
+    {
+        return LIBRARIES_NS . ucfirst($name) . 'Dao';
     }
 
     /**
@@ -78,7 +122,7 @@ class Main
      * @return array
      * @access private
      */
-    private function help($query = null)
+    private function help()
     {
         return [
             '---- Help ----',
@@ -127,15 +171,14 @@ class Main
         // with software type only, create new software type class
         // for the momentn we will only add a new browser : 1/ into the db 2/ in order to expect class with its name (and with its inheritance)
         $db  = Singleton::db();
-        $res = $db->query('DELETE FROM software');
-        $res = $db->query('DELETE FROM type');
-        $res = $db->query('
+        //$res = $db->query('DELETE FROM software');
+        //$res = $db->query('DELETE FROM type');
+        /*$res = $db->query('
             INSERT INTO type (type_name, type_last_update) VALUES ("browser", ' . time() . ');
         ');
-
-        var_dump($res);
+*/
         $res = $db->query('
-            INSERT INTO software (type_id, software_name, software_last_update) VALUES (1, "chrome", ' . time() . ');
+            INSERT INTO software (type_id, software_name, software_last_update) VALUES (1, "firefox", ' . time() . ');
         ');
         var_dump($res);
     }
