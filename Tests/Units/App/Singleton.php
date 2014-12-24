@@ -58,8 +58,7 @@ class Singleton extends \atoum
         $this->exception(function () {
             _Singleton::router((new \StdClass));
         })
-        ->isInstanceOf('\LogicException')
-        ->hasMessage('Overwrite router isn\'t allowed');
+        ->isInstanceOf('\LogicException');
     }
 
     /**
@@ -73,8 +72,7 @@ class Singleton extends \atoum
         $this->exception(function () {
             _Singleton::router((new \StdClass), (new \StdClass));
         })
-        ->isInstanceOf('\OutOfBoundsException')
-        ->hasMessage('Only one value is allowed');
+        ->isInstanceOf('\OutOfBoundsException');
     }
 
     /**
@@ -88,8 +86,7 @@ class Singleton extends \atoum
         $this->exception(function () {
             _Singleton::router('I love apple pie');
         })
-        ->isInstanceOf('\DomainException')
-        ->hasMessage('router isn\'t an object');
+        ->isInstanceOf('\DomainException');
     }
 }
 
