@@ -17,22 +17,45 @@ class Browser extends Software
     Following this, reorganize json file
     */
 
-    /**
-     * Browser' Data Access Object
-     *
-     * @var \App\Libraries\BrowserDao
-     *
-     * @access private
-     */
-    private $dao;
-
-    public function __construct(\App\Libraries\BrowserDao $dao)
+    public function getByName($name)
     {
-        $this->dao = $dao;
+        $data = \App\Singleton::dao()->getByName($name);
+
+        if (0 === count($data)) {
+            return 'Unknown browser';
+        } else {
+            foreach ($data as $browser) {
+                $line[] = 'id : ' . $browser['software_id'] .', name : ' . $browser['software_name'];
+            }
+            return $line;
+        }
     }
 
-    public function get()
+    public function getAll()// data understanding
     {
-        return 'It works !';
+        $data = \App\Singleton::dao()->getAll();
+
+        if (0 === count($data)) {
+            return 'There is no browser';
+        } else {
+            foreach ($data as $browser) {
+                $line[] = 'id : ' . $browser['software_id'] .', name : ' . $browser['software_name'];
+            }
+            return $line;
+        }
+    }
+
+    public function getListName()
+    {
+        $data = \App\Singleton::dao()->getListName();
+        if (0 === count($data)) {
+            return 'None';
+        } else {
+            foreach ($data as $browser) {
+                $row[] = $browser['software_name'];
+            }
+            $row[] = 'all';
+            return implode(', ', $row);
+        }
     }
 }

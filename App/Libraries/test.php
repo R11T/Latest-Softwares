@@ -57,10 +57,10 @@ class WinButton extends Button {
 class OSXButton extends Button {
     public function render() {
         return "Je suis un OSXButton: ".$this->getCaption();
-}
+    }
 }
  
-$aFactory = GUIFactory::getFactory(GUIFactory::WIN);
+$aFactory = GUIFactory::getFactory(GUIFactory::WIN);// it would be interesting to give a software type name as parameter, but it implies that existence is checked above in the flow
 $aButton = $aFactory->createButton();
 $aButton->setCaption("Démarrage");
 echo $aButton->render() . "\n";
