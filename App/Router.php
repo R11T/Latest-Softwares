@@ -6,6 +6,7 @@ namespace App;
 
 /**
  * Routing service
+ *
  * Execute controller/action/parameters sequence understood by Request
  *
  * @since 0.1
@@ -46,12 +47,24 @@ class Router
     }
 
     /**
-     * Returns query requested
+     * Returns softwareType requested
      *
-     * @return string|null if query doesn't exist
+     * @return string|null if softwareType doesn't exist
+     * @access public
      */
-     public function getQuery()
+     public function getSoftwareType()
      {
-        return $this->request->getQuery();
+        return $this->request->getSoftwareType();
      }
+
+    /**
+     * Returns softwareName requested
+     *
+     * @return string|null if softwareName doesn't exist
+     * @access public
+     */
+    public function getSoftwareName()
+    {
+        return $this->request->getSoftwareName();
+    }
 }

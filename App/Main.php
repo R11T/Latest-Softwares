@@ -24,11 +24,11 @@ class Main
     {
         $router = Singleton::router();
         $action = $router->getAction();
-        $query  = $router->getQuery();
+        $type   = $router->getSoftwareType();
         if ('help' !== $action) {
             if (is_callable([$this, $action])) {
-                if (null !== $query) {
-                    Singleton::response()->display(call_user_func_array([$this, $action], [$query]));
+                if (null !== $type) {
+                    Singleton::response()->display(call_user_func_array([$this, $action], [$type]));
                 } else {
                     throw new \InvalidArgumentException('Query must not be empty');
                 }
@@ -43,23 +43,23 @@ class Main
     /**
      * Execute GET method, in a RESTful meaning
      *
-     * @param string $query Element wanted
+     * @param string $type Software type wanted
      *
      * @return array
      * @access private
      * @throws \DomainException if the controller doesn't exist
      * @throws \InvalidArgumentException if the controller doesn't implement GET
      */
-    protected function get($query)
+    private function get($type)
     {
-        $conNS = $this->getControllerName($query);
+        $conNS = $this->getControllerName($type);
         if (class_exists($conNS)) {
             if (is_callable([$conNS, 'get'])) {
-                $dao   = $this->getDaoName($query);
-                $model = $this->getModelName($query);
+                $dao   = $this->getDaoName($type);
+                $model = $this->getModelName($type);
                 Singleton::dao((new $dao()));
                 Singleton::model((new $model()));
-                return (new $conNS())->get();
+                return (new $conNS())->get(Singleton::router()->getSoftwareName());
             } else {
                 throw new \InvalidArgumentException($conNS . ' doesn\'t implement requested action');
             }
@@ -129,7 +129,7 @@ class Main
             'Usage : {script_name} action [parameters]',
             'Availables actions :',
             'help : This help',
-            'get [parameters] : Get latest information…',
+            'get [parameters] : Get softwares\' latests data',
             'parameters : ? for listing parameters allowed',
             '',
         ];

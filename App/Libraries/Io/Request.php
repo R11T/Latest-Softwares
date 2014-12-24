@@ -44,13 +44,22 @@ class Request
     const ACTION = 1;
 
     /**
-     * In the argv, query arg's offset
+     * In the argv, software type arg's offset
      *
      * @var int
      *
      * @access public
      */
-     const QUERY = 2;
+    const SOFTWARE_TYPE = 2;
+
+    /**
+     * In the argv, software name arg's offset
+     *
+     * @var int
+     *
+     * @access public
+     */
+    const SOFTWARE_NAME = 3;
 
     /**
      * Request constructor (you don't say ?)
@@ -83,15 +92,26 @@ class Request
     }
 
     /**
-     * Returns query
+     * Returns software type
      *
-     * @return string|null if query doesn't exist
+     * @return string|null if software type doesn't exist
      * @access public
      */
-     public function getQuery()
-     {
-        return isset($this->argv[self::QUERY]) ? $this->argv[self::QUERY] : null;
-     }
+    public function getSoftwareType()
+    {
+        return isset($this->argv[self::SOFTWARE_TYPE]) ? $this->argv[self::SOFTWARE_TYPE] : null;
+    }
+
+    /**
+     * Returns software name
+     *
+     * @return string|null if software name doesn't exist
+     * @access public
+     */
+    public function getSoftwareName()
+    {
+        return isset($this->argv[self::SOFTWARE_NAME]) ? $this->argv[self::SOFTWARE_NAME] : null;
+    }
 
     // TODO: array_slice for params…
 }

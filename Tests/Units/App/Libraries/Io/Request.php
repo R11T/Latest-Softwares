@@ -54,30 +54,58 @@ class Request extends \atoum
     }
 
     /**
-     * Tests getQuery with a query
+     * Tests getSoftwareType with a software type
      *
      * @return void
      * @access public
      */
-     public function testGetQueryWithQuery()
-     {
-        $params  = [self::SCRIPT_NAME, 'action', 'query'];
+    public function testGetSoftwareTypeGiven()
+    {
+        $params  = [self::SCRIPT_NAME, 'action', 'type'];
         $request = new _Request($params, count($params));
 
-        $this->string($request->getQuery())->isIdenticalTo('query');
-     }
+        $this->string($request->getSoftwareType())->isIdenticalTo('type');
+    }
 
     /**
-     * Tests getQuery without a query
+     * Tests getSoftwareType void
      *
      * @return void
      * @access public
      */
-     public function testGetQueryWithoutQuery()
-     {
+    public function testGetQueryWithoutSoftwareType()
+    {
         $params  = [self::SCRIPT_NAME, 'action'];
         $request = new _Request($params, count($params));
 
-        $this->variable($request->getQuery())->isNull();
-     }
+        $this->variable($request->getSoftwareType())->isNull();
+    }
+
+    /**
+     * Tests getSoftwareName with a software name
+     *
+     * @return void
+     * @access public
+     */
+    public function testGetSoftwareNameGiven()
+    {
+        $params  = [self::SCRIPT_NAME, 'action', 'type', 'name'];
+        $request = new _Request($params, count($params));
+
+        $this->string($request->getSoftwareName())->isIdenticalTo('name');
+    }
+
+    /**
+     * Tests getSoftwareName void
+     *
+     * @return void
+     * @access public
+     */
+    public function testGetSoftwareNameWithoutSoftwareName()
+    {
+        $params  = [self::SCRIPT_NAME, 'action', 'type'];
+        $request = new _Request($params, count($params));
+
+        $this->variable($request->getSoftwareName())->isNull();
+    }
 }

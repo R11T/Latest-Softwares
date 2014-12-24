@@ -36,8 +36,8 @@ class Main extends TestCase
     {
 	    $this->main = new _Main();
 	    $this->mockGenerator()->orphanize('__construct');
-	    $router     = new \mock\App\Router;
-	    $response   = new \mock\App\Libraries\Io\Response;
+	    $router   = new \mock\App\Router;
+	    $response = new \mock\App\Libraries\Io\Response;
 	    Singleton::router($router);
 	    Singleton::response($response);
     }
@@ -50,8 +50,8 @@ class Main extends TestCase
 	 */
 	public function testRunHelp()
 	{
-        Singleton::router()->getMockController()->getAction = 'help';
-        Singleton::router()->getMockController()->getQuery  = null;
+        Singleton::router()->getMockController()->getAction       = 'help';
+        Singleton::router()->getMockController()->getSoftwareType = null;
 
         $this->output(function () {
             $this->main->run();
@@ -66,8 +66,8 @@ class Main extends TestCase
      */
      public function testRunNonCallable()
      {
-        Singleton::router()->getMockController()->getAction = 'test';
-        Singleton::router()->getMockController()->getQuery  = null;
+        Singleton::router()->getMockController()->getAction       = 'test';
+        Singleton::router()->getMockController()->getSoftwareType = null;
 
         $this->exception(function () {
             $this->main->run();
@@ -82,8 +82,8 @@ class Main extends TestCase
      */
     public function testRunWithQueryNull()
     {
-        Singleton::router()->getMockController()->getAction = 'get';
-        Singleton::router()->getMockController()->getQuery  = null;
+        Singleton::router()->getMockController()->getAction       = 'get';
+        Singleton::router()->getMockController()->getSoftwareType = null;
 
         $this->exception(function () {
             $this->main->run();
@@ -100,8 +100,8 @@ class Main extends TestCase
      */
     public function testGetWithNonExistentClass()
     {
-        Singleton::router()->getMockController()->getAction = 'get';
-        Singleton::router()->getMockController()->getQuery  = 'browsers';
+        Singleton::router()->getMockController()->getAction       = 'get';
+        Singleton::router()->getMockController()->getSoftwareType = 'browsers';
 
         $this->exception(function () {
             $this->main->run();

@@ -40,17 +40,32 @@ class Router extends \atoum
     }
 
     /**
-     * Tests if getQuery returns query given to request
+     * Tests if getSoftwareType returns query given to request
      *
      * @return void
      * @access public
      */
-     public function testGetQuery()
+     public function testGetSoftwareType()
      {
-        $parameters = [self::SCRIPT_NAME, 'get', 'query'];
+        $parameters = [self::SCRIPT_NAME, 'get', 'type'];
         $request    = new \mock\App\Libraries\Io\Request($parameters, count($parameters));
         $router     = new _Router($request);
 
-        $this->string($router->getQuery())->isIdenticalTo('query');
+        $this->string($router->getSoftwareType())->isIdenticalTo('type');
      }
+
+    /**
+     * Tests if getSoftwareName returns query given to request
+     *
+     * @return void
+     * @access public
+     */
+    public function testGetSoftwareName()
+    {
+        $parameters = [self::SCRIPT_NAME, 'get', 'type', 'name'];
+        $request    = new \mock\App\Libraries\Io\Request($parameters, count($parameters));
+        $router     = new _Router($request);
+
+        $this->string($router->getSoftwareName())->isIdenticalTo('name');
+    }
 }
