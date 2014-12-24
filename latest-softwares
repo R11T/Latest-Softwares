@@ -18,6 +18,9 @@ try {
     \App\Singleton::db()->exec('PRAGMA foreign_keys=ON');
 
 } catch (\Exception $e) {
+    if (!is_object(\App\Singleton::response())) {
+        \App\Singleton::response((new \App\Libraries\Io\Response()));
+    }
     \App\Singleton::response()->display('Fatal error : ' . $e->getMessage());
     exit(1);
 }
@@ -26,6 +29,9 @@ try {
     $controller = new \App\Main();
     $controller->run();
 } catch (\Exception $e) {
+    if (!is_object(\App\Singleton::response())) {
+        \App\Singleton::response((new \App\Libraries\Io\Response()));
+    }
     \App\Singleton::response()->display('Error : ' . $e->getMessage() . "\nTry typing <help>");
     exit(1);
 }
