@@ -6,9 +6,6 @@ namespace App\Models;
 
 /**
  *
- *
- *
- *
  */
 class Browser extends Software
 {
@@ -17,6 +14,14 @@ class Browser extends Software
     Following this, reorganize json file
     */
 
+    /**
+     * Gets a browser's all data
+     *
+     * @param string $name
+     *
+     * @return array
+     * @access public
+     */
     public function getByName($name)
     {
         $data = \App\Singleton::dao()->getByName($name);
@@ -31,7 +36,13 @@ class Browser extends Software
         }
     }
 
-    public function getAll()// data understanding
+    /**
+     * Get all browsers' all data
+     *
+     * @return array
+     * @access public
+     */
+    public function getAll()
     {
         $data = \App\Singleton::dao()->getAll();
 
@@ -45,6 +56,12 @@ class Browser extends Software
         }
     }
 
+    /**
+     * Get all browsers' names
+     *
+     * @return string
+     * @access public
+     */
     public function getListName()
     {
         $data = \App\Singleton::dao()->getListName();
