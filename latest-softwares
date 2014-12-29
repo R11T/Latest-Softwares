@@ -16,6 +16,7 @@ try {
     \App\Singleton::router((new \App\Router($request)));
     \App\Singleton::db(new \App\Libraries\Db(DATA_DIR . 'db.sqlite'));
     \App\Singleton::db()->exec('PRAGMA foreign_keys=ON');
+    \App\Singleton::mainFactory(new \App\Libraries\Factory());
 
 } catch (\Exception $e) {
     if (!is_object(\App\Singleton::response())) {

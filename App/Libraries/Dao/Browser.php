@@ -2,7 +2,7 @@
 /**
  * @licence GPL-v2
  */
-namespace App\Libraries;
+namespace App\Libraries\Dao;
 
 /**
  * Browser' Data Access Object
@@ -10,7 +10,7 @@ namespace App\Libraries;
  * @author Romain L.
  * @since 0.1
  */
-class BrowserDao
+class Browser
 {
     public function getByName($name)
     {
@@ -20,7 +20,7 @@ class BrowserDao
             ':software_name' => $name
         ]);
 
-        return $req->fetchAll($db::FETCH_ASSOC);
+        return $req->fetch($db::FETCH_ASSOC);
     }
 
     public function getAll()

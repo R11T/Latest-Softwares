@@ -1,9 +1,7 @@
 <?php
-namespace App\Libraries\Factory;
+namespace App\Libraries\Factories;
 
-use \App\Exceptions;
-
-class Browsers extends \App\Libraries\Factory\Softwares implements \App\Libraries\Interfaces\Factories
+class Browser
 {
     protected $browsers;
 

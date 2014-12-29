@@ -18,19 +18,27 @@ namespace App\Libraries\Io;
     /**
      * Print data
      *
-     * @param string|array $data
+     * @param \App\Libraries\Interfaces\ISoftwareItem
      *
      * @return void
      * @access public
      */
-    public function display($data)
+    public function display(\Iterator $items)
     {
-        if (!is_array($data)) {
-            $data = (array) $data;
+        foreach ($items as $item) {
+            echo $item->current() . "\n";
         }
-        foreach ($data as $line) {
-            echo $line . "\n";
-        }
+        /**
+         * Collectable $items
+         *
+         * foreach ($items as $item) {
+         *  $item->display();
+         *
+         * }
+         *
+         * implies that an object must be iterable and displayable and an array as an object too
+         *
+         */
     }
  }
 

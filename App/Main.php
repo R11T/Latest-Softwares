@@ -47,40 +47,18 @@ class Main
      *
      * @return array
      * @access private
-     * @throws \DomainException if the controller doesn't exist
-     * @throws \InvalidArgumentException if the controller doesn't implement GET
      */
     private function get($type)
     {
-        $conNS = $this->getControllerName($type);
-        if (class_exists($conNS)) {
-            if (is_callable([$conNS, 'get'])) {
-                $dao   = $this->getDaoName($type);
-                $model = $this->getModelName($type);
-                Singleton::dao((new $dao()));
-                Singleton::model((new $model()));
-                return (new $conNS())->get(Singleton::router()->getSoftwareName());
-            } else {
-                throw new \InvalidArgumentException($conNS . ' doesn\'t implement requested action');
-            }
+        $factory      = Singleton::mainFactory()->create($type);
+        $softwareName = Singleton::router()->getSoftwareName();
+        if ('all' === $softwareName) {
+            return $factory->getAll();
+        } elseif (isset($softwareName) && '?' !== $softwareName) {
+            return $factory->getByName($softwareName);
         } else {
-            throw new \DomainException($conNS . ' doesn\'t exist');
+            return $factory->getAllNames();
         }
-    }
-
-    private function getControllerName($name)
-    {
-        return CONTROLLER_NS . ucfirst($name);
-    }
-
-    private function getModelName($name)
-    {
-        return MODEL_NS . ucfirst($name);
-    }
-
-    private function getDaoName($name)
-    {
-        return LIBRARIES_NS . ucfirst($name) . 'Dao';
     }
 
     /**
@@ -181,11 +159,5 @@ class Main
             INSERT INTO software (type_id, software_name, software_last_update) VALUES (1, "firefox", ' . time() . ');
         ');
         var_dump($res);
-    }
-
-    private function verifConsistency()
-    {
-        // check if all classes are present, callable and match to db informations
-        // ensure that there's no residue of work undone
     }
 }

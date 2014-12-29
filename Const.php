@@ -6,3 +6,5 @@ define('MODEL_NS', '\\App\Models\\');
 define('DATA_DIR', ROOT_DIR . 'App/Data/');
 define('CONTROLLER_NS', '\\App\Controllers\\');
 define('LIBRARIES_NS', '\\App\Libraries\\');
+define('FACTORIES_NS', LIBRARIES_NS . 'Factories\\');
+define('DAO_NS', LIBRARIES_NS . 'Dao\\');

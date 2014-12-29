@@ -2,23 +2,23 @@
 /**
  * @licence GPL-v2
  */
-namespace Tests\Units\App\Models;
+namespace Tests\Units\App\Item;
 
 use \Tests\Units\TestCase;
 use \App\Singleton;
-use \App\Models\Browser as _Browser;
+use \App\Item\Browser as _Browser;
 
 /**
  * Unit testing on browser's model
  *
  * @since 0.1
  * @author Romain L.
- * @see \App\Models\Browser
+ * @see \App\Item\Browser
  */
 class Browser extends TestCase
 {
     /**
-     * Tested clas
+     * Tested class
      *
      * @var \App\Models\Browser
      *

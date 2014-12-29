@@ -34,12 +34,14 @@ class Main extends TestCase
      */
     public function beforeTestMethod()
     {
-	    $this->main = new _Main();
+	    $this->main  = new _Main();
 	    $this->mockGenerator()->orphanize('__construct');
-	    $router   = new \mock\App\Router;
-	    $response = new \mock\App\Libraries\Io\Response;
+	    $router      = new \mock\App\Router;
+	    $response    = new \mock\App\Libraries\Io\Response;
 	    Singleton::router($router);
 	    Singleton::response($response);
+        $mainFactory = new \mock\App\Libraries\Factory;
+        Singleton::mainFactory($mainFactory);
     }
 
 	/**
@@ -90,24 +92,57 @@ class Main extends TestCase
         })->isInstanceOf('\InvalidArgumentException');
     }
 
-    // TODO: test run whun function is called
-
     /**
-     * Tests get with class doesn't exist
+     * Tests getting when we are requesting all softwares of a given type
      *
      * @return void
      * @access public
      */
-    public function testGetWithNonExistentClass()
+    public function testGetWithSoftwareNameIsAll()
     {
-        Singleton::router()->getMockController()->getAction       = 'get';
-        Singleton::router()->getMockController()->getSoftwareType = 'browsers';
+        Singleton::router()->getMockController()->getAction = 'get';
+        Singleton::router()->getMockController()->getSoftwareType = 'browser';
+        Singleton::router()->getMockController()->getSoftwareName = 'all';
+        $factory = new \mock\App\Libraries\Factories\Browser;
+        Singleton::mainFactory()->getMockController()->create = $factory;
+        $factory->getMockController()->getAll = 'test all';
 
-        $this->exception(function () {
-            $this->main->run();
-        })->isInstanceOf('\DomainException');
+        $getAll = $this->outputToString([$this->main, 'run']);
+
+        $this->string($getAll)->isIdenticalTo("test all\n");
     }
 
-    // TODO: test get non callable method
-    // TODO: test get without talking to db
+    /**
+     * Tests getting when software name is given
+     *
+     * @return void
+     * @access public
+     */
+    public function testGetWithSoftwareGiven()
+    {
+        Singleton::router()->getMockController()->getAction = 'get';
+        Singleton::router()->getMockController()->getSoftwareType = 'browser';
+        Singleton::router()->getMockController()->getSoftwareName = 'chrome';
+        $factory = new \mock\App\Libraries\Factories\Browser;
+        Singleton::mainFactory()->getMockController()->create = $factory;
+        $factory->getMockController()->getByName = 'this is chrome';
+
+        $getAll = $this->outputToString([$this->main, 'run']);
+
+        $this->string($getAll)->isIdenticalTo("this is chrome\n");
+    }
+
+    public function testGetWithUnkwown()
+    {
+        Singleton::router()->getMockController()->getAction = 'get';
+        Singleton::router()->getMockController()->getSoftwareType = 'browser';
+        Singleton::router()->getMockController()->getSoftwareName = '?';
+        $factory = new \mock\App\Libraries\Factories\Browser;
+        Singleton::mainFactory()->getMockController()->create = $factory;
+        $factory->getMockController()->getAllNames = 'This is Spartaaa';
+
+        $getAll = $this->outputToString([$this->main, 'run']);
+
+        $this->string($getAll)->isIdenticalTo("This is Spartaaa\n");
+    }
 }
