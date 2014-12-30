@@ -4,7 +4,7 @@
  */
 namespace Test\Unit\App\Library\Io;
 
-use \atoum;
+use \Test\Unit\TestCase;
 use \App\Library\Io\Response as _Response;
 
 /**
@@ -14,7 +14,7 @@ use \App\Library\Io\Response as _Response;
  * @author Romain L.
  * @see \App\Library\Io\Response;
  */
- class Response extends atoum
+ class Response extends TestCase
  {
  	/**
  	 * Tests displaying data as a string
@@ -24,21 +24,14 @@ use \App\Library\Io\Response as _Response;
  	 */
  	 public function testDisplayWithString()
  	 {
-        $data     = 'This is a string';
- 	 	$response = new _Response();
+        $this->mockGenerator->orphanize('__construct');
+        $item       = new \mock\App\Item\Browser;
+        $item->getMockController()->display = 'Allons-y';
+        $response   = new _Response();
+        $collection = new \mock\App\Library\Collection($item);
 
-        $this->output(function () use ($response, $data) {
-            $response->display($data);
-        })->isIdenticalTo("This is a string\n");
+        $this->output(function () use ($response, $collection) {
+            $response->display($collection);
+        })->isIdenticalTo("Allons-y\n");
  	 }
-
-     public function testDisplayWithArray()
-     {
-        $data     = ['Allons-y', 'Geronimo'];
-        $response = new _Response();
-
-        $this->output(function () use ($response, $data) {
-            $response->display($data);
-        })->isIdenticalTo("Allons-y\nGeronimo\n");
-     }
  }
