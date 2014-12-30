@@ -28,7 +28,7 @@ class Main
         if ('help' !== $action) {
             if (is_callable([$this, $action])) {
                 if (null !== $type) {
-                    Singleton::response()->display(call_user_func_array([$this, $action], [$type]));
+                    return call_user_func_array([$this, $action], [$type]);
                 } else {
                     throw new \InvalidArgumentException('Query must not be empty');
                 }
@@ -36,7 +36,7 @@ class Main
                 throw new \InvalidArgumentException('Action isn\'t a REST method');
             }
         } else {
-            Singleton::response()->display($this->help());
+            return $this->help();
         }
     }
 

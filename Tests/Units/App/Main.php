@@ -55,9 +55,10 @@ class Main extends TestCase
         Singleton::router()->getMockController()->getAction       = 'help';
         Singleton::router()->getMockController()->getSoftwareType = null;
 
-        $this->output(function () {
-            $this->main->run();
-        })->contains('--- Help ----');
+        $run = $this->main->run();
+
+        $this->array($run)->hasSize(7);
+        $this->string($run[0])->contains('Help');
     }
 
     /**
@@ -107,9 +108,9 @@ class Main extends TestCase
         Singleton::mainFactory()->getMockController()->create = $factory;
         $factory->getMockController()->getAll = 'test all';
 
-        $getAll = $this->outputToString([$this->main, 'run']);
+        $getAll = $this->main->run();
 
-        $this->string($getAll)->isIdenticalTo("test all\n");
+        $this->string($getAll)->isIdenticalTo('test all');
     }
 
     /**
@@ -127,11 +128,17 @@ class Main extends TestCase
         Singleton::mainFactory()->getMockController()->create = $factory;
         $factory->getMockController()->getByName = 'this is chrome';
 
-        $getAll = $this->outputToString([$this->main, 'run']);
+        $getAll = $this->main->run();
 
-        $this->string($getAll)->isIdenticalTo("this is chrome\n");
+        $this->string($getAll)->isIdenticalTo('this is chrome');
     }
 
+    /**
+     * Tests getting when software name is unknown
+     *
+     * @return void
+     * @access public
+     */
     public function testGetWithUnkwown()
     {
         Singleton::router()->getMockController()->getAction = 'get';
@@ -141,8 +148,8 @@ class Main extends TestCase
         Singleton::mainFactory()->getMockController()->create = $factory;
         $factory->getMockController()->getAllNames = 'This is Spartaaa';
 
-        $getAll = $this->outputToString([$this->main, 'run']);
+        $getAll = $this->main->run();
 
-        $this->string($getAll)->isIdenticalTo("This is Spartaaa\n");
+        $this->string($getAll)->isIdenticalTo('This is Spartaaa');
     }
 }
