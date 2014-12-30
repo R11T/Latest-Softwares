@@ -64,6 +64,6 @@ class Factory
      */
     private function getFactoryName($name)
     {
-        return FACTORIES_NS . ucfirst($name);
+        return FACTORY_NS . ucfirst($name);
     }
 }
