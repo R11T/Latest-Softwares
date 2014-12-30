@@ -4,6 +4,13 @@ namespace App\Libraries\Factories;
 use \App\Libraries\Interfaces\ISoftwareFactoryGetable;
 use \App\Singleton as Singleton;
 
+/**
+ * Browser's factory
+ *
+ * @since 0.2
+ * @author Romain L.
+ * @see \Tests\Units\App\Libraries\Factories\Browser
+ */
 class Browser implements ISoftwareFactoryGetable
 {
     /**
@@ -22,7 +29,7 @@ class Browser implements ISoftwareFactoryGetable
             return null;
         } else {
             $item = new \App\Item\Browser($data);
-            return $item;// new Collection($item)
+            return new \App\Libraries\Collection($item);
         }
     }
 
