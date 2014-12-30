@@ -2,9 +2,9 @@
 /**
  * @licence GPL-v2
  */
-namespace Tests\Units\App\Item;
+namespace Test\Unit\App\Item;
 
-use \Tests\Units\TestCase;
+use \Test\Unit\TestCase;
 use \App\Singleton;
 use \App\Item\Browser as _Browser;
 

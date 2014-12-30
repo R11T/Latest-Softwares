@@ -1,26 +1,26 @@
 <?php
 /**
- *
+ * @licence GPL-v2
  */
-namespace Tests\Units\App\Libraries\Factories;
+namespace Test\Unit\App\Library\Factory;
 
-use \Tests\Units\TestCase;
+use \Test\Unit\TestCase;
 use \App\Singleton;
-use \App\Libraries\Factories\Browser as _Browser;
+use \App\Library\Factory\Browser as _Browser;
 
 /**
  * Unit testing on the browser factory
  *
  * @since 0.2
  * @author Romain L.
- * @see \App\Libraries\Factories\Browser
+ * @see \App\Library\Factory\Browser
  */
 class Browser extends TestCase
 {
     /**
      * Tested class
      *
-     * @var \App\Libraries\Factories\Browser
+     * @var \App\Library\Factory\Browser
      *
      * @access private
      */
@@ -67,6 +67,6 @@ class Browser extends TestCase
 
         $get = $this->browser->getByName('Zelda');
 
-        $this->object($get)->isInstanceOf('\App\Libraries\Collection');
+        $this->object($get)->isInstanceOf('\App\Library\Collection');
     }
 }

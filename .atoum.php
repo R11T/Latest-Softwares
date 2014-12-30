@@ -1,3 +1,3 @@
 <?php
-$runner->addTestsFromDirectory(__DIR__ . '/Tests/Units');
+$runner->addTestsFromDirectory(__DIR__ . '/Test/Unit');
 $script->bootstrapFile(__DIR__ . '/.bootstrap.atoum.php');

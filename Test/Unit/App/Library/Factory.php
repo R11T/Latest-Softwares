@@ -2,18 +2,18 @@
 /**
  * @licence GPL-v2
  */
-namespace Tests\Units\App\Libraries;
+namespace Test\Unit\App\Library;
 
-use \Tests\Units\TestCase;
+use \Test\Unit\TestCase;
 use \App\Singleton as Singleton;
-use \App\Libraries\Factory as _Factory;
+use \App\Library\Factory as _Factory;
 
 /**
  * Unit testing on the main factory
  *
  * @since 0.2
  * @author Romain L.
- * @see \App\Libraries\Factory
+ * @see \App\Library\Factory
  */
  class Factory extends TestCase
  {
@@ -40,7 +40,7 @@ use \App\Libraries\Factory as _Factory;
      */
     public function testCreateWithFactoryExistent()
     {
-        $expectedNS = '\App\Libraries\Factories\Browser';
+        $expectedNS = '\App\Library\Factory\Browser';
         $factory    = new _Factory();
 
         $softFactory = $factory->create('browser');

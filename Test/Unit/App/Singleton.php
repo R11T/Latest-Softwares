@@ -2,7 +2,7 @@
 /**
  * @licence GPL-v2
  */
-namespace Tests\Units\App;
+namespace Test\Unit\App;
 
 use \atoum;
 use \App\Singleton as _Singleton;

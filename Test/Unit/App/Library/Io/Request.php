@@ -2,17 +2,17 @@
 /**
  * @licence GPL-v2
  */
-namespace Tests\Units\App\Libraries\Io;
+namespace Test\Unit\App\Library\Io;
 
 use \atoum;
-use \App\Libraries\Io\Request as _Request;
+use \App\Library\Io\Request as _Request;
 
 /**
  * Unit testing on the request object
  *
  * @since 0.1
  * @author Romain L.
- * @see \App\Libraries\Io\Request
+ * @see \App\Library\Io\Request
  */
 class Request extends \atoum
 {

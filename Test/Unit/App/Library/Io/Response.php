@@ -2,17 +2,17 @@
 /**
  * @licence GPL-v2
  */
-namespace Tests\Units\App\Libraries\Io;
+namespace Test\Unit\App\Library\Io;
 
 use \atoum;
-use \App\Libraries\Io\Response as _Response;
+use \App\Library\Io\Response as _Response;
 
 /**
  * Unit testing on the response object
  *
  * @since 0.1
  * @author Romain L.
- * @see \App\Libraries\Io\Response;
+ * @see \App\Library\Io\Response;
  */
  class Response extends atoum
  {

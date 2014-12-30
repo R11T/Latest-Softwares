@@ -2,9 +2,9 @@
 /**
  * @licence GPL-v2
  */
-namespace Tests\Units\App;
+namespace Test\Unit\App;
 
-use \Tests\Units\TestCase;
+use \Test\Unit\TestCase;
 use \App\Singleton as Singleton;
 use \App\Main as _Main;
 
@@ -37,7 +37,7 @@ class Main extends TestCase
 	    $this->main  = new _Main();
 	    $this->mockGenerator()->orphanize('__construct');
 	    $router      = new \mock\App\Router;
-	    $response    = new \mock\App\Libraries\Io\Response;
+	    $response    = new \mock\App\Library\Io\Response;
 	    Singleton::router($router);
 	    Singleton::response($response);
         $mainFactory = new \mock\App\Libraries\Factory;
@@ -104,7 +104,7 @@ class Main extends TestCase
         Singleton::router()->getMockController()->getAction = 'get';
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
         Singleton::router()->getMockController()->getSoftwareName = 'all';
-        $factory = new \mock\App\Libraries\Factories\Browser;
+        $factory = new \mock\App\Library\Factory\Browser;
         Singleton::mainFactory()->getMockController()->create = $factory;
         $factory->getMockController()->getAll = 'test all';
 
@@ -124,7 +124,7 @@ class Main extends TestCase
         Singleton::router()->getMockController()->getAction = 'get';
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
         Singleton::router()->getMockController()->getSoftwareName = 'chrome';
-        $factory = new \mock\App\Libraries\Factories\Browser;
+        $factory = new \mock\App\Library\Factory\Browser;
         Singleton::mainFactory()->getMockController()->create = $factory;
         $factory->getMockController()->getByName = 'this is chrome';
 
@@ -144,7 +144,7 @@ class Main extends TestCase
         Singleton::router()->getMockController()->getAction = 'get';
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
         Singleton::router()->getMockController()->getSoftwareName = '?';
-        $factory = new \mock\App\Libraries\Factories\Browser;
+        $factory = new \mock\App\Library\Factory\Browser;
         Singleton::mainFactory()->getMockController()->create = $factory;
         $factory->getMockController()->getAllNames = 'This is Spartaaa';
 

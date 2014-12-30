@@ -2,7 +2,7 @@
 /**
  * @licence GPL-v2
  */
-namespace Tests\Units\App;
+namespace Test\Unit\App;
 
 use \atoum;
 use \App\Router as _Router;
@@ -33,7 +33,7 @@ class Router extends \atoum
     public function testGetAction()
     {
         $parameters = [self::SCRIPT_NAME, 'get'];
-        $request    = new \mock\App\Libraries\Io\Request($parameters, count($parameters));
+        $request    = new \mock\App\Library\Io\Request($parameters, count($parameters));
         $router     = new _Router($request);
 
         $this->string($router->getAction())->isIdenticalTo('get');
@@ -48,7 +48,7 @@ class Router extends \atoum
      public function testGetSoftwareType()
      {
         $parameters = [self::SCRIPT_NAME, 'get', 'type'];
-        $request    = new \mock\App\Libraries\Io\Request($parameters, count($parameters));
+        $request    = new \mock\App\Library\Io\Request($parameters, count($parameters));
         $router     = new _Router($request);
 
         $this->string($router->getSoftwareType())->isIdenticalTo('type');
@@ -63,7 +63,7 @@ class Router extends \atoum
     public function testGetSoftwareName()
     {
         $parameters = [self::SCRIPT_NAME, 'get', 'type', 'name'];
-        $request    = new \mock\App\Libraries\Io\Request($parameters, count($parameters));
+        $request    = new \mock\App\Library\Io\Request($parameters, count($parameters));
         $router     = new _Router($request);
 
         $this->string($router->getSoftwareName())->isIdenticalTo('name');

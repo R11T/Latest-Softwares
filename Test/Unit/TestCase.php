@@ -2,7 +2,7 @@
 /**
  * @licence GPL-v2
  */
-namespace Tests\Units;
+namespace Test\Unit;
 
 use \atoum;
 

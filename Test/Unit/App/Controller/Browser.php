@@ -2,25 +2,25 @@
 /**
  * @licence GPL-v2
  */
-namespace Tests\Units\App\Controllers;
+namespace Test\Unit\App\Controller;
 
-use \Tests\Units\TestCase;
+use \Test\Unit\TestCase;
 use \App\Singleton;
-use \App\Controllers\Browser as _Browser;
+use \App\Controller\Browser as _Browser;
 
 /**
  * Unit testing on browser' controller
  *
  * @since 0.1
  * @author Romain L.
- * @see \App\Controllers\Browser
+ * @see \App\Controller\Browser
  */
 class Browser extends TestCase
 {
     /**
      * Tested clas
      *
-     * @var \App\Controllers\Browser
+     * @var \App\Controller\Browser
      *
      * @access private
      */
@@ -35,7 +35,7 @@ class Browser extends TestCase
     public function beforeTestMethod()
     {
         $this->browser = new _Browser();
-        $model         = new \mock\App\Models\Browser;
+        $model         = new \mock\App\Model\Browser;
         Singleton::model($model);
     }
 

@@ -2,26 +2,25 @@
 /**
  * @licence GPL-v2
  */
-namespace Tests\Units\App\Libraries;
+namespace Test\Unit\App\Library;
 
-use \Tests\Units\TestCase;
-use \App\Libraries\Collection as _Collection;
+use \Test\Unit\TestCase;
+use \App\Library\Collection as _Collection;
 
 /**
  * Unit testing on collection of displayable item
  *
  * @since 0.2
  * @author Romain L.
- * @see \App\Libraries\Collection
+ * @see \App\Library\Collection
  */
 class Collection extends TestCase
 {
     /**
      * Tests constructing a collection
      *
-     * @since 0.2
-     * @author Romain L.
-     * @see \App\Libraries\Collection
+     * @return void
+     * @access public
      */
     public function test__construct()
     {
