@@ -4,7 +4,7 @@
  */
 namespace App\Item;
 
-use \App\Libraries\Interfaces\ISoftwareItemDisplayable;
+use \App\Libraries\Interfaces\IDisplayable;
 
 /**
  * Browser's Data Transport Object
@@ -15,82 +15,70 @@ use \App\Libraries\Interfaces\ISoftwareItemDisplayable;
  * @author Romain L.
  * @see \Tests\Units\App\Item\Browser
  */
-class Browser implements ISoftwareItemDisplayable
+class Browser implements IDisplayable
 {
 
+    /**
+     * Browser's name
+     *
+     * @var string
+     *
+     * @access private
+     */
     private $name;
+
+    /**
+     * Software type
+     *
+     * @var int
+     *
+     * @access private
+     */
     private $type;
 
+    /**
+     * Construct data transport object
+     *
+     * @param array $data
+     *
+     * @access public
+     */
     public function __construct(array $data)
     {
         $this->name = (string) $data['software_name'];
         $this->type = (int) $data['type_id'];
     }
 
-    public function display()
-    {
-        return $this->name . ' is a software of type ' . $this->type;
-    }
-
     /**
-     * Gets a browser's all data
-     *
-     * @param string $name
-     *
-     * @return array
-     * @access public
-     */
-    /*public function getByName($name)
-    {
-        $data = \App\Singleton::dao()->getByName($name);
-
-        if (0 === count($data)) {
-            return 'Unknown browser';
-        } else {
-            foreach ($data as $browser) {
-                $line[] = 'id : ' . $browser['software_id'] .', name : ' . $browser['software_name'];
-            }
-            return $line;
-        }
-    }
-
-    /**
-     * Get all browsers' all data
-     *
-     * @return array
-     * @access public
-     */
-    /*public function getAll()
-    {
-        $data = \App\Singleton::dao()->getAll();
-
-        if (0 === count($data)) {
-            return 'There is no browser';
-        } else {
-            foreach ($data as $browser) {
-                $line[] = 'id : ' . $browser['software_id'] .', name : ' . $browser['software_name'];
-            }
-            return $line;
-        }
-    }
-
-    /**
-     * Get all browsers' names
+     * Getter
      *
      * @return string
      * @access public
      */
-    /*public function getListName()
+    public function getName()
     {
-        $data = \App\Singleton::dao()->getListName();
-        if (0 === count($data)) {
-            return 'None';
-        } else {
-            foreach ($data as $browser) {
-                $row[] = $browser['software_name'];
-            }
-            $row[] = 'all';
-            return implode(', ', $row);
-        }
-    }*/
+        return $this->name;
+    }
+
+    /**
+     * Getter
+     *
+     * @return int
+     * @access public
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Displays object's content
+     *
+     * @return string
+     * @access public
+     */
+    public function display()
+    {
+        return $this->getName() . ' is a software of type ' . $this->getType();
+    }
 }
