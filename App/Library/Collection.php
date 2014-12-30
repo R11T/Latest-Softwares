@@ -2,18 +2,18 @@
 /**
  * @licence GPL-v2
  */
-namespace App\Libraries;
+namespace App\Library;
 
-use \App\Libraries\Interfaces;
+use \App\Library\Interfaces;
 
 /**
  * Collection of displayable item
  *
  * @since 0.2
  * @author Romain L.
- * @see \Tests\Units\App\Libraries\Collection
+ * @see \Test\Unit\App\Library\Collection
  */
-class Collection implements \Iterator, Interfaces\IStackable, Interfaces\IMeasurable
+class Collection implements \Iterator, Interfaces\IStackable, Interfaces\IMeasurable // implements JsonSerializable too
 {
     /**
      * Collection of items

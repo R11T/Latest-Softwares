@@ -28,17 +28,6 @@ namespace App\Libraries\Io;
         foreach ($items as $key => $item) {
             echo $item->display() . "\n";
         }
-        /**
-         * Collectable $items
-         *
-         * foreach ($items as $item) {
-         *  $item->display();
-         *
-         * }
-         *
-         * implies that an object must be iterable and displayable and an array as an object too
-         *
-         */
     }
  }
 

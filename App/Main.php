@@ -1,18 +1,18 @@
 <?php
 namespace App;
 
-use \App\Libraries;
+use \App\Library;
 
 /**
  * Main controller
  *
  * @since 0.1
  * @author Romain L.
- * @see \Tests\Units\App\Main
+ * @see \Test\Unit\App\Main
  */
 class Main
 {
-	/**
+    /**
      * Execute script action
      *
      * @return void
@@ -111,6 +111,7 @@ class Main
             'parameters : ? for listing parameters allowed',
             '',
         ];
+        // if help were an item too, i would be so happy
     }
 
     private function create() // rename to post

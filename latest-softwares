@@ -10,17 +10,17 @@ require_once 'dependencies.php';
 loadDependencies($required);
 
 try {
-    $request = new \App\Libraries\Io\Request($argv, $argc);
+    $request = new \App\Library\Io\Request($argv, $argc);
     \App\Singleton::request($request);
-    \App\Singleton::response((new \App\Libraries\Io\Response()));
+    \App\Singleton::response((new \App\Library\Io\Response()));
     \App\Singleton::router((new \App\Router($request)));
-    \App\Singleton::db(new \App\Libraries\Db(DATA_DIR . 'db.sqlite'));
+    \App\Singleton::db(new \App\Library\Db(DATA_DIR . 'db.sqlite'));
     \App\Singleton::db()->exec('PRAGMA foreign_keys=ON');
-    \App\Singleton::mainFactory(new \App\Libraries\Factory());
+    \App\Singleton::mainFactory(new \App\Library\Factory());
 
 } catch (\Exception $e) {
     if (!is_object(\App\Singleton::response())) {
-        \App\Singleton::response((new \App\Libraries\Io\Response()));
+        \App\Singleton::response((new \App\Library\Io\Response()));
     }
     \App\Singleton::response()->display('Fatal error : ' . $e->getMessage());
     exit(1);
@@ -31,7 +31,7 @@ try {
     \App\Singleton::response()->display($app);
 } catch (\Exception $e) {
     if (!is_object(\App\Singleton::response())) {
-        \App\Singleton::response((new \App\Libraries\Io\Response()));
+        \App\Singleton::response((new \App\Library\Io\Response()));
     }
     \App\Singleton::response()->display('Error : ' . $e->getMessage() . "\nTry typing <help>");
     exit(1);

@@ -11,14 +11,14 @@ namespace App;
  *
  * @since 0.1
  * @author Romain L.
- * @see \Tests\Units\App\Router
+ * @see \Test\Unit\App\Router
  */
 class Router
 {
     /**
      * Request object, that's it which understand parameters given to script
      *
-     * @var Libraries\Io\Request
+     * @var Library\Io\Request
      * @access private
      */
     private $request;
@@ -26,11 +26,11 @@ class Router
     /**
      * __construct()
      *
-     * @param Libraries\Io\Request $request
+     * @param Library\Io\Request $request
      *
      * @access public
      */
-    public function __construct(Libraries\Io\Request $request)
+    public function __construct(Library\Io\Request $request)
     {
         $this->request = $request;
     }
