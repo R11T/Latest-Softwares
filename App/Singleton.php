@@ -44,7 +44,7 @@ class Singleton
     private static function get($key)
     {
         if (!isset(self::$singleton[$key])) {
-            throw new \LogicException($key . ' doesn\'t exist');
+            return null;
         }
         return self::$singleton[$key];
     }

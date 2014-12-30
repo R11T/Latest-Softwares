@@ -34,9 +34,10 @@ class Request extends \atoum
     {
         $parameters = [self::SCRIPT_NAME];
 
-        $this->exception(function () use ($parameters) {
-            new _Request($parameters, count($parameters));
-        })->isInstanceOf('\BadFunctionCallException');
+        $req = new _Request($parameters, count($parameters));
+
+        $this->object($req)->isInstanceOf('\App\Library\Io\Request');
+        $this->variable($req->getAction)->isNull();
     }
 
     /**

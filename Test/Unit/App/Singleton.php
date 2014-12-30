@@ -25,11 +25,7 @@ class Singleton extends \atoum
      */
     public function testGetVariableNonExistent()
     {
-        $this->exception(function () {
-            _Singleton::router();
-        })
-        ->isInstanceOf('\LogicException')
-        ->hasMessage('router doesn\'t exist');
+        $this->variable(_Singleton::router())->isNull();
     }
 
     /**

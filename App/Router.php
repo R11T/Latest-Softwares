@@ -38,7 +38,7 @@ class Router
     /**
      * Returns action requested
      *
-     * @return string
+     * @return string|null if action doesn't exist
      * @access public
      */
     public function getAction()

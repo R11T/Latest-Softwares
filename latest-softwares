@@ -19,10 +19,7 @@ try {
     \App\Singleton::mainFactory(new \App\Library\Factory());
 
 } catch (\Exception $e) {
-    if (!is_object(\App\Singleton::response())) {
-        \App\Singleton::response((new \App\Library\Io\Response()));
-    }
-    \App\Singleton::response()->display('Fatal error : ' . $e->getMessage());
+    echo "Fatal error : " . $e->getMessage() . "\n";
     exit(1);
 }
 
@@ -30,10 +27,7 @@ try {
     $app = (new \App\Main)->run();
     \App\Singleton::response()->display($app);
 } catch (\Exception $e) {
-    if (!is_object(\App\Singleton::response())) {
-        \App\Singleton::response((new \App\Library\Io\Response()));
-    }
-    \App\Singleton::response()->display('Error : ' . $e->getMessage() . "\nTry typing <help>");
+    echo "Error : " . $e->getMessage() . "\nTry typing <help>";
     exit(1);
 }
 

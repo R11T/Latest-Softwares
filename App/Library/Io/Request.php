@@ -73,9 +73,6 @@ class Request
      */
     public function __construct(array $argv, $argc)
     {
-        if (1 === $argc) {
-            throw new \BadFunctionCallException('No action specified');
-        }
         $this->argv = $argv;
         $this->argc = $argc;
     }
@@ -83,12 +80,12 @@ class Request
     /**
      * Returns action requested by the user
      *
-     * @return string
+     * @return string|null if action doesn't exist
      * @access public
      */
     public function getAction()
     {
-        return $this->argv[self::ACTION];
+        return isset($this->argv[self::ACTION]) ? $this->argv[self::ACTION] : null;
     }
 
     /**
