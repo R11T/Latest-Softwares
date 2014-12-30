@@ -16,17 +16,17 @@ namespace App\Libraries\Io;
  class Response
  {
     /**
-     * Print data
+     * Displays data
      *
-     * @param \App\Libraries\Interfaces\ISoftwareItem
+     * @param \Iterator
      *
      * @return void
      * @access public
      */
     public function display(\Iterator $items)
     {
-        foreach ($items as $item) {
-            echo $item->current() . "\n";
+        foreach ($items as $key => $item) {
+            echo $item->display() . "\n";
         }
         /**
          * Collectable $items

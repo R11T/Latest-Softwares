@@ -28,7 +28,7 @@ try {
 
 try {
     $app = (new \App\Main)->run();
-    \App\Singleton::response()->display();
+    \App\Singleton::response()->display($app);
 } catch (\Exception $e) {
     if (!is_object(\App\Singleton::response())) {
         \App\Singleton::response((new \App\Libraries\Io\Response()));

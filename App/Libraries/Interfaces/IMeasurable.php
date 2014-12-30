@@ -5,18 +5,19 @@
 namespace App\Libraries\Interfaces;
 
 /**
- * Define an element as displayable
+ * Define an element as measurable
  *
  * @since 0.2
  * @author Romain L.
  */
-interface IDisplayable
+interface IMeasurable
 {
     /**
-     * Displays element's content
+     * Return element's length
      *
-     * @return string
+     * @return int
      * @access public
      */
-    public function display();
+    public function length();
 }
+
