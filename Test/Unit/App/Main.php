@@ -72,9 +72,9 @@ class Main extends TestCase
         Singleton::router()->getMockController()->getAction       = 'test';
         Singleton::router()->getMockController()->getSoftwareType = null;
 
-        $this->exception(function () {
-            $this->main->run();
-        })->isInstanceOf('\InvalidArgumentException');
+        $run  = $this->main->run();
+        $this->array($run)->hasSize(7);
+        $this->string($run[0])->contains('Help');
      }
 
     /**

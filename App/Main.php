@@ -25,19 +25,20 @@ class Main
         $router = Singleton::router();
         $action = $router->getAction();
         $type   = $router->getSoftwareType();
-        if ('help' !== $action) {
+        if (null !== $action && 'help' !== $action) {
             if (is_callable([$this, $action])) {
                 if (null !== $type) {
                     return call_user_func_array([$this, $action], [$type]);
                 } else {
                     throw new \InvalidArgumentException('Query must not be empty');
                 }
-            } else {
-                throw new \InvalidArgumentException('Action isn\'t a REST method');
+            /*} else {
+                throw new \InvalidArgumentException('Action isn\'t a REST method');*/
             }
-        } else {
-            return $this->help();
+        /*} else {
+            return $this->help();*/
         }
+        return $this->help();
     }
 
     /**
@@ -102,6 +103,7 @@ class Main
      */
     private function help()
     {
+        $factory = new \App\Library\Factory\Help();
         return [
             '---- Help ----',
             'Usage : {script_name} action [parameters]',
@@ -143,7 +145,7 @@ class Main
         $res = $db->query('CREATE UNIQUE INDEX software_name ON software(software_name)');
         var_dump($res);
     }
-    
+
     private function add() // refacto with above
     {
         // with software type and software name, create new software class
