@@ -27,11 +27,20 @@ class Factory
      */
     public function create($type)
     {
+        if (existsInDao($type)) {
+        } else {
+            
+        }
         $daoName = $this->getDaoName($type);
+        // if checkExistence $softwareType
+        // if not exists, to Help, with usage
+        // if exists, checkExistence class dao and item
+        // Anyway, this organisation must evolve because of create and update (not sure)
+
         if (class_exists($daoName)) {
             Singleton::dao(new $daoName());
         } else {
-            throw new \DomainException('"' . $type . '" dao does\'nt exist');
+            throw new \DomainException('"' . $type . '" dao doesn\'t exist');
         }
         $factoryName = $this->getFactoryName($type);
         if (class_exists($factoryName)) {

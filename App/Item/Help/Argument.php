@@ -17,6 +17,7 @@ use \App\Library\Interfaces\IDisplayable;
  */
 class Argument implements IDisplayable
 {
+    // create a note in order to help user finding out how use soft
     /**
      * Argument
      *
@@ -35,7 +36,7 @@ class Argument implements IDisplayable
      */
     public function __construct(array $data)
     {
-        $this->argument = (string) $data[0];
+        $this->argument = (string) $data['action'];
     }
 
     /**
@@ -57,7 +58,7 @@ class Argument implements IDisplayable
      */
     public function display()
     {
-        return "Argument : " . $this->getArgument() . "\n";
+        return "### Argument\n" . $this->getArgument() . "\n";
     }
 }
 

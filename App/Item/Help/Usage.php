@@ -18,13 +18,13 @@ use \App\Library\Interfaces\IDisplayable;
 class Usage implements IDisplayable
 {
     /**
-     * usage
+     * syntax
      *
      * @var string
      *
      * @access private
      */
-    private $usage;
+    private $syntax;
 
     /**
      * Construct help transport object
@@ -35,7 +35,7 @@ class Usage implements IDisplayable
      */
     public function __construct(array $data)
     {
-        $this->usage = (string) $data[0];
+        $this->syntax = (string) $data['syntax'];
     }
 
     /**
@@ -44,9 +44,9 @@ class Usage implements IDisplayable
      * @return string
      * @access public
      */
-    public function getUsage()
+    public function getSyntax()
     {
-        return $this->usage;
+        return $this->syntax;
     }
 
     /**
@@ -57,7 +57,10 @@ class Usage implements IDisplayable
      */
     public function display()
     {
-        return "Usage : " . $this->getUsage() . "\n";
+        return "## Usage\n\n" . $this->getSyntax() . "\n";
+        // syntax : 
+        // action availables : 
+        // software-type availables : 
     }
 }
 

@@ -99,7 +99,7 @@ class Introduction implements IDisplayable
      */
     public function display()
     {
-        $display = "## Latest Softwares\n\n" . $this->getDescription() . "\n";
+        $display = "Latest Softwares\n\n## Description\n" . $this->getDescription() . "\n";
         $display .= "Made with love by " . $this->getAuthor() . "\n";
         $display .= 'Source code : ' . $this->getLink();
         return $display . "\n";

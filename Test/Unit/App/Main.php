@@ -57,8 +57,7 @@ class Main extends TestCase
 
         $run = $this->main->run();
 
-        $this->array($run)->hasSize(7);
-        $this->string($run[0])->contains('Help');
+        $this->object($run)->isInstanceOf('\App\Library\Collection');
     }
 
     /**
@@ -73,8 +72,8 @@ class Main extends TestCase
         Singleton::router()->getMockController()->getSoftwareType = null;
 
         $run  = $this->main->run();
-        $this->array($run)->hasSize(7);
-        $this->string($run[0])->contains('Help');
+
+        $this->object($run)->isInstanceOf('\App\Library\Collection');
      }
 
     /**

@@ -25,19 +25,17 @@ class Main
         $router = Singleton::router();
         $action = $router->getAction();
         $type   = $router->getSoftwareType();
-        if (null !== $action && 'help' !== $action) {
+        //if (null !== $action && 'help' !== $action) {
             if (is_callable([$this, $action])) {
                 if (null !== $type) {
                     return call_user_func_array([$this, $action], [$type]);
-                } else {
-                    throw new \InvalidArgumentException('Query must not be empty');
                 }
             /*} else {
                 throw new \InvalidArgumentException('Action isn\'t a REST method');*/
             }
         /*} else {
             return $this->help();*/
-        }
+        //}
         return $this->help();
     }
 
@@ -49,8 +47,17 @@ class Main
      * @return array
      * @access private
      */
-    private function get($type)
+    private function get()
     {
+        /*
+            $softwareType = Singleton::router()->getSoftwareType()
+            $typeInDao = …
+            if (in_array($softwareType, $typeInDao)) {
+                factory->create()
+            } else {
+                aide avec les 
+            }
+        */
         $factory      = Singleton::mainFactory()->create($type);
         $softwareName = Singleton::router()->getSoftwareName();
         if ('all' === $softwareName) {
@@ -103,17 +110,8 @@ class Main
      */
     private function help()
     {
-        $factory = new \App\Library\Factory\Help();
-        return [
-            '---- Help ----',
-            'Usage : {script_name} action [parameters]',
-            'Availables actions :',
-            'help : This help',
-            'get [parameters] : Get softwares\' latests data',
-            'parameters : ? for listing parameters allowed',
-            '',
-        ];
-        // if help were an item too, i would be so happy
+        $help = new \App\Library\Factory\Help();
+        return $help->main();
     }
 
     private function create() // rename to post

@@ -30,11 +30,11 @@ class Help
         $introduction = new \App\Item\Help\Introduction($dataIntro);
 
         $dataUsage = [
-            'action software-type software-name',
+            'syntax' => 'action software-type software-name',
         ];
 
         $dataArgument = [
-           'get',
+           'action' => 'get',
         ];
 
         $collection = new \App\Library\Collection($introduction);

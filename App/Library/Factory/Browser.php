@@ -25,7 +25,7 @@ class Browser implements ISoftwareFactoryGetable
     {
         $data = Singleton::dao()->getByName($softwareName);
 
-        if (0 === count($data)) {
+        if (false === $data) {
             return null;
         } else {
             $item = new \App\Item\Browser($data);
@@ -37,7 +37,7 @@ class Browser implements ISoftwareFactoryGetable
     {
     }
 
-    public function getAllNames()
+    public function getAllNames() // getList
     {
     }
 }
