@@ -27,7 +27,7 @@ try {
     $app = (new \App\Main)->run();
     \App\Singleton::response()->display($app);
 } catch (\Exception $e) {
-    echo "Error : " . $e->getMessage() . "\nTry typing <help>";
+    echo "Error : " . $e->getMessage() . "\nTry typing <help>\n";
     exit(1);
 }
 

@@ -31,7 +31,7 @@ class Factory
         if (class_exists($daoName)) {
             Singleton::dao(new $daoName());
         } else {
-            throw new \DomainException('"' . $type . '" dao does\'st exist');
+            throw new \DomainException('"' . $type . '" dao does\'nt exist');
         }
         $factoryName = $this->getFactoryName($type);
         if (class_exists($factoryName)) {
