@@ -17,7 +17,6 @@ use \App\Library\Interfaces\IDisplayable;
  */
 class Browser implements IDisplayable
 {
-
     /**
      * Browser's name
      *
