@@ -25,11 +25,10 @@ class Main
         $router = Singleton::router();
         $action = $router->getAction();
         $type   = $router->getSoftwareType();
+        Singleton::daoType(new \App\Library\Dao\Type()); 
         //if (null !== $action && 'help' !== $action) {
             if (is_callable([$this, $action])) {
-                if (null !== $type) {
-                    return call_user_func_array([$this, $action], [$type]);
-                }
+                return call_user_func_array([$this, $action], [$type]);
             /*} else {
                 throw new \InvalidArgumentException('Action isn\'t a REST method');*/
             }
@@ -49,24 +48,30 @@ class Main
      */
     private function get()
     {
-        /*
-            $softwareType = Singleton::router()->getSoftwareType()
-            $typeInDao = …
-            if (in_array($softwareType, $typeInDao)) {
-                factory->create()
+        $itemsType    = new \App\Item\Types(Singleton::daoType()->getAllNames());
+        $softwareType = Singleton::router()->getSoftwareType();
+        if (in_array($softwareType, $itemsType->getNames())) {
+            $factory      = Singleton::mainFactory()->create($softwareType);
+            $softwareName = Singleton::router()->getSoftwareName();
+            if ('all' === $softwareName) {
+                return $factory->getAll();
+            } elseif (isset($softwareName) && in_array($softwareName, $factory->getAllNames())) {
+                return $factory->getByName($softwareName);
             } else {
-                aide avec les 
+                $usage = [
+                    'syntax' => 'get software-type [software-name]',
+                    'action' => 'all ' . implode(' ', $factory->getAllNames()),
+                ];
             }
-        */
-        $factory      = Singleton::mainFactory()->create($type);
-        $softwareName = Singleton::router()->getSoftwareName();
-        if ('all' === $softwareName) {
-            return $factory->getAll();
-        } elseif (isset($softwareName) && '?' !== $softwareName) {
-            return $factory->getByName($softwareName);
         } else {
-            return $factory->getAllNames();
+            $usage = [
+                'syntax' => 'get [software-type] software-name',
+                'action' => implode(' ', $itemsType->getNames()),
+            ];
         }
+        $help = new \App\Item\Help\Usage($usage);
+        return new \App\Library\Collection($help);
+
     }
 
     /**

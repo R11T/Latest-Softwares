@@ -30,7 +30,7 @@ class Browser
         return $res->fetchAll(Db::FETCH_ASSOC);
     }
 
-    public function getListName()
+    public function getAllNames()
     {
         $db  = \App\Singleton::db();
         $res = $db->query('SELECT software_name from software');

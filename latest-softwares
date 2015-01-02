@@ -10,12 +10,14 @@ require_once 'dependencies.php';
 loadDependencies($required);
 
 try {
+    \App\Singleton::namespaces(new \App\Library\Namespaces());
     $request = new \App\Library\Io\Request($argv, $argc);
     \App\Singleton::request($request);
     \App\Singleton::response((new \App\Library\Io\Response()));
     \App\Singleton::router((new \App\Router($request)));
     \App\Singleton::db(new \App\Library\Db(DATA_DIR . 'db.sqlite'));
     \App\Singleton::db()->exec('PRAGMA foreign_keys=ON');
+    //\App\Singleton::daoType(new \App\Library\Dao\Type());
     \App\Singleton::mainFactory(new \App\Library\Factory());
 
 } catch (\Exception $e) {

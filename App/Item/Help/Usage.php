@@ -26,6 +26,8 @@ class Usage implements IDisplayable
      */
     private $syntax;
 
+    private $action;
+
     /**
      * Construct help transport object
      *
@@ -36,6 +38,7 @@ class Usage implements IDisplayable
     public function __construct(array $data)
     {
         $this->syntax = (string) $data['syntax'];
+        $this->action = (string) $data['action'];
     }
 
     /**
@@ -49,6 +52,11 @@ class Usage implements IDisplayable
         return $this->syntax;
     }
 
+    public function getAction()
+    {
+        return $this->action;
+    }
+
     /**
      * Displays object's content
      *
@@ -57,7 +65,9 @@ class Usage implements IDisplayable
      */
     public function display()
     {
-        return "## Usage\n\n" . $this->getSyntax() . "\n";
+        $usage  = "## Usage\n\n" . $this->getSyntax() . "\n";
+        $usage .= "\nAction : " . $this->getAction();
+        return $usage  . "\n";
         // syntax : 
         // action availables : 
         // software-type availables : 

@@ -10,7 +10,7 @@ namespace App\Library\Interfaces;
  * @since 0.2
  * @author Romain L.
  */
-interface ISoftwareFactoryGetable
+interface ISoftwareFactoryGetable extends IFactoryGetable
 {
     /**
      * Get all data of software, given its name
@@ -22,16 +22,9 @@ interface ISoftwareFactoryGetable
     public function getByName($softwareName);
 
     /**
-     * Get all data of all browsers
+     * Get all data of all softwares
      *
      * @access public
      */
     public function getAll();
-
-    /**
-     * Get all browser' name
-     *
-     * @access public
-     */
-    public function getAllNames();
 }

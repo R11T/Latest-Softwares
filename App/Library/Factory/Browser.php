@@ -1,4 +1,7 @@
 <?php
+/**
+ * @licence GPL-v2
+ */
 namespace App\Library\Factory;
 
 use \App\Library\Interfaces\ISoftwareFactoryGetable;
@@ -39,5 +42,6 @@ class Browser implements ISoftwareFactoryGetable
 
     public function getAllNames() // getList
     {
+        return ['chrome', 'firefox'];
     }
 }

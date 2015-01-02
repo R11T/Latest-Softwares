@@ -18,33 +18,80 @@ use \App\Library\Factory as _Factory;
  class Factory extends TestCase
  {
     /**
-     * Tests creating factory with unkwown type
+     * Tested class
+     *
+     * @var \App\Library\Factory
+     *
+     * @access private
+     */
+    private $factory;
+
+    /**
+     * Setting routine
      *
      * @return void
      * @access public
      */
-    public function testCreateWithFactoryInexistent()
+    public function beforeTestMethod()
     {
-        $factory = new _Factory();
+        $namespaces    = new \mock\App\Library\Namespaces();
+        Singleton::namespaces($namespaces);
+        $this->factory = new _Factory();
+    }
 
-        $this->exception(function () use ($factory) {
-            $factory->create('type');
+    /**
+     * Tests creating factory with inexistent dao
+     *
+     * @return void
+     * @access public
+     */
+    public function testCreateWithDaoInexistent()
+    {
+        Singleton::namespaces()->getMockController()->getDaoName = 'notADao';
+
+        $this->exception(function () {
+            $this->factory->create('type');
         })->isInstanceOf('\DomainException');
     }
 
     /**
-     * Tests creating factory with known type
+     * Tests creating factory with existent dao
      *
      * @return void
      * @access public
      */
-    public function testCreateWithFactoryExistent()
+    public function testCreateWithDaoExistent()
     {
-        $expectedNS = '\App\Library\Factory\Browser';
-        $factory    = new _Factory();
+        $this->factory->create('browser');
 
-        $softFactory = $factory->create('browser');
+        $this->object(Singleton::dao())->isInstanceOf('\App\Library\Dao\Browser');
+    }
 
-        $this->object($softFactory)->isInstanceOf($expectedNS);
+    /**
+     * Tests creating factory with inexistent type
+     *
+     * @return void
+     * @access public
+     */
+    public function testCreateWithTypeInexistent()
+    {
+        Singleton::namespaces()->getMockController()->getFactoryName = 'notAFactory';
+
+        $this->exception(function () {
+            $this->factory->create('type');
+        })->isInstanceOf('\DomainException');
+    }
+
+    /**
+     * Tests creating factory with existent type
+     *
+     * @return void
+     * @access public
+     */
+    public function testCreateWithTypeExistent()
+    {
+        $softFactory = $this->factory->create('browser');
+
+        $this->object($softFactory)->isInstanceOf('\App\Library\Factory\Browser');
     }
  }
