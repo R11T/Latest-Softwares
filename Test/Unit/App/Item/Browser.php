@@ -33,12 +33,17 @@ class Browser extends TestCase
      */
     public function test__construct()
     {
-        $data = ['software_name' => 'Spartan', 'type_id' => 117];
+        $data = [
+            'software_name'        => 'Spartan',
+            'type_name'            => 'Human',
+            'software_last_update' => '117',
+        ];
 
         $browser = new _Browser($data);
 
         $this->string($browser->getName())->isIdenticalTo('Spartan');
-        $this->integer($browser->getType())->isIdenticalTo(117);
+        $this->string($browser->getType())->isIdenticalTo('Human');
+        $this->integer($browser->getLastUpdate())->isIdenticalTo(117);
     }
 
     /**
@@ -49,11 +54,11 @@ class Browser extends TestCase
      */
     public function testDisplay()
     {
-       $data = ['software_name' => 'Elite', 'type_id' => '666'];
+       $data    = ['software_name' => 'Elite', 'type_name' => 'Saurian', 'software_last_update' => 223];
        $browser = new _Browser($data);
 
        $display = $browser->display();
 
-       $this->string($display)->isIdenticalTo('Elite is a software of type 666');
+       $this->string($display)->isIdenticalTo('Elite is a software of type Saurian last updated on 223');
     }
 }

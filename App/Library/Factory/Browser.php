@@ -44,12 +44,46 @@ class Browser implements ISoftwareFactoryGetable
         }
     }
 
+    /**
+     * Get all data of all browsers
+     *
+     * @return \App\Library\Collection | null if no data was returned
+     * @access public
+     */
     public function getAll()
     {
+        $collection = null;
+        $data       = Singleton::dao()->getAll();
+
+        if (0 === count($data)) {
+            return null;
+        } else {
+            foreach ($data as $row) {
+                $item = new \App\Item\Browser($row);
+                if (null === $collection) {
+                    $collection = new \App\Library\Collection($item);
+                } else {
+                    $collection->push($item);
+                }
+            }
+            return $collection;
+        }
     }
 
-    public function getAllNames() // getList
+    /**
+     * Get all browsers' names
+     *
+     * @return array
+     * @access public
+     */
+    public function getAllNames()
     {
-        return ['chrome', 'firefox'];
+        $data = Singleton::dao()->getAllNames();
+
+        $names = [];
+        foreach ($data as $row) {
+            $names[] = $row['software_name'];
+        }
+        return $names;
     }
 }

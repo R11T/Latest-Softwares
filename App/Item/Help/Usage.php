@@ -138,7 +138,7 @@ class Usage implements IDisplayable
         if (null !== $this->getSoftwareName()) {
             $usage .= "\nName : " . $this->getSoftwareName();
         }
-        return $usage  . "\n";
+        return $usage;
     }
 }
 

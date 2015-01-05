@@ -132,7 +132,7 @@ class Main extends TestCase
      * @return void
      * @access public
      */
-    public function testGetWithSoftwareGiven()
+    public function testGetWithSoftwareNameGiven()
     {
         Singleton::router()->getMockController()->getAction = 'get';
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
@@ -140,6 +140,7 @@ class Main extends TestCase
         $factory = new \mock\App\Library\Factory\Browser;
         Singleton::mainFactory()->getMockController()->create = $factory;
         $factory->getMockController()->getByName = 'this is chrome';
+        $factory->getMockController()->getAllNames = ['chrome', 'firefox'];
 
         $getAll = $this->main->run();
 

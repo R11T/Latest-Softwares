@@ -35,13 +35,22 @@ class Browser implements IDisplayable
     private $name;
 
     /**
-     * Software type
+     * Textual software type
+     *
+     * @var string
+     *
+     * @access private
+     */
+    private $type;
+
+    /**
+     * Timestamp of the last update
      *
      * @var int
      *
      * @access private
      */
-    private $type;
+    private $lastUpdate;
 
     /**
      * Construct data transport object
@@ -52,8 +61,9 @@ class Browser implements IDisplayable
      */
     public function __construct(array $data)
     {
-        $this->name = (string) $data['software_name'];
-        $this->type = (int) $data['type_id'];
+        $this->name       = (string) $data['software_name'];
+        $this->type       = (string) $data['type_name'];
+        $this->lastUpdate = (int) $data['software_last_update'];
     }
 
     /**
@@ -70,12 +80,23 @@ class Browser implements IDisplayable
     /**
      * Getter
      *
-     * @return int
+     * @return string
      * @access public
      */
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Getter
+     *
+     * @return int
+     * @access public
+     */
+    public function getLastUpdate()
+    {
+        return $this->lastUpdate;
     }
 
     /**
@@ -86,6 +107,6 @@ class Browser implements IDisplayable
      */
     public function display()
     {
-        return $this->getName() . ' is a software of type ' . $this->getType();
+        return $this->getName() . ' is a software of type ' . $this->getType() . ' last updated on ' . $this->getLastUpdate();
     }
 }

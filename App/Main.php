@@ -52,7 +52,7 @@ class Main
     {
         $itemsType    = new \App\Item\Types(Singleton::daoType()->getAllNames());
         $softwareType = Singleton::router()->getSoftwareType();
-        if (null !== $softwareType || in_array($softwareType, $itemsType->getNames())) {
+        if (in_array($softwareType, $itemsType->getNames())) {
             $factory      = Singleton::mainFactory()->create($softwareType);
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
