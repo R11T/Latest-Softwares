@@ -43,8 +43,6 @@ class Main
     /**
      * Execute GET method, in a RESTful meaning
      *
-     * @param string $type Software type wanted
-     *
      * @return array
      * @access private
      */
@@ -60,33 +58,46 @@ class Main
             } elseif (isset($softwareName) && in_array($softwareName, $factory->getAllNames())) {
                 return $factory->getByName($softwareName);
             } else {
-                $usage = [
-                    'syntax'       => 'get software-type [software-name]',
-                    'softwareName' => 'all ' . implode(' ', $factory->getAllNames()),
-                ];
+                return $this->help('badSoftwareName');
             }
         } else {
-            $usage = [
-                'syntax'       => 'get [software-type] software-name',
-                'softwareType' => implode(' ', $itemsType->getNames()),
-            ];
+            return $this->help('badSoftwareType');
         }
-        $help = new \App\Item\Help\Usage($usage);
-        return new \App\Library\Collection($help);
-
     }
 
     /**
-     * Refresh database' data
-     *
-     * @param string $softwareType
+     * Execute UPDATE method, in a RESTful meaning
      *
      * @return void
      * @access private
      */
-    private function update($softwareType = null)// rename to push
+    private function update()
     {
-        if (null === $softwareType) {
+        $itemsType    = new \App\Item\Types(Singleton::daoType()->getAllNames());
+        $softwareType = Singleton::router()->getSoftwareType();
+        if (in_array($softwareType, $itemsType->getNames())) {
+            $factory      = Singleton::mainFactory()->create($softwareType);
+            $softwareName = Singleton::router()->getSoftwareName();
+            if ('all' === $softwareName) {
+                //
+            } elseif (isset($softwareName) && in_array($softwareName, $factory->getAllNames())) {
+                $factory->updateByName($softwareName);
+            } else {
+                // propose name
+            }
+        } else {
+            // propose type
+            
+        }
+
+
+
+
+
+
+
+
+        /*if (null === $softwareType) {
             throw new \BadFunctionCallException('No software type specified');
         } else {
             $response = Singleton::response();
@@ -104,7 +115,11 @@ class Main
             } else {
                 throw new \BadFunctionCallException('Software Type doesn\'t exist');
             }
-        }
+        }*/
+    }
+
+    private function checkExistenceSoftwareType()
+    {
     }
 
     /**
@@ -115,10 +130,19 @@ class Main
      * @return array
      * @access private
      */
-    private function help()
+    private function help($section = null)
     {
         $help = new \App\Library\Factory\Help();
-        return $help->main();
+        switch ($section) {
+            case 'badSoftwareType' :
+                return $help->badSoftwareType();
+                break;
+            case 'badSoftwareName' :
+                return $help->badSoftwareName();
+                break;
+            default:
+                return $help->main();
+        }
     }
 
     private function create() // rename to post

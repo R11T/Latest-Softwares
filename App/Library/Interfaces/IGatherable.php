@@ -13,26 +13,26 @@
 namespace App\Library\Interfaces;
 
 /**
- * Define a software factory as Getable
+ * Define an element as gatherable
  *
  * @since 0.2
  * @author Romain L.
  */
-interface ISoftwareFactoryGetable extends IFactoryGetable
+interface IGatherable
 {
     /**
-     * Get all data of a software, given its name
+     * Returns resource link in order to update dao' data
      *
-     * @param string $softwareName
-     *
+     * @return string
      * @access public
      */
-    public function getByName($softwareName);
+    public function getResourceLink();
 
-    /**
-     * Get all data of all softwares
-     *
-     * @access public
-     */
-    public function getAll();
+    public function getReleaseTimestamp();
+
+    public function getReleaseMajor();
+
+    public function getReleaseMinor();
+
+    public function getReleasePatch();
 }

@@ -12,7 +12,7 @@
  */
 namespace App\Library\Factory;
 
-use \App\Library\Interfaces\ISoftwareFactoryGetable;
+use \App\Library\Interfaces;
 use \App\Singleton as Singleton;
 
 /**
@@ -22,7 +22,7 @@ use \App\Singleton as Singleton;
  * @author Romain L.
  * @see \Test\Unit\App\Library\Factory\Browser
  */
-class Browser implements ISoftwareFactoryGetable
+class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactoryUpdateable
 {
     /**
      * Get all data of a browser, given its name
@@ -85,5 +85,10 @@ class Browser implements ISoftwareFactoryGetable
             $names[] = $row['software_name'];
         }
         return $names;
+    }
+
+    public function updateByName($softwareName)
+    {
+        
     }
 }

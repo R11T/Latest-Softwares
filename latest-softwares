@@ -37,9 +37,11 @@ try {
 
 try {
     $app = (new \App\Main)->run();
-    \App\Singleton::response()->display($app);
+    if (null !== $app) {
+        \App\Singleton::response()->display($app);
+    }
 } catch (\Exception $e) {
-    echo "Error : " . $e->getMessage() . "\nTry typing <help>\n";
+    echo "Error : " . $e->getMessage() . "\n";
     exit(1);
 }
 

@@ -130,13 +130,13 @@ class Usage implements IDisplayable
     {
         $usage = "## Usage\n\n" . $this->getSyntax() . "\n";
         if (null !== $this->getAction()) {
-            $usage .= "\nAction : " . $this->getAction();
+            $usage .= "\nAvailables actions : " . $this->getAction();
         }
         if (null !== $this->getSoftwareType()) {
-            $usage .= "\nType : " . $this->getSoftwareType();
+            $usage .= "\nAvailables types : " . $this->getSoftwareType();
         }
         if (null !== $this->getSoftwareName()) {
-            $usage .= "\nName : " . $this->getSoftwareName();
+            $usage .= "\nAvailables names : " . $this->getSoftwareName();
         }
         return $usage;
     }

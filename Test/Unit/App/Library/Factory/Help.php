@@ -40,4 +40,8 @@ class Help extends TestCase
         $this->object($main->pop())->isInstanceOf('\App\Item\Help\Usage');
         $this->object($main->pop())->isInstanceOf('\App\Item\Help\Introduction');
     }
+
+    public function testBadSoftwareType()
+    {
+    }
 }

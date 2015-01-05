@@ -37,7 +37,7 @@ class Help
         $introduction = new \App\Item\Help\Introduction($dataIntro);
 
         $dataUsage = [
-            'syntax' => 'action software-type software-name',
+            'syntax' => '[action] software-type software-name',
             'action' => 'get',
         ];
 
@@ -45,5 +45,39 @@ class Help
         $usage      = new \App\Item\Help\Usage($dataUsage);
         $collection->push($usage);
         return $collection;
+    }
+
+    public function badSoftwareType()
+    {
+        $usage = [
+            'syntax'       => 'get [software-type] software-name',
+            'softwareType' => $this->suggestType(),
+        ];
+        $help = new \App\Item\Help\Usage($usage);
+        return new \App\Library\Collection($help);
+    }
+
+    private function suggestType()
+    {
+        $itemsType = new \App\Item\Types(\App\Singleton::daoType()->getAllNames());
+        return implode(' ', $itemsType->getNames());
+    }
+
+    public function badSoftwareName()
+    {
+        $usage = [
+            'syntax'       => 'get software-type [software-name]',
+            'softwareName' => 'all ' . $this->suggestName(),
+        ];
+        $help = new \App\Item\Help\Usage($usage);
+        return new \App\Library\Collection($help);
+    }
+
+    private function suggestName()
+    {
+        // find a way to figure out which one is the factory at this moment
+        //$get = $factory->getAllNames();
+        //return implode(' ', $get);
+        return 'Cr fx';
     }
 }

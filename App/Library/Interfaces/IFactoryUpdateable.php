@@ -13,26 +13,19 @@
 namespace App\Library\Interfaces;
 
 /**
- * Define a software factory as Getable
+ * Define a software factory as Saveable
  *
  * @since 0.2
  * @author Romain L.
  */
-interface ISoftwareFactoryGetable extends IFactoryGetable
+interface IFactoryUpdateable
 {
     /**
-     * Get all data of a software, given its name
+     * Update all data of a software, given its name
      *
-     * @param string $softwareName
-     *
+     * @return void
      * @access public
      */
-    public function getByName($softwareName);
-
-    /**
-     * Get all data of all softwares
-     *
-     * @access public
-     */
-    public function getAll();
+    public function updateByName($softwareName);
 }
+
