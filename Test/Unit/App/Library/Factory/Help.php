@@ -37,5 +37,7 @@ class Help extends TestCase
         $main = $help->main();
 
         $this->object($main)->isInstanceOf('\App\Library\Collection');
+        $this->object($main->pop())->isInstanceOf('\App\Item\Help\Usage');
+        $this->object($main->pop())->isInstanceOf('\App\Item\Help\Introduction');
     }
 }

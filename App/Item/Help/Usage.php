@@ -34,7 +34,32 @@ class Usage implements IDisplayable
      */
     private $syntax;
 
+    /**
+     * Availables actions
+     *
+     * @var string
+     *
+     * @access private
+     */
     private $action;
+
+    /**
+     * Availables software type
+     *
+     * @var string
+     *
+     * @access private
+     */
+    private $softwareType;
+
+    /**
+     * Availables software name
+     *
+     * @var string
+     *
+     * @acces private
+     */
+    private $softwareName;
 
     /**
      * Construct help transport object
@@ -46,7 +71,9 @@ class Usage implements IDisplayable
     public function __construct(array $data)
     {
         $this->syntax = (string) $data['syntax'];
-        $this->action = (string) $data['action'];
+        $this->action = isset($data['action']) ? (string) $data['action'] : null;
+        $this->softwareType = isset($data['softwareType']) ? (string) $data['softwareType'] : null;
+        $this->softwareName = isset($data['softwareName']) ? (string) $data['softwareName'] : null;
     }
 
     /**
@@ -60,9 +87,37 @@ class Usage implements IDisplayable
         return $this->syntax;
     }
 
+    /**
+     * Getter
+     *
+     * @return string
+     * @access public
+     */
     public function getAction()
     {
         return $this->action;
+    }
+
+    /**
+     * Getter
+     *
+     * @return string
+     * @access public
+     */
+    public function getSoftwareType()
+    {
+        return $this->softwareType;
+    }
+
+    /**
+     * Getter
+     *
+     * @return string
+     * @access public
+     */
+    public function getSoftwareName()
+    {
+        return $this->softwareName;
     }
 
     /**
@@ -73,12 +128,17 @@ class Usage implements IDisplayable
      */
     public function display()
     {
-        $usage  = "## Usage\n\n" . $this->getSyntax() . "\n";
-        $usage .= "\nAction : " . $this->getAction();
+        $usage = "## Usage\n\n" . $this->getSyntax() . "\n";
+        if (null !== $this->getAction()) {
+            $usage .= "\nAction : " . $this->getAction();
+        }
+        if (null !== $this->getSoftwareType()) {
+            $usage .= "\nType : " . $this->getSoftwareType();
+        }
+        if (null !== $this->getSoftwareName()) {
+            $usage .= "\nName : " . $this->getSoftwareName();
+        }
         return $usage  . "\n";
-        // syntax : 
-        // action availables : 
-        // software-type availables : 
     }
 }
 

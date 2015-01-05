@@ -25,34 +25,92 @@ use \App\Item\Help\Usage as _Usage;
 class Usage extends TestCase
 {
     /**
-     * Tests constructing an usage item
+     * Tests constructing an usage item with a syntax
      *
      * @return void
      * @access public
      */
     public function test__construct()
     {
-        $data = ['Deep Thought'];
+        $data = ['syntax' => 'Deep Thought'];
 
         $usage = new _Usage($data);
 
-        $this->string($usage->getUsage())->isIdenticalTo('Deep Thought');
+        $this->string($usage->getSyntax())->isIdenticalTo('Deep Thought');
     }
 
     /**
-     * Tests displaying item's content
+     * Tests displaying syntax
      *
      * @return void
      * @access public
      */
-    public function testDisplay()
+    public function testDisplaySyntax()
     {
-        $data  = ['Zaphod'];
+        $data  = ['syntax' => 'Zaphod'];
         $usage = new _Usage($data);
         
         $display = $usage->display();
 
         $this->string($display)->contains('Zaphod');
+    }
+
+    /**
+     * Tests displaying action
+     *
+     * @return void
+     * @access public
+     */
+    public function testDisplayAction()
+    {
+        $data = [
+            'syntax' => 'Zaphod',
+            'action' => 'Arthur Dent',
+        ];
+        $usage = new _Usage($data);
+
+        $display = $usage->display();
+
+        $this->string($display)->contains('Arthur Dent');
+    }
+
+    /**
+     * Tests displaying software type
+     *
+     * @return void
+     * @access public
+     */
+    public function testDisplaySoftwareType()
+    {
+        $data = [
+            'syntax'       => 'Zaphod',
+            'softwareType' => 'Marvin, the paranoid android',
+        ];
+        $usage = new _Usage($data);
+
+        $display = $usage->display();
+
+        $this->string($display)->contains('Marvin, the paranoid android');
+    }
+
+    /**
+     * Tests displaying software name
+     *
+     * @return void
+     * @access public
+
+     */
+    public function testDisplaySoftwareName()
+    {
+        $data = [
+            'syntax'       => 'Zaphod',
+            'softwareName' => 'Trillian',
+        ];
+        $usage = new _Usage($data);
+
+        $display = $usage->display();
+
+        $this->string($display)->contains('Trillian');
     }
 }
 
