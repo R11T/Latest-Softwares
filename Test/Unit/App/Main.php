@@ -50,6 +50,11 @@ class Main extends TestCase
 	    Singleton::response($response);
         $mainFactory = new \mock\App\Libraries\Factory;
         Singleton::mainFactory($mainFactory);
+        $dao         = new \mock\App\Library\Dao\Type;
+        $dao->getMockController()->getAllNames    = [
+            ['type_name' => 'browser'],
+        ];
+        Singleton::daoType($dao);
     }
 
 	/**
@@ -85,19 +90,20 @@ class Main extends TestCase
      }
 
     /**
-     * Tests running a callable action without query
+     * Tests running a callable action without software type
      *
      * @return void
      * @access public
      */
-    public function testRunWithQueryNull()
+    public function testRunWithSoftwareTypeNull()
     {
         Singleton::router()->getMockController()->getAction       = 'get';
         Singleton::router()->getMockController()->getSoftwareType = null;
 
-        $this->exception(function () {
-            $this->main->run();
-        })->isInstanceOf('\InvalidArgumentException');
+        $run = $this->main->run();
+
+        $this->object($run)->isInstanceOf('\App\Library\Collection');
+        $this->object($run->pop())->isInstanceOf('\App\Item\Help\Usage');
     }
 
     /**
@@ -148,15 +154,16 @@ class Main extends TestCase
      */
     public function testGetWithUnkwown()
     {
-        Singleton::router()->getMockController()->getAction = 'get';
+        Singleton::router()->getMockController()->getAction       = 'get';
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
         Singleton::router()->getMockController()->getSoftwareName = '?';
         $factory = new \mock\App\Library\Factory\Browser;
         Singleton::mainFactory()->getMockController()->create = $factory;
-        $factory->getMockController()->getAllNames = 'This is Spartaaa';
+        $factory->getMockController()->getAllNames = ['This is Spartaaa', 'Xerxes'];
 
         $getAll = $this->main->run();
 
-        $this->string($getAll)->isIdenticalTo('This is Spartaaa');
+        $this->object($getAll)->isInstanceOf('\App\Library\Collection');
+        $this->object($getAll->pop())->isInstanceOf('\App\Item\Help\Usage');
     }
 }

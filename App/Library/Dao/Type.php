@@ -21,9 +21,10 @@ namespace App\Library\Dao;
 class Type
 {
     /**
-     * Get 
+     * Get all names of softwares types
      *
-     *
+     * @return array
+     * @access public
      */
     public function getAllNames()
     {

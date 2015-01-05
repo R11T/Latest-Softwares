@@ -55,7 +55,7 @@ class Browser extends TestCase
      */
     public function testGetByNameWithoutData()
     {
-        Singleton::dao()->getMockController()->getByName = [];
+        Singleton::dao()->getMockController()->getByName = false;
         
         $get = $this->browser->getByName('Dr. Mario');
 

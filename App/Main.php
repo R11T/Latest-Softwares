@@ -28,24 +28,15 @@ class Main
      *
      * @return void
      * @access public
-     * @throws \InvalidArgumentException if action is forbidden
-     * @throws \InvalidArgumentException if query is empty
      */
     public function run()
     {
         $router = Singleton::router();
         $action = $router->getAction();
         $type   = $router->getSoftwareType();
-        Singleton::daoType(new \App\Library\Dao\Type()); 
-        //if (null !== $action && 'help' !== $action) {
-            if (is_callable([$this, $action])) {
-                return call_user_func_array([$this, $action], [$type]);
-            /*} else {
-                throw new \InvalidArgumentException('Action isn\'t a REST method');*/
-            }
-        /*} else {
-            return $this->help();*/
-        //}
+        if (is_callable([$this, $action])) {
+            return call_user_func_array([$this, $action], [$type]);
+        }
         return $this->help();
     }
 
@@ -61,7 +52,7 @@ class Main
     {
         $itemsType    = new \App\Item\Types(Singleton::daoType()->getAllNames());
         $softwareType = Singleton::router()->getSoftwareType();
-        if (in_array($softwareType, $itemsType->getNames())) {
+        if (null !== $softwareType || in_array($softwareType, $itemsType->getNames())) {
             $factory      = Singleton::mainFactory()->create($softwareType);
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
@@ -70,14 +61,14 @@ class Main
                 return $factory->getByName($softwareName);
             } else {
                 $usage = [
-                    'syntax' => 'get software-type [software-name]',
-                    'action' => 'all ' . implode(' ', $factory->getAllNames()),
+                    'syntax'       => 'get software-type [software-name]',
+                    'softwareName' => 'all ' . implode(' ', $factory->getAllNames()),
                 ];
             }
         } else {
             $usage = [
-                'syntax' => 'get [software-type] software-name',
-                'action' => implode(' ', $itemsType->getNames()),
+                'syntax'       => 'get [software-type] software-name',
+                'softwareType' => implode(' ', $itemsType->getNames()),
             ];
         }
         $help = new \App\Item\Help\Usage($usage);

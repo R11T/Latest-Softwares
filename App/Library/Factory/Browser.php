@@ -29,7 +29,7 @@ class Browser implements ISoftwareFactoryGetable
      *
      * @param string $softwareName
      *
-     * @return \App\Item\Browser|null if no data was returned
+     * @return \App\Library\Collection|null if no data was returned
      * @access public
      */
     public function getByName($softwareName)

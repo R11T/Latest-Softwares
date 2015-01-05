@@ -27,7 +27,7 @@ try {
     \App\Singleton::router((new \App\Router($request)));
     \App\Singleton::db(new \App\Library\Db(DATA_DIR . 'db.sqlite'));
     \App\Singleton::db()->exec('PRAGMA foreign_keys=ON');
-    //\App\Singleton::daoType(new \App\Library\Dao\Type());
+    \App\Singleton::daoType(new \App\Library\Dao\Type());
     \App\Singleton::mainFactory(new \App\Library\Factory());
 
 } catch (\Exception $e) {
