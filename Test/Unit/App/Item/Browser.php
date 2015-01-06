@@ -17,7 +17,7 @@ use \App\Singleton;
 use \App\Item\Browser as _Browser;
 
 /**
- * Unit testing on browser's model
+ * Unit testing on browser's item
  *
  * @since 0.2
  * @author Romain L.

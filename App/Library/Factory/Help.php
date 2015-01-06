@@ -38,7 +38,7 @@ class Help
 
         $dataUsage = [
             'syntax' => '[action] software-type software-name',
-            'action' => 'get',
+            'action' => 'get update',
         ];
 
         $collection = new \App\Library\Collection($introduction);

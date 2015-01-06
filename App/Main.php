@@ -79,43 +79,15 @@ class Main
             Singleton::mainFactory()->create($softwareType);
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
-                //
+                throw new \Exception('Not available');
             } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames())) {
                 Singleton::factory()->updateByName($softwareName);
             } else {
-                // propose name
+                return $this->help('badSoftwareName');
             }
         } else {
-            // propose type
-            
+            return $this->help('badSoftwareType');
         }
-
-
-
-
-
-
-
-
-        /*if (null === $softwareType) {
-            throw new \BadFunctionCallException('No software type specified');
-        } else {
-            $response = Singleton::response();
-            $softwareType = ucfirst($softwareType);
-            $softwareClass = MODEL_NS . $softwareType;
-            if (is_dir(MODEL_DIR . $softwareType) && class_exists($softwareClass)) {
-                $db = Singleton::db();
-                $res = $db->query('SELECT * from software');
-                foreach ($res->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-                    $response->display($row['software_name']);
-                }
-
-                //$data = file_get_contents(ROOT_DIR . $softwareType . '.json');
-                //$response->display($data);
-            } else {
-                throw new \BadFunctionCallException('Software Type doesn\'t exist');
-            }
-        }*/
     }
 
     private function checkExistenceSoftwareType()
