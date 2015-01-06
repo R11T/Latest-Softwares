@@ -51,12 +51,12 @@ class Main
         $itemsType    = new \App\Item\Types(Singleton::daoType()->getAllNames());
         $softwareType = Singleton::router()->getSoftwareType();
         if (in_array($softwareType, $itemsType->getNames())) {
-            $factory      = Singleton::mainFactory()->create($softwareType);
+            Singleton::mainFactory()->create($softwareType);
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
-                return $factory->getAll();
-            } elseif (isset($softwareName) && in_array($softwareName, $factory->getAllNames())) {
-                return $factory->getByName($softwareName);
+                return Singleton::factory()->getAll();
+            } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames())) {
+                return Singleton::factory()->getByName($softwareName);
             } else {
                 return $this->help('badSoftwareName');
             }
@@ -76,12 +76,12 @@ class Main
         $itemsType    = new \App\Item\Types(Singleton::daoType()->getAllNames());
         $softwareType = Singleton::router()->getSoftwareType();
         if (in_array($softwareType, $itemsType->getNames())) {
-            $factory      = Singleton::mainFactory()->create($softwareType);
+            Singleton::mainFactory()->create($softwareType);
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
                 //
-            } elseif (isset($softwareName) && in_array($softwareName, $factory->getAllNames())) {
-                $factory->updateByName($softwareName);
+            } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames())) {
+                Singleton::factory()->updateByName($softwareName);
             } else {
                 // propose name
             }

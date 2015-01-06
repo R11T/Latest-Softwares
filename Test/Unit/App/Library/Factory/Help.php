@@ -41,7 +41,44 @@ class Help extends TestCase
         $this->object($main->pop())->isInstanceOf('\App\Item\Help\Introduction');
     }
 
+    /**
+     * Tests constructing help in case of bad software type
+     *
+     * @return void
+     * @access public
+     */
     public function testBadSoftwareType()
     {
+        $daoType = new \mock\App\Library\Dao\Type;
+        $daoType->getMockController()->getAllNames = [
+            ['type_name' => 'Dijkstra'],
+            ['type_name' => 'Schneier'],
+        ];
+        \App\Singleton::daoType($daoType);
+        $help = new _Help();
+
+        $badType = $help->badSoftwareType();
+
+        $this->object($badType)->isInstanceOf('\App\Library\Collection');
+        $this->object($badType->pop())->isInstanceOf('\App\Item\Help\Usage');
+    }
+
+    /**
+     * Test constructing help in case of bad software name
+     *
+     * @return void
+     * @access public
+     */
+    public function testBadSoftwareName()
+    {
+        $factory = new \mock\App\Library\Factory\Browser;
+        $factory->getMockController()->getAllNames = ['Nash', 'Hawkins'];
+        \App\Singleton::factory($factory);
+        $help = new _Help();
+
+        $badType = $help->badSoftwareName();
+
+        $this->object($badType)->isInstanceOf('\App\Library\Collection');
+        $this->object($badType->pop())->isInstanceOf('\App\Item\Help\Usage');
     }
 }
