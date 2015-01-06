@@ -10,22 +10,16 @@
  * @link https://www.tldrlegal.com/l/gpl2
  * @see LICENSE file
  */
-namespace App\Library\Interfaces;
+namespace Test\Unit\App\Fetcher;
 
 /**
- * Define a software factory as Updateable
+ * Unit testing on chrome fetcher
  *
  * @since 0.3
  * @author Romain L.
+ * @see \App\Fetcher\Chrome
  */
-interface IFactoryUpdateable
+class Chrome
 {
-    /**
-     * Update all data of a software, given its name
-     *
-     * @return void
-     * @access public
-     */
-    public function updateByName($softwareName);
-}
 
+}

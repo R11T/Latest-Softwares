@@ -87,8 +87,19 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
         return $names;
     }
 
+    /**
+     * Update all data of a software, given its name
+     *
+     * @return void
+     * @access public
+     */
     public function updateByName($softwareName)
     {
-        
+        $fetcherName = Singleton::namespaces()->getFetcherName($softwareName);
+        $fetcher     = new $fetcherName();
+        $data = 
+        // moulinette sur le recolteur
+       // insertion des infos du récolteur dans l'item
+       // enregistrement de l'item dans la dao
     }
 }

@@ -10,15 +10,36 @@
  * @link https://www.tldrlegal.com/l/gpl2
  * @see LICENSE file
  */
-namespace App\Model\Browser;
+namespace App\Fetcher;
 
-use \App\Library\Interfaces;
-
-class Chrome implements Inferfaces\IGatherable
+/**
+ * Fetcher of all fresh data
+ *
+ * @since 0.3
+ * @author Romain L.
+ * @see \Test\Unit\App\Fetcher\Chrome
+ */
+class Chrome implements \App\Library\Inferfaces\IFetchable
 {
-    private $link = 'http://en.wikipedia.org/w/index.php?action=raw&title=Template:Latest_stable_software_release/Google_Chrome';
-    private $file;
+    private $resourceLink = 'http://en.wikipedia.org/w/index.php?action=raw&title=Template:Latest_stable_software_release/Google_Chrome';
+    private $data;
 
+    public function __construct()
+    {
+        $this->fetchDataFile();
+    }
+
+    private function fetchDataFile()
+    {
+        $content = file_get_contents($this->resourceLink);//urlencode
+        if (false !== $content) {
+            $this->data = $content;
+        } else {
+            throw new \Exception('Data file doesn\'t exist');
+        }
+    }
+
+    /*
     private $regexReleaseVersion = '#.*\|latest[ _]?release[ _]?version[ ]?=[ ]?([\d]+)\.([\d]+)\.([\d]+).*\|#';
 
     private $regexReleaseDate = '#.* \|[ ]?date[ ]?=(.*) \|#';
@@ -77,4 +98,5 @@ class Chrome implements Inferfaces\IGatherable
         preg_match($this->regexReleaseDate, $this->file, $matches);
         $this->data['release']['latest']['time'] = strtotime($matches[1]);
     }
+    */
 }

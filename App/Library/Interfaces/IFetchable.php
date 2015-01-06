@@ -13,26 +13,46 @@
 namespace App\Library\Interfaces;
 
 /**
- * Define an element as gatherable
+ * Define an element as fetchable
  *
  * @since 0.2
  * @author Romain L.
  */
-interface IGatherable
+interface IFetchable
 {
     /**
-     * Returns resource link in order to update dao' data
+     * Fetch latest release timestamp
      *
-     * @return string
+     * @return int
      * @access public
      */
-    public function getResourceLink();
+    public function fetchReleaseTimestamp();
 
-    public function getReleaseTimestamp();
+    /**
+     * Fetch major version latest release
+     *
+     * If the element doesn't implement semver, ?
+     *
+     * @return int
+     * @access public
+     */
+    public function fetchReleaseMajor();
 
-    public function getReleaseMajor();
+    /**
+     * Fetch minor version latest release
+     *
+     * If the element doesn't implement semver, ?
+     *
+     * @return int
+     * @access public
+     */
+    public function fetchReleaseMinor();
 
-    public function getReleaseMinor();
+    public function fetchReleasePatch();
 
-    public function getReleasePatch();
+    //public function fetchPlatform();
+
+    /*
+    * Si le soft est dispo sur plusieurs platform, la methode fetchplatform sera  un array. Si c'est le cas, alors les methode de release renvoient elles aussi un array (meme si c'est la même version)
+    */
 }
