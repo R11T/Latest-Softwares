@@ -25,4 +25,8 @@ interface IITemGetable
     public function getType();
 
     public function getLastUpdate();
+
+    public function getCommercialName();
+
+    public function getRelease();
 }

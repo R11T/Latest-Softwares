@@ -61,9 +61,12 @@ class Browser implements Interfaces\IDisplayable, Interfaces\IItemGetable
      */
     public function __construct(array $data)
     {
-        $this->name       = (string) $data['software_name'];
-        $this->type       = (string) $data['type_name'];
-        $this->lastUpdate = (int) $data['software_last_update'];
+        var_dump($data);
+        $this->name           = (string) $data['name'];
+        $this->type           = (string) $data['type'];
+        $this->lastUpdate     = (int)    $data['lastUpdate'];
+        $this->commercialName = (string) $data['commercialName'];
+        $this->release        = (array)  $data['release'];
     }
 
     /**

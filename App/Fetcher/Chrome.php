@@ -97,6 +97,19 @@ class Chrome implements IFetchable
         return $this->data;
     }
 
+    public function fetchRelease()
+    {
+        foreach ($this->fetchPlatform() as $platform) {
+            $data[$platform] = [
+                'timestamp' => $this->fetchReleaseTimestamp(),
+                'major'     => $this->fetchReleaseMajor(),
+                'minor'     => $this->fetchReleaseMinor(),
+                'patch'     => $this->fetchReleasePatch()
+            ];
+        }
+        return $data;
+    }
+
     /**
      * Fetch release timestamp
      *

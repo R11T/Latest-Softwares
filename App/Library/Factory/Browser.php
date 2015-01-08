@@ -36,7 +36,7 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
     {
         $data = Singleton::dao()->getByName($softwareName);
 
-        if (false === $data) {
+        if (0 === count($data)) {
             return null;
         } else {
             $item = new \App\Item\Browser($data);
@@ -97,9 +97,26 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
     {
         $fetcherName = Singleton::namespaces()->getFetcherName($softwareName);
         $fetcher     = new $fetcherName();
-        $data = 
-        // moulinette sur le recolteur
-       // insertion des infos du récolteur dans l'item
-       // enregistrement de l'item dans la dao
+        $fetcher->fetchData();
+
+        /*["software_name"]=> string(6) "chrome"
+        ["software_last_update"]=>string(10) "1419339211"
+        ["software_commercial_name"]=>string(0) ""
+        ["release_major"]=> string(1) "0"
+        ["release_minor"]=> string(1) "2"
+        ["release_patch"]=> string(1) "3"
+        ["release_timestamp"]=>string(7) "1126495"
+        ["platform_name"]=>string(4) "os x"
+
+*/
+
+        $data = [
+            'name'           => $softwareName,
+            'type'           => Singleton::router()->getSoftwareType(),
+            'commercialName' => '',
+            'release'        => $fetcher->fetchRelease(),
+        ];
+        $item = new \App\Item\Browser($data);
+        Singleton::dao()->updateOne($item);
     }
 }

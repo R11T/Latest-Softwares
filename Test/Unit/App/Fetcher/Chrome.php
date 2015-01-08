@@ -168,4 +168,19 @@ class Chrome extends TestCase
         $this->string($platform[1])->isIdenticalTo('os x');
         $this->string($platform[2])->isIdenticalTo('linux');
     }
+
+    // le fetcher se démerde comme il veut, on veut juste recuperer un array formaté comme suit :
+    /* 
+        $data = [
+            'name'             => $softwareName,
+            'type'             => Singleton::router()->getSoftwareType(),
+            'commercialName'   => '',
+            'release'          => [
+                'major'        => $fetcher->fetchReleaseMajor(),
+                'minor'        => $fetcher->fetchReleaseMinor(),
+                'patch'        => $fetcher->fetchReleasePatch(),
+                'timestamp'    => $fetcher->fetchReleaseTimestamp(),
+            ],
+        ];
+    */
  }
