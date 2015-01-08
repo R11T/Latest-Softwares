@@ -12,6 +12,8 @@
  */
 namespace App\Fetcher;
 
+use \App\Library\Interfaces\IFetchable;
+
 /**
  * Fetcher of all fresh data
  *
@@ -19,84 +21,161 @@ namespace App\Fetcher;
  * @author Romain L.
  * @see \Test\Unit\App\Fetcher\Chrome
  */
-class Chrome implements \App\Library\Inferfaces\IFetchable
+class Chrome implements IFetchable
 {
+    /**
+     * URI
+     *
+     * @var string
+     *
+     * @access private
+     * @see https://en.wikipedia.org/wiki/Uniform_resource_identifier
+     */
     private $resourceLink = 'http://en.wikipedia.org/w/index.php?action=raw&title=Template:Latest_stable_software_release/Google_Chrome';
+
+    /**
+     * Data
+     *
+     * @var string
+     *
+     * @access private
+     */
     private $data;
 
-    public function __construct()
+    /**
+     * Fetch data
+     *
+     * @return void
+     * @access public
+     * @throws Exception if resource doesn't exist
+     */
+    public function fetchData()
     {
-        $this->fetchDataFile();
-    }
-
-    private function fetchDataFile()
-    {
-        $content = file_get_contents($this->resourceLink);//urlencode
-        if (false !== $content) {
-            $this->data = $content;
+        $resource = $this->getResourceLink();
+        if ($fileHandle = @fopen($resource, 'rb')) {
+            $content = stream_get_contents($fileHandle);
+            fclose($fileHandle);
+            $this->setData($content);
         } else {
             throw new \Exception('Data file doesn\'t exist');
         }
     }
 
-    /*
-    private $regexReleaseVersion = '#.*\|latest[ _]?release[ _]?version[ ]?=[ ]?([\d]+)\.([\d]+)\.([\d]+).*\|#';
-
-    private $regexReleaseDate = '#.* \|[ ]?date[ ]?=(.*) \|#';
-
-    private $regexReleaseOs = '#\; ([\w, ]*) {{LSR#';
-
-    private $data = [];
-
-    public function __construct()
+    /**
+     * Getter
+     *
+     * @return string
+     * @access public
+     */
+    public function getResourceLink()
     {
-        $this->setFile($this->link);
-        $this->setReleaseOs();
-        $this->setReleaseVersion();
-        $this->setReleaseDate();
+        return DATA_TEST_DIR . 'chrome';
+        //return $this->resourceLink; Set this when we'll be in prod, not in current dev
     }
 
-    public function getLink()
+    /**
+     * Setter
+     *
+     * @param string $data
+     *
+     * @return void
+     * @access public
+     */
+    public function setData($data)
     {
-        return $this->link;
+        $this->data  = strtolower(str_replace("\n", '', $data));
     }
 
+    /**
+     * Getter
+     *
+     * @return string
+     * @access public
+     */
     public function getData()
     {
         return $this->data;
     }
 
-    protected function setFile($link)
+    /**
+     * Fetch release timestamp
+     *
+     * @return integer
+     * @access public
+     */
+    public function fetchReleaseTimestamp()
     {
-        $tmp = 'chrome.tmp';
-        if (!file_exists($tmp)) {
-            $wiki = file_get_contents($this->link);
-            file_put_contents($tmp, str_replace("\n", ' ', file_get_contents($this->link)));
-        }
-
-        $this->file = file_get_contents($tmp);
+        $regexReleaseDate = '#.*\{\{lsr.*\|latest_?release_?date ?=.*\{\{start date and age\|(?P<year>\d{4})\|(?P<month>\d{2})\|(?P<day>\d{2})\}\}#isU';
+        preg_match($regexReleaseDate, $this->data, $matches);
+        /* Avoid daylight saving time aftermaths by setting 12:00 */
+        return strtotime($matches['year'] . '-' . $matches['month'] . '-' . $matches['day'] . ' 12:00');
     }
 
-    protected function setReleaseOs()
+    /**
+     * Fetch release major version
+     *
+     * @return integer
+     * @access public
+     */
+    public function fetchReleaseMajor()
     {
-        preg_match($this->regexReleaseOs, $this->file, $matches);
-        $this->data['release']['latest']['os'] = array_map(function ($e) {
-            return trim($e);
-        }, explode(',', $matches[1]));
+        $regexReleaseVersion = '#\{\{lsr.*\|latest_?release_?version ?= ?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)\..*\|#isU';
+        preg_match($regexReleaseVersion, $this->data, $matches);
+        return (int) $matches['major'];
     }
 
-    public function setReleaseVersion()
+    /**
+     * Fetch release minor version
+     *
+     * @return integer
+     * @access public
+     */
+    public function fetchReleaseMinor()
     {
-        preg_match($this->regexReleaseVersion, $this->file, $matches);
-        $this->data['release']['latest']['version']['major'] = $matches[1];
-        $this->data['release']['latest']['version']['minor'] = $matches[2];
-        $this->data['release']['latest']['version']['patch'] = $matches[3];
+        $regexReleaseVersion = '#\{\{lsr.*\|latest_?release_?version ?= ?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)\..*\|#isU';
+        preg_match($regexReleaseVersion, $this->data, $matches);
+        return (int) $matches['minor'];
     }
 
-    protected function setReleaseDate()
+    /**
+     * Fetch release patch version
+     *
+     * @return integer
+     * @access public
+     */
+    public function fetchReleasePatch()
     {
-        preg_match($this->regexReleaseDate, $this->file, $matches);
-        $this->data['release']['latest']['time'] = strtotime($matches[1]);
+        $regexReleaseVersion = '#\{\{lsr.*\|latest_?release_?version ?= ?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)\..*\|#isU';
+        preg_match($regexReleaseVersion, $this->data, $matches);
+        return (int) $matches['patch'];
     }
-    */
+
+    /**
+     * Fetch platform availability
+     *
+     * @return array
+     * @access public
+     */
+    public function fetchPlatform()
+    {
+        $regexReleasePlatform = '#;([ a-z]+),([ a-z]+),([ a-z]+)\{\{lsr#isU';
+        preg_match($regexReleasePlatform, $this->data, $matches);
+        return array_map('trim', [$matches[1], $matches[2], $matches[3]]);
+    }
+
+    /**
+     * Fetch developer
+     *
+     * @return string
+     * @access public
+     */
+    public function fetchDeveloper()
+    {
+        // Cheat mode enabled
+        return 'Google';
+    }
+
+    public function fetchCommercialName()
+    {
+    }
 }

@@ -10,12 +10,19 @@
  * @link https://www.tldrlegal.com/l/gpl2
  * @see LICENSE file
  */
-/* Directories */
-define('ROOT_DIR', __DIR__ . '/');
-define('DATA_DIR', ROOT_DIR . 'App/Data/');
-define('DATA_TEST_DIR', ROOT_DIR . 'Test/Unit/Data/');
-/* Namespaces */
-define('LIBRARY_NS', '\\App\Library\\');
-define('FACTORY_NS', LIBRARY_NS . 'Factory\\');
-define('DAO_NS', LIBRARY_NS . 'Dao\\');
-define('FETCHER_NS', '\\App\Fetcher\\');
+namespace App\Library\Interfaces;
+
+/**
+ * Define an item as getable
+ *
+ * @since 0.3
+ * @author Romain L.
+ */
+interface IITemGetable
+{
+    public function getName();
+
+    public function getType();
+
+    public function getLastUpdate();
+}

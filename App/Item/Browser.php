@@ -12,7 +12,7 @@
  */
 namespace App\Item;
 
-use \App\Library\Interfaces\IDisplayable;
+use \App\Library\Interfaces;
 
 /**
  * Browser's Data Transport Object
@@ -23,7 +23,7 @@ use \App\Library\Interfaces\IDisplayable;
  * @author Romain L.
  * @see \Test\Unit\App\Item\Browser
  */
-class Browser implements IDisplayable
+class Browser implements Interfaces\IDisplayable, Interfaces\IItemGetable
 {
     /**
      * Browser's name

@@ -21,6 +21,14 @@ namespace App\Library\Interfaces;
 interface IFetchable
 {
     /**
+     * Fetch data
+     *
+     * @return void
+     * @access public
+     */
+    public function fetchData();
+
+    /**
      * Fetch latest release timestamp
      *
      * @return int
@@ -29,9 +37,7 @@ interface IFetchable
     public function fetchReleaseTimestamp();
 
     /**
-     * Fetch major version latest release
-     *
-     * If the element doesn't implement semver, ?
+     * Fetch release major version
      *
      * @return int
      * @access public
@@ -39,20 +45,48 @@ interface IFetchable
     public function fetchReleaseMajor();
 
     /**
-     * Fetch minor version latest release
+     * Fetch release minor version
      *
-     * If the element doesn't implement semver, ?
+     * If the element doesn't implement semver, should be equal to 0
      *
      * @return int
      * @access public
+     * @see http://semver.org/
      */
     public function fetchReleaseMinor();
 
+    /**
+     * Fetch release patch version
+     *
+     * If the element doesn't implement semver, should be equal to 0
+     *
+     * @return int
+     * @access public
+     * @see http://semver.org/
+     */
     public function fetchReleasePatch();
 
-    //public function fetchPlatform();
+    /**
+     * Fetch platform availability
+     *
+     * @return array
+     * @access public
+     */
+    public function fetchPlatform();
 
-    /*
-    * Si le soft est dispo sur plusieurs platform, la methode fetchplatform sera  un array. Si c'est le cas, alors les methode de release renvoient elles aussi un array (meme si c'est la même version)
-    */
+    /**
+     * Fetch developer
+     *
+     * @return string
+     * @access public
+     */
+    public function fetchDeveloper();
+
+    /**
+     * Fetch commercial name
+     *
+     * @return string
+     * @access public
+     */
+    public function fetchCommercialName();
 }
