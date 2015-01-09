@@ -43,7 +43,8 @@ class Factory
         }
         $factoryName = Singleton::namespaces()->getFactoryName($type);
         if (class_exists($factoryName)) {
-            return new $factoryName();
+            Singleton::factory(new $factoryName());
+            return Singleton::factory();
         } else {
             throw new \DomainException('"' . $type . '" factory doesn\'t exist');
         }

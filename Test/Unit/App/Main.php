@@ -118,8 +118,9 @@ class Main extends TestCase
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
         Singleton::router()->getMockController()->getSoftwareName = 'all';
         $factory = new \mock\App\Library\Factory\Browser;
-        Singleton::mainFactory()->getMockController()->create = $factory;
+        Singleton::mainFactory()->getMockController()->create = '';
         $factory->getMockController()->getAll = 'test all';
+        Singleton::factory($factory);
 
         $getAll = $this->main->run();
 
@@ -138,9 +139,11 @@ class Main extends TestCase
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
         Singleton::router()->getMockController()->getSoftwareName = 'chrome';
         $factory = new \mock\App\Library\Factory\Browser;
-        Singleton::mainFactory()->getMockController()->create = $factory;
+
+        Singleton::mainFactory()->getMockController()->create = '';
         $factory->getMockController()->getByName = 'this is chrome';
         $factory->getMockController()->getAllNames = ['chrome', 'firefox'];
+        Singleton::factory($factory);
 
         $getAll = $this->main->run();
 
@@ -159,8 +162,9 @@ class Main extends TestCase
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
         Singleton::router()->getMockController()->getSoftwareName = '?';
         $factory = new \mock\App\Library\Factory\Browser;
-        Singleton::mainFactory()->getMockController()->create = $factory;
+        Singleton::mainFactory()->getMockController()->create = '';
         $factory->getMockController()->getAllNames = ['This is Spartaaa', 'Xerxes'];
+        Singleton::factory($factory);
 
         $getAll = $this->main->run();
 

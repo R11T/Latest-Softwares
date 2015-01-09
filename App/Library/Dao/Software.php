@@ -18,7 +18,7 @@ namespace App\Library\Dao;
  * @author Romain L.
  * @since 0.3
  */
-abstract class Software // implements ? for having in children getType()
+abstract class Software 
 {
     /**
      * Get all data of a software type, given its name
@@ -30,20 +30,50 @@ abstract class Software // implements ? for having in children getType()
      */
     public function getByName($name)
     {
-        $db  = \App\Singleton::db();
-        $req = $db->prepare('SELECT software_name, software_last_update, type_name
-                            FROM software
-                              INNER JOIN type USING (type_id)
-                            WHERE software_name = :software_name
-                              AND type_name = :type_name
-                            LIMIT 1
+        $data = [];
+        $db   = \App\Singleton::db();
+        $req  = $db->prepare('SELECT software_name AS name,
+                                type_name as type,
+                                software_last_update AS lastUpdate,
+                                software_commercial_name AS commercialName,
+                                release_major AS releaseMajor,
+                                release_minor AS releaseMinor,
+                                release_patch AS releasePatch,
+                                release_timestamp AS releaseTimestamp,
+                                platform_name AS platform
+                              FROM software
+                                INNER JOIN type USING (type_id)
+                                INNER JOIN release USING (software_id)
+                                INNER JOIN platform USING (platform_id)
+                              WHERE software_name = :software_name
+                                AND type_name = :type_name
+                              GROUP BY platform_name
+                              ORDER BY release_timestamp DESC, platform_id
         ');
         $req->execute([
             'software_name' => $name,
             'type_name'     => $this->getType()
         ]);
 
-        return $req->fetch($db::FETCH_ASSOC);
+        $res = $req->fetchAll($db::FETCH_ASSOC);
+
+        foreach ($res as $row) {
+            if (!isset($data['name'])) {
+                /* Given we don't have any data, common data setting */
+                $data['name']           = (string) $row['name'];
+                $data['type']           = (string) $row['type'];
+                $data['lastUpdate']     = (int) $row['lastUpdate'];
+                $data['commercialName'] = (string) $row['commercialName'];
+            }
+            $data['release'][$row['platform']] = [
+                'major'     => (int) $row['releaseMajor'],
+                'minor'     => (int) $row['releaseMinor'],
+                'patch'     => (int) $row['releasePatch'],
+                'timestamp' => (int) $row['releaseTimestamp'],
+            ];
+        }
+
+        return $data;
     }
     
     /**
@@ -85,5 +115,14 @@ abstract class Software // implements ? for having in children getType()
         ]);
         return $req->fetchAll($db::FETCH_ASSOC);
     }
+
+    /**
+     * Returns software type
+     *
+     * @return string
+     * @access public
+     * @abstract
+     */
+    abstract public function getType();
     
 }

@@ -76,12 +76,12 @@ use \App\Library\Factory as _Factory;
     }
 
     /**
-     * Tests creating factory with inexistent type
+     * Tests creating factory with inexistent factory
      *
      * @return void
      * @access public
      */
-    public function testCreateWithTypeInexistent()
+    public function testCreateWithFactoryInexistent()
     {
         Singleton::namespaces()->getMockController()->getFactoryName = 'notAFactory';
 
@@ -91,12 +91,12 @@ use \App\Library\Factory as _Factory;
     }
 
     /**
-     * Tests creating factory with existent type
+     * Tests creating factory with existent factory
      *
      * @return void
      * @access public
      */
-    public function testCreateWithTypeExistent()
+    public function testCreateWithFactoryExistent()
     {
         $softFactory = $this->factory->create('browser');
 

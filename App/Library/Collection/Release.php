@@ -10,21 +10,31 @@
  * @link https://www.tldrlegal.com/l/gpl2
  * @see LICENSE file
  */
-namespace App\Library\Interfaces;
+namespace App\Library\Collection;
+
+use \App\Library\Interfaces;
 
 /**
- * Define an element as displayable
+ * Collection of releases
  *
- * @since 0.2
+ * @since 0.4
  * @author Romain L.
+ * @see \Test\Unit\App\Library\Collection\Release
  */
-interface IDisplayable
+class Release extends \App\Library\Collection implements Interfaces\IDisplayable
 {
     /**
-     * Displays element's content
+     * Display releases content
      *
      * @return array
      * @access public
      */
-    public function display();
+    public function display()
+    {
+        $temp = [];
+        foreach ($this->items as $release) {
+            $temp = array_merge($temp, $release->display());
+        }
+        return $temp;
+    }
 }

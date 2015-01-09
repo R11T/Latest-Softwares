@@ -48,6 +48,19 @@ class Namespaces
     }
 
     /**
+     * Give fetcher's complete namespace given its name
+     *
+     * @param string $name
+     *
+     * @return string
+     * @access public
+     */
+    public function getFetcherName($name)
+    {
+        return $this->getNamespace($name, FETCHER_NS);
+    }
+
+    /**
      * Get a namespace
      *
      * @param string $name      Classname

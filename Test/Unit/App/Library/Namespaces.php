@@ -52,7 +52,7 @@ class Namespaces extends TestCase
      */
     public function testGetDaoName()
     {
-        $dao = $this->namespaces->getDaoName('Octavian');
+        $dao = $this->namespaces->getDaoName('octavian');
 
         $this->string($dao)->isIdenticalTo('\App\Library\Dao\Octavian');
     }
@@ -65,8 +65,15 @@ class Namespaces extends TestCase
      */
     public function testGetFactoryName()
     {
-        $factory = $this->namespaces->getFactoryName('Tiberius');
+        $factory = $this->namespaces->getFactoryName('tiberius');
 
         $this->string($factory)->isIdenticalTo('\App\Library\Factory\Tiberius');
+    }
+
+    public function testGetFetcherName()
+    {
+        $fetcher = $this->namespaces->getFetcherName('caligula');
+
+        $this->string($fetcher)->isIdenticalTo('\App\Fetcher\Caligula');
     }
 }

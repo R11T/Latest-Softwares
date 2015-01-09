@@ -51,12 +51,12 @@ class Main
         $itemsType    = new \App\Item\Types(Singleton::daoType()->getAllNames());
         $softwareType = Singleton::router()->getSoftwareType();
         if (in_array($softwareType, $itemsType->getNames())) {
-            $factory      = Singleton::mainFactory()->create($softwareType);
+            Singleton::mainFactory()->create($softwareType);
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
-                return $factory->getAll();
-            } elseif (isset($softwareName) && in_array($softwareName, $factory->getAllNames())) {
-                return $factory->getByName($softwareName);
+                return Singleton::factory()->getAll();
+            } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames())) {
+                return Singleton::factory()->getByName($softwareName);
             } else {
                 return $this->help('badSoftwareName');
             }
@@ -76,46 +76,18 @@ class Main
         $itemsType    = new \App\Item\Types(Singleton::daoType()->getAllNames());
         $softwareType = Singleton::router()->getSoftwareType();
         if (in_array($softwareType, $itemsType->getNames())) {
-            $factory      = Singleton::mainFactory()->create($softwareType);
+            Singleton::mainFactory()->create($softwareType);
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
-                //
-            } elseif (isset($softwareName) && in_array($softwareName, $factory->getAllNames())) {
-                $factory->updateByName($softwareName);
+                throw new \Exception('Not available');
+            } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames())) {
+                Singleton::factory()->updateByName($softwareName);
             } else {
-                // propose name
+                return $this->help('badSoftwareName');
             }
         } else {
-            // propose type
-            
+            return $this->help('badSoftwareType');
         }
-
-
-
-
-
-
-
-
-        /*if (null === $softwareType) {
-            throw new \BadFunctionCallException('No software type specified');
-        } else {
-            $response = Singleton::response();
-            $softwareType = ucfirst($softwareType);
-            $softwareClass = MODEL_NS . $softwareType;
-            if (is_dir(MODEL_DIR . $softwareType) && class_exists($softwareClass)) {
-                $db = Singleton::db();
-                $res = $db->query('SELECT * from software');
-                foreach ($res->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-                    $response->display($row['software_name']);
-                }
-
-                //$data = file_get_contents(ROOT_DIR . $softwareType . '.json');
-                //$response->display($data);
-            } else {
-                throw new \BadFunctionCallException('Software Type doesn\'t exist');
-            }
-        }*/
     }
 
     private function checkExistenceSoftwareType()
@@ -159,10 +131,8 @@ class Main
             type_last_update INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP);
         ');
         $res = $db->query('CREATE UNIQUE INDEX type_name ON type(type_name)');
-        var_dump($res);
         $res = $db->query('DROP TABLE IF EXISTS software');
         $res = $db->query('CREATE TABLE test(a integer)');
-        var_dump($res);
         $res = $db->query('
             CREATE TABLE software (software_id INTEGER PRIMARY KEY,
             type_id INTEGER NOT NULL,
@@ -172,7 +142,6 @@ class Main
             );
         ');
         $res = $db->query('CREATE UNIQUE INDEX software_name ON software(software_name)');
-        var_dump($res);
     }
 
     private function add() // refacto with above
@@ -190,6 +159,5 @@ class Main
         $res = $db->query('
             INSERT INTO software (type_id, software_name, software_last_update) VALUES (1, "firefox", ' . time() . ');
         ');
-        var_dump($res);
     }
 }

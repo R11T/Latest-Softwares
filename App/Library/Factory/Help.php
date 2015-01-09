@@ -38,7 +38,7 @@ class Help
 
         $dataUsage = [
             'syntax' => '[action] software-type software-name',
-            'action' => 'get',
+            'action' => 'get update',
         ];
 
         $collection = new \App\Library\Collection($introduction);
@@ -47,6 +47,12 @@ class Help
         return $collection;
     }
 
+    /**
+     * Constructs help in case of bad software type
+     *
+     * @return \App\Library\Collection
+     * @access public
+     */
     public function badSoftwareType()
     {
         $usage = [
@@ -57,12 +63,27 @@ class Help
         return new \App\Library\Collection($help);
     }
 
+    // TODO: for now i have only action possible, but in the future, should be replaced by requested action
+    // And there possibly are divergences in syntax (ex : 'create' operation)
+
+    /**
+     * Furnish a space separated list of software types
+     *
+     * @return string
+     * @access private
+     */
     private function suggestType()
     {
         $itemsType = new \App\Item\Types(\App\Singleton::daoType()->getAllNames());
         return implode(' ', $itemsType->getNames());
     }
 
+    /**
+     * Constructs help in case of bad software name
+     *
+     * @return \App\Library\Collection
+     * @access public
+     */
     public function badSoftwareName()
     {
         $usage = [
@@ -73,11 +94,15 @@ class Help
         return new \App\Library\Collection($help);
     }
 
+    /**
+     * Furnish a space separated list of software names
+     *
+     * @return string
+     * @access private
+     */
     private function suggestName()
     {
-        // find a way to figure out which one is the factory at this moment
-        //$get = $factory->getAllNames();
-        //return implode(' ', $get);
-        return 'Cr fx';
+        $get = \App\Singleton::factory()->getAllNames();
+        return implode(' ', $get);
     }
 }

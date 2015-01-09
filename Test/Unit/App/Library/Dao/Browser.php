@@ -25,4 +25,7 @@ use \App\Library\Dao\Browser as _Browser;
  */
 class Browser extends TestCase
 {
+    public function testUpdateOne()
+    {
+    }
 }

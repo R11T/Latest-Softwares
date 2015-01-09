@@ -13,9 +13,9 @@
 namespace App\Library\Interfaces;
 
 /**
- * Define a software factory as Saveable
+ * Define a software factory as Updateable
  *
- * @since 0.2
+ * @since 0.3
  * @author Romain L.
  */
 interface IFactoryUpdateable

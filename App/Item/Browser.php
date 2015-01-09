@@ -12,10 +12,10 @@
  */
 namespace App\Item;
 
-use \App\Library\Interfaces\IDisplayable;
+use \App\Library\Interfaces;
 
 /**
- * Browser's Data Transport Object
+ * Browser Data Transport Object
  *
  * Represents data at a T time
  *
@@ -23,7 +23,7 @@ use \App\Library\Interfaces\IDisplayable;
  * @author Romain L.
  * @see \Test\Unit\App\Item\Browser
  */
-class Browser implements IDisplayable
+class Browser implements Interfaces\IDisplayable, Interfaces\ISoftwareGetable
 {
     /**
      * Browser's name
@@ -61,9 +61,11 @@ class Browser implements IDisplayable
      */
     public function __construct(array $data)
     {
-        $this->name       = (string) $data['software_name'];
-        $this->type       = (string) $data['type_name'];
-        $this->lastUpdate = (int) $data['software_last_update'];
+        $this->name           = (string) $data['name'];
+        $this->type           = (string) $data['type'];
+        $this->lastUpdate     = (int)    $data['lastUpdate'];
+        $this->commercialName = (string) $data['commercialName'];
+        $this->release        = (array)  $data['release'];
     }
 
     /**
@@ -99,6 +101,14 @@ class Browser implements IDisplayable
         return $this->lastUpdate;
     }
 
+    public function getCommercialName()
+    {
+    }
+
+    public function getRelease()
+    {
+    }
+
     /**
      * Displays object's content
      *
@@ -107,6 +117,7 @@ class Browser implements IDisplayable
      */
     public function display()
     {
+        //echo json_encode(['name' => $this->getName(), 'type' => $this->getType()]);
         return $this->getName() . ' is a software of type ' . $this->getType() . ' last updated on ' . $this->getLastUpdate();
     }
 }

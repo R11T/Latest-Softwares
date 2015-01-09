@@ -36,7 +36,7 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
     {
         $data = Singleton::dao()->getByName($softwareName);
 
-        if (false === $data) {
+        if (0 === count($data)) {
             return null;
         } else {
             $item = new \App\Item\Browser($data);
@@ -87,8 +87,28 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
         return $names;
     }
 
+    /**
+     * Update all data of a software, given its name
+     *
+     * @return void
+     * @access public
+     */
     public function updateByName($softwareName)
     {
-        
+        $fetcherName = Singleton::namespaces()->getFetcherName($softwareName);
+        $fetcher = new $fetcherName();
+        $fetcher->fetchData();
+
+        $data = [
+            'name'           => $softwareName,
+            'type'           => Singleton::router()->getSoftwareType(),
+            'commercialName' => '',
+            'release'        => $fetcher->fetchRelease(),
+        ];
+
+        //var_dump($fetcher->fetchRelease());
+
+        $item = new \App\Item\Browser($data);
+        Singleton::dao()->updateOne($item);
     }
 }

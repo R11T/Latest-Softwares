@@ -12,6 +12,8 @@
  */
 namespace App\Library\Dao;
 
+use \App\Library\Interfaces\ISoftwareGetable;
+
 /**
  * Browser' Data Access Object
  *
@@ -30,4 +32,32 @@ class Browser extends Software
     {
         return 'browser';
     }
+
+    /**
+     * Update a browser if it exists
+     *
+     * @param IItemGetable $item
+     *
+     * @return void
+     * @access public
+     */
+    public function updateOne(ISoftwareGetable $item)
+    {
+        $db = \App\Singleton::db();
+
+        // recuperation id lié au nom de navigateur
+        // si non existant, erreur
+        // si existant :
+        // debut transaction
+        // fetch and update type
+        // fetch and update developer
+        // maj ligne navigateur
+        // maj type
+        // maj plateforme
+        // maj release
+
+        
+    }
+
+    // tries to update a browser. If doesn't exist, abort !
 }

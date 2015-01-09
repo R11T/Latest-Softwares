@@ -28,23 +28,23 @@ class Collection implements \Iterator, Interfaces\IStackable, Interfaces\IMeasur
      *
      * @var array
      *
-     * @access private
+     * @access protected
      */
-    private $items = [];
+    protected $items = [];
 
     /**
      * Offset of the current element
      *
      * @var int
      *
-     * @access private
+     * @access protected
      */
-    private $position;
+    protected $position;
 
     /**
      * Construct a new Collection, adding a new item
      *
-     * @param \ISoftwareItemDisplayable $item
+     * @param Interfaces\IDisplayable $item
      *
      * @access public
      */
