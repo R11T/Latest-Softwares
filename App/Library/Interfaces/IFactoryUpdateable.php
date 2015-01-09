@@ -21,11 +21,14 @@ namespace App\Library\Interfaces;
 interface IFactoryUpdateable
 {
     /**
-     * Update all data of a software, given its name
+     * Update all data of a software, given its name and its type
+     *
+     * @param string $softwareName
+     * @param string $softwareType
      *
      * @return void
      * @access public
      */
-    public function updateByName($softwareName);
+    public function updateByName($softwareName, $softwareType);
 }
 

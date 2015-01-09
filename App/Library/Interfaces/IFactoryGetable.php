@@ -20,10 +20,4 @@ namespace App\Library\Interfaces;
  */
 interface IFactoryGetable
 {
-    /**
-     * Get all item names
-     *
-     * @access public
-     */
-    public function getAllNames();
 }

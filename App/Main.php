@@ -43,20 +43,20 @@ class Main
     /**
      * Execute GET method, in a RESTful meaning
      *
+     * @param string $softwareType
+     *
      * @return array
      * @access private
      */
-    private function get()
+    private function get($softwareType)
     {
-        $itemsType    = new \App\Item\Types(Singleton::daoType()->getAllNames());
-        $softwareType = Singleton::router()->getSoftwareType();
+        $itemsType = new \App\Item\Types(Singleton::daoType()->getAllNames());
         if (in_array($softwareType, $itemsType->getNames())) {
-            Singleton::mainFactory()->create($softwareType);
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
-                return Singleton::factory()->getAll();
+                return Singleton::factory()->getAll($softwareType);
             } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames())) {
-                return Singleton::factory()->getByName($softwareName);
+                return Singleton::factory()->getByName($softwareName, $softwareType);
             } else {
                 return $this->help('badSoftwareName');
             }
@@ -68,20 +68,20 @@ class Main
     /**
      * Execute UPDATE method, in a RESTful meaning
      *
+     * @param string $softwareType
+     *
      * @return void
      * @access private
      */
-    private function update()
+    private function update($softwareType)
     {
         $itemsType    = new \App\Item\Types(Singleton::daoType()->getAllNames());
-        $softwareType = Singleton::router()->getSoftwareType();
         if (in_array($softwareType, $itemsType->getNames())) {
-            Singleton::mainFactory()->create($softwareType);
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
                 throw new \Exception('Not available');
-            } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames())) {
-                Singleton::factory()->updateByName($softwareName);
+            } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames($softwareType))) {
+                Singleton::factory()->updateByName($softwareName, $softwareType);
             } else {
                 return $this->help('badSoftwareName');
             }

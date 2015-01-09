@@ -21,18 +21,30 @@ namespace App\Library\Interfaces;
 interface ISoftwareFactoryGetable extends IFactoryGetable
 {
     /**
-     * Get all data of a software, given its name
+     * Get all data of a software, given its name and its type
      *
      * @param string $softwareName
+     * @param string $softwareType
      *
      * @access public
      */
     public function getByName($softwareName);
 
     /**
-     * Get all data of all softwares
+     * Get all data of all softwares of a type
+     *
+     * @param string $softwareType
      *
      * @access public
      */
-    public function getAll();
+    public function getAll($softwareType);
+
+    /**
+     * Get all item names of a software type
+     *
+     * @param string $softwareType
+     *
+     * @access public
+     */
+    public function getAllNames($softwareType);
 }

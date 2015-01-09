@@ -28,11 +28,12 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
      * Get all data of a browser, given its name
      *
      * @param string $softwareName
+     * @param string $softwareType
      *
      * @return \App\Library\Collection|null if no data was returned
      * @access public
      */
-    public function getByName($softwareName)
+    public function getByName($softwareName, $softwareType)
     {
         $data = Singleton::dao()->getByName($softwareName);
 
@@ -47,10 +48,12 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
     /**
      * Get all data of all browsers
      *
+     * @param string $softwareType
+     *
      * @return \App\Library\Collection | null if no data was returned
      * @access public
      */
-    public function getAll()
+    public function getAll($softwareType)
     {
         $collection = null;
         $data       = Singleton::dao()->getAll();
@@ -73,10 +76,12 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
     /**
      * Get all browsers' names
      *
+     * @param string $softwareType
+     *
      * @return array
      * @access public
      */
-    public function getAllNames()
+    public function getAllNames($softwareType)
     {
         $data = Singleton::dao()->getAllNames();
 
@@ -90,10 +95,13 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
     /**
      * Update all data of a software, given its name
      *
+     * @param string $softwareName
+     * @param string $softwareType
+     *
      * @return void
      * @access public
      */
-    public function updateByName($softwareName)
+    public function updateByName($softwareName, $softwareType)
     {
         $fetcherName = Singleton::namespaces()->getFetcherName($softwareName);
         $fetcher = new $fetcherName();
@@ -101,7 +109,7 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
 
         $data = [
             'name'           => $softwareName,
-            'type'           => Singleton::router()->getSoftwareType(),
+            'type'           => $softwareType,
             'commercialName' => '',
             'release'        => $fetcher->fetchRelease(),
         ];

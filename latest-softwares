@@ -28,7 +28,8 @@ try {
     \App\Singleton::db(new \App\Library\Db(DATA_DIR . 'db.sqlite'));
     \App\Singleton::db()->exec('PRAGMA foreign_keys=ON');
     \App\Singleton::daoType(new \App\Library\Dao\Type());
-    \App\Singleton::mainFactory(new \App\Library\Factory());
+    \App\Singleton::dao(new \App\Library\Dao\Browser);
+    \App\Singleton::factory(new \App\Library\Factory\Browser);
 
 } catch (\Exception $e) {
     echo "Fatal error : " . $e->getMessage() . "\n";
