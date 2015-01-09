@@ -13,7 +13,7 @@
 /* Directories */
 define('ROOT_DIR', __DIR__ . '/');
 define('DATA_DIR', ROOT_DIR . 'App/Data/');
-define('DATA_TEST_DIR', ROOT_DIR . 'Test/Unit/Data/');
+define('DATA_TEST_DIR', ROOT_DIR . 'Test/Data/');
 /* Namespaces */
 define('LIBRARY_NS', '\\App\Library\\');
 define('FACTORY_NS', LIBRARY_NS . 'Factory\\');

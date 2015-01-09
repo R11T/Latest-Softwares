@@ -131,10 +131,8 @@ class Main
             type_last_update INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP);
         ');
         $res = $db->query('CREATE UNIQUE INDEX type_name ON type(type_name)');
-        var_dump($res);
         $res = $db->query('DROP TABLE IF EXISTS software');
         $res = $db->query('CREATE TABLE test(a integer)');
-        var_dump($res);
         $res = $db->query('
             CREATE TABLE software (software_id INTEGER PRIMARY KEY,
             type_id INTEGER NOT NULL,
@@ -144,7 +142,6 @@ class Main
             );
         ');
         $res = $db->query('CREATE UNIQUE INDEX software_name ON software(software_name)');
-        var_dump($res);
     }
 
     private function add() // refacto with above
@@ -162,6 +159,5 @@ class Main
         $res = $db->query('
             INSERT INTO software (type_id, software_name, software_last_update) VALUES (1, "firefox", ' . time() . ');
         ');
-        var_dump($res);
     }
 }

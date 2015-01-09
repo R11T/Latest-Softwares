@@ -70,6 +70,7 @@ class Chrome implements IFetchable
     public function getResourceLink()
     {
         return DATA_TEST_DIR . 'chrome';
+        // eventually with a switch following virtual mode existence, or something else
         //return $this->resourceLink; Set this when we'll be in prod, not in current dev
     }
 
@@ -83,7 +84,7 @@ class Chrome implements IFetchable
      */
     public function setData($data)
     {
-        $this->data  = strtolower(str_replace("\n", '', $data));
+        $this->data = strtolower(str_replace("\n", '', $data));
     }
 
     /**
@@ -97,26 +98,41 @@ class Chrome implements IFetchable
         return $this->data;
     }
 
+    /**
+     * Returns a collection of release items
+     *
+     * @return \App\Library\Collection\Release
+     * @access public
+     */
     public function fetchRelease()
     {
+        $collection = null;
         foreach ($this->fetchPlatform() as $platform) {
-            $data[$platform] = [
+            $data = [
+                'platform'  => $platform,
                 'timestamp' => $this->fetchReleaseTimestamp(),
                 'major'     => $this->fetchReleaseMajor(),
                 'minor'     => $this->fetchReleaseMinor(),
-                'patch'     => $this->fetchReleasePatch()
+                'patch'     => $this->fetchReleasePatch(),
             ];
+            $release = new \App\Item\Release($data);
+            if (null == $collection) {
+                $collection = new \App\Library\Collection\Release($release);
+            } else {
+                $collection->push($release);
+            }
         }
-        return $data;
+
+        return $collection;
     }
 
     /**
      * Fetch release timestamp
      *
      * @return integer
-     * @access public
+     * @access private
      */
-    public function fetchReleaseTimestamp()
+    private function fetchReleaseTimestamp()
     {
         $regexReleaseDate = '#.*\{\{lsr.*\|latest_?release_?date ?=.*\{\{start date and age\|(?P<year>\d{4})\|(?P<month>\d{2})\|(?P<day>\d{2})\}\}#isU';
         preg_match($regexReleaseDate, $this->data, $matches);
@@ -128,9 +144,9 @@ class Chrome implements IFetchable
      * Fetch release major version
      *
      * @return integer
-     * @access public
+     * @access private
      */
-    public function fetchReleaseMajor()
+    private function fetchReleaseMajor()
     {
         $regexReleaseVersion = '#\{\{lsr.*\|latest_?release_?version ?= ?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)\..*\|#isU';
         preg_match($regexReleaseVersion, $this->data, $matches);
@@ -141,9 +157,9 @@ class Chrome implements IFetchable
      * Fetch release minor version
      *
      * @return integer
-     * @access public
+     * @access private
      */
-    public function fetchReleaseMinor()
+    private function fetchReleaseMinor()
     {
         $regexReleaseVersion = '#\{\{lsr.*\|latest_?release_?version ?= ?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)\..*\|#isU';
         preg_match($regexReleaseVersion, $this->data, $matches);
@@ -154,9 +170,9 @@ class Chrome implements IFetchable
      * Fetch release patch version
      *
      * @return integer
-     * @access public
+     * @access private
      */
-    public function fetchReleasePatch()
+    private function fetchReleasePatch()
     {
         $regexReleaseVersion = '#\{\{lsr.*\|latest_?release_?version ?= ?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)\..*\|#isU';
         preg_match($regexReleaseVersion, $this->data, $matches);

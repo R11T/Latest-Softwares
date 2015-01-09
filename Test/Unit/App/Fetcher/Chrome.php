@@ -98,65 +98,27 @@ class Chrome extends TestCase
     }
 
     /**
-     * Tests fetching release timestamp
+     * Tests fetchin release data
      *
      * @return void
      * @access public
      */
-    public function testFetchReleaseTimestamp()
+    public function testFetchRelease()
     {
         $this->chrome->setData(file_get_contents($this->file));
 
-        $time = $this->chrome->fetchReleaseTimestamp();
+        $release = $this->chrome->fetchRelease();
 
-        $this->integer($time)->isIdenticalTo(1415703600);
-     }
-
-    /**
-     * Tests fetching release major version
-     *
-     * @return void
-     * @access public
-     */
-    public function testFetchReleaseMajor()
-    {
-        $this->chrome->setData(file_get_contents($this->file));
-
-        $major = $this->chrome->fetchReleaseMajor();
-
-        $this->integer($major)->isIdenticalTo(38);
+        $this->object($release)->isInstanceOf('\App\Library\Collection\Release');
+        $this->integer($release->length())->isIdenticalTo(3);
     }
 
     /**
-     * Tests fetching release minor version
+     * Test fetching platform availability
      *
      * @return void
      * @access public
      */
-    public function testFetchReleaseMinor()
-    {
-        $this->chrome->setData(file_get_contents($this->file));
-
-        $minor = $this->chrome->fetchReleaseMinor();
-
-        $this->integer($minor)->isIdenticalTo(0);
-    }
-
-    /**
-     * Tests fetching release patch version
-     *
-     * @return void
-     * @access public
-     */
-    public function testFetchReleasePatch()
-    {
-        $this->chrome->setData(file_get_contents($this->file));
-
-        $patch = $this->chrome->fetchReleasePatch();
-
-        $this->integer($patch)->isIdenticalTo(2125);
-    }
-
     public function testFetchPlatform()
     {
         $this->chrome->setData(file_get_contents($this->file));
@@ -168,19 +130,4 @@ class Chrome extends TestCase
         $this->string($platform[1])->isIdenticalTo('os x');
         $this->string($platform[2])->isIdenticalTo('linux');
     }
-
-    // le fetcher se démerde comme il veut, on veut juste recuperer un array formaté comme suit :
-    /* 
-        $data = [
-            'name'             => $softwareName,
-            'type'             => Singleton::router()->getSoftwareType(),
-            'commercialName'   => '',
-            'release'          => [
-                'major'        => $fetcher->fetchReleaseMajor(),
-                'minor'        => $fetcher->fetchReleaseMinor(),
-                'patch'        => $fetcher->fetchReleasePatch(),
-                'timestamp'    => $fetcher->fetchReleaseTimestamp(),
-            ],
-        ];
-    */
  }

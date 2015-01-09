@@ -23,7 +23,7 @@ interface IDisplayable
     /**
      * Displays element's content
      *
-     * @return string
+     * @return array
      * @access public
      */
     public function display();

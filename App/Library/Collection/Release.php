@@ -14,20 +14,27 @@ namespace App\Library\Collection;
 
 use \App\Library\Interfaces;
 
+/**
+ * Collection of releases
+ *
+ * @since 0.4
+ * @author Romain L.
+ * @see \Test\Unit\App\Library\Collection\Release
+ */
 class Release extends \App\Library\Collection implements Interfaces\IDisplayable
 {
-    // construct identique : principe Liskov
-
+    /**
+     * Display releases content
+     *
+     * @return array
+     * @access public
+     */
     public function display()
     {
-        // var_dump($items->);
-        foreach ($items as $release) {
-            $data[$release->getPlatform()] = [
-                'timestamp' => $release->getTimestamp(),
-                'major'     => $release->getMajor(),
-                'minor'     => $release->getMinor(),
-                'patch'     => $release->getPatch()
-            ];
+        $temp = [];
+        foreach ($this->items as $release) {
+            $temp = array_merge($temp, $release->display());
         }
+        return $temp;
     }
 }

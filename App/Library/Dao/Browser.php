@@ -12,7 +12,7 @@
  */
 namespace App\Library\Dao;
 
-use \App\Library\Interfaces\IItemGetable;
+use \App\Library\Interfaces\ISoftwareGetable;
 
 /**
  * Browser' Data Access Object
@@ -41,10 +41,9 @@ class Browser extends Software
      * @return void
      * @access public
      */
-    public function updateOne(IItemGetable $item)
+    public function updateOne(ISoftwareGetable $item)
     {
         $db = \App\Singleton::db();
-        var_dump($item);
 
         // recuperation id lié au nom de navigateur
         // si non existant, erreur

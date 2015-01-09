@@ -29,42 +29,12 @@ interface IFetchable
     public function fetchData();
 
     /**
-     * Fetch latest release timestamp
+     * Fetch release data
      *
-     * @return int
+     * @return \App\Library\Collection\Release
      * @access public
      */
-    public function fetchReleaseTimestamp();
-
-    /**
-     * Fetch release major version
-     *
-     * @return int
-     * @access public
-     */
-    public function fetchReleaseMajor();
-
-    /**
-     * Fetch release minor version
-     *
-     * If the element doesn't implement semver, should be equal to 0
-     *
-     * @return int
-     * @access public
-     * @see http://semver.org/
-     */
-    public function fetchReleaseMinor();
-
-    /**
-     * Fetch release patch version
-     *
-     * If the element doesn't implement semver, should be equal to 0
-     *
-     * @return int
-     * @access public
-     * @see http://semver.org/
-     */
-    public function fetchReleasePatch();
+    public function fetchRelease();
 
     /**
      * Fetch platform availability

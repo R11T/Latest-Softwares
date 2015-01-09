@@ -132,4 +132,24 @@ class Browser extends TestCase
         $this->string($get[0])->isIdenticalTo('Lara Croft');
         $this->string($get[1])->isIdenticalTo('Prince');
     }
+
+    /**
+     * Tests updating a browser
+     *
+     * @return void
+     * @access public
+     */
+    public function testUpdateByName()
+    {
+        $namespaces = new \mock\App\Library\Namespaces;
+        Singleton::namespaces($namespaces);
+        $this->mockGenerator->orphanize('__construct');
+        $router = new \mock\App\Router;
+        $router->getMockController()->getSoftwareType = 'browser';
+        Singleton::router($router);
+
+        $this->when(function () {
+            $this->browser->updateByName('chrome');
+        })->mock(Singleton::dao())->call('updateOne')->once();
+    }
 }

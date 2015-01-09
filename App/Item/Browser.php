@@ -15,7 +15,7 @@ namespace App\Item;
 use \App\Library\Interfaces;
 
 /**
- * Browser's Data Transport Object
+ * Browser Data Transport Object
  *
  * Represents data at a T time
  *
@@ -23,7 +23,7 @@ use \App\Library\Interfaces;
  * @author Romain L.
  * @see \Test\Unit\App\Item\Browser
  */
-class Browser implements Interfaces\IDisplayable, Interfaces\IItemGetable
+class Browser implements Interfaces\IDisplayable, Interfaces\ISoftwareGetable
 {
     /**
      * Browser's name
@@ -61,7 +61,6 @@ class Browser implements Interfaces\IDisplayable, Interfaces\IItemGetable
      */
     public function __construct(array $data)
     {
-        var_dump($data);
         $this->name           = (string) $data['name'];
         $this->type           = (string) $data['type'];
         $this->lastUpdate     = (int)    $data['lastUpdate'];
@@ -102,6 +101,14 @@ class Browser implements Interfaces\IDisplayable, Interfaces\IItemGetable
         return $this->lastUpdate;
     }
 
+    public function getCommercialName()
+    {
+    }
+
+    public function getRelease()
+    {
+    }
+
     /**
      * Displays object's content
      *
@@ -110,6 +117,7 @@ class Browser implements Interfaces\IDisplayable, Interfaces\IItemGetable
      */
     public function display()
     {
+        //echo json_encode(['name' => $this->getName(), 'type' => $this->getType()]);
         return $this->getName() . ' is a software of type ' . $this->getType() . ' last updated on ' . $this->getLastUpdate();
     }
 }

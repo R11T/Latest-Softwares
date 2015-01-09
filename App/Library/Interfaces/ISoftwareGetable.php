@@ -13,20 +13,50 @@
 namespace App\Library\Interfaces;
 
 /**
- * Define an item as getable
+ * Define a software as getable
  *
  * @since 0.3
  * @author Romain L.
  */
-interface IITemGetable
+interface ISoftwareGetable
 {
+    /**
+     * Getter
+     *
+     * @return string
+     * @access public
+     */
     public function getName();
 
+    /**
+     * Getter
+     *
+     * @return string
+     * @access public
+     */
     public function getType();
 
+    /**
+     * Getter
+     *
+     * @return int
+     * @access public
+     */
     public function getLastUpdate();
 
+    /**
+     * Getter
+     *
+     * @return int
+     * @access public
+     */
     public function getCommercialName();
 
+    /**
+     * Getter
+     *
+     * @return \App\Library\Collection\Release
+     * @access public
+     */
     public function getRelease();
 }
