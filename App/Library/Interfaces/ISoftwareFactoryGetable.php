@@ -28,7 +28,7 @@ interface ISoftwareFactoryGetable extends IFactoryGetable
      *
      * @access public
      */
-    public function getByName($softwareName);
+    public function getByName($softwareName, $softwareType);
 
     /**
      * Get all data of all softwares of a type

@@ -56,7 +56,7 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
     public function getAll($softwareType)
     {
         $collection = null;
-        $data       = Singleton::dao()->getAll();
+        $data       = Singleton::dao()->getAll($softwareType);
 
         if (0 === count($data)) {
             return null;
@@ -83,7 +83,7 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
      */
     public function getAllNames($softwareType)
     {
-        $data = Singleton::dao()->getAllNames();
+        $data = Singleton::dao()->getAllNames($softwareType);
 
         $names = [];
         foreach ($data as $row) {
@@ -110,6 +110,7 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
         $data = [
             'name'           => $softwareName,
             'type'           => $softwareType,
+            'lastUpdate'     => null,
             'commercialName' => '',
             'release'        => $fetcher->fetchRelease(),
         ];

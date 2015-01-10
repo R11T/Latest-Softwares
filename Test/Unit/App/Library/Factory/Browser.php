@@ -57,7 +57,7 @@ class Browser extends TestCase
     {
         Singleton::dao()->getMockController()->getByName = [];
         
-        $get = $this->browser->getByName('Dr. Mario');
+        $get = $this->browser->getByName('Dr. Mario', 'Luigi');
 
         $this->variable($get)->isNull();
     }
@@ -70,10 +70,16 @@ class Browser extends TestCase
      */
     public function testGetByNameWithData()
     {
-        $data = ['software_name' => 'Link', 'type_id' => 1];     
+        $data = [
+            'name'           => 'Link',
+            'type'           => 1,
+            'lastUpdate'     => 66,
+            'commercialName' => 'Link, son of Hyrule',
+            'release'        => [],
+        ];
         Singleton::dao()->getMockController()->getByName = $data;
 
-        $get = $this->browser->getByName('Zelda');
+        $get = $this->browser->getByName('Zelda', 'Sheik');
 
         $this->object($get)->isInstanceOf('\App\Library\Collection');
     }
@@ -88,7 +94,7 @@ class Browser extends TestCase
     {
         Singleton::dao()->getMockController()->getAll = [];
 
-        $get = $this->browser->getAll();
+        $get = $this->browser->getAll('Altaïr');
 
         $this->variable($get)->isNull();
     }
@@ -101,13 +107,22 @@ class Browser extends TestCase
      */
     public function testGetAllWithData()
     {
-        $data = [
-            ['software_name' => 'Samus',      'type_id' => 7],
-            ['software_name' => 'Sam Fisher', 'type_id' => 47]
-        ];
+        $data = [[
+            'name'           => 'Samus',
+            'type'           => 7,
+            'lastUpdate'     => 12345,
+            'commercialName' => 'Samus Aran',
+            'release'        => [],
+        ],[
+            'name'           => 'Sam Fisher',
+            'type'           => 47,
+            'lastUpdate'     => 67890,
+            'commercialName' => 'Splinter Cell',
+            'release'        => [],
+        ],];
         Singleton::dao()->getMockController()->getAll = $data;
 
-        $get = $this->browser->getAll();
+        $get = $this->browser->getAll('Adam Jensen');
 
         $this->object($get)->isInstanceOf('\App\Library\Collection');
         $this->integer($get->length())->isIdenticalTo(2);
@@ -127,7 +142,7 @@ class Browser extends TestCase
         ];
         Singleton::dao()->getMockController()->getAllNames = $data;
 
-        $get = $this->browser->getAllNames();
+        $get = $this->browser->getAllNames('Sonic');
 
         $this->string($get[0])->isIdenticalTo('Lara Croft');
         $this->string($get[1])->isIdenticalTo('Prince');
@@ -144,12 +159,9 @@ class Browser extends TestCase
         $namespaces = new \mock\App\Library\Namespaces;
         Singleton::namespaces($namespaces);
         $this->mockGenerator->orphanize('__construct');
-        $router = new \mock\App\Router;
-        $router->getMockController()->getSoftwareType = 'browser';
-        Singleton::router($router);
 
         $this->when(function () {
-            $this->browser->updateByName('chrome');
+            $this->browser->updateByName('chrome', 'browser');
         })->mock(Singleton::dao())->call('updateOne')->once();
     }
 }

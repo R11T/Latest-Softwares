@@ -79,30 +79,34 @@ class Help
     }
 
     /**
-     * Constructs help in case of bad software name
+     * Constructs help in case of bad software name, given a software type
+     *
+     * @param string $softwareType
      *
      * @return \App\Library\Collection
      * @access public
      */
-    public function badSoftwareName()
+    public function badSoftwareName($softwareType)
     {
         $usage = [
             'syntax'       => 'get software-type [software-name]',
-            'softwareName' => 'all ' . $this->suggestName(),
+            'softwareName' => 'all ' . $this->suggestName($softwareType),
         ];
         $help = new \App\Item\Help\Usage($usage);
         return new \App\Library\Collection($help);
     }
 
     /**
-     * Furnish a space separated list of software names
+     * Furnish a space separated list of software names, given a software type
+     *
+     * @param string $softwareType
      *
      * @return string
      * @access private
      */
-    private function suggestName()
+    private function suggestName($softwareType)
     {
-        $get = \App\Singleton::factory()->getAllNames();
+        $get = \App\Singleton::factory()->getAllNames($softwareType);
         return implode(' ', $get);
     }
 }

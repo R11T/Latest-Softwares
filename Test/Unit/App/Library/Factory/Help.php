@@ -76,7 +76,7 @@ class Help extends TestCase
         \App\Singleton::factory($factory);
         $help = new _Help();
 
-        $badType = $help->badSoftwareName();
+        $badType = $help->badSoftwareName('Gallois');
 
         $this->object($badType)->isInstanceOf('\App\Library\Collection');
         $this->object($badType->pop())->isInstanceOf('\App\Item\Help\Usage');

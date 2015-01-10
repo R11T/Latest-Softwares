@@ -45,7 +45,7 @@ class Request extends \atoum
         $req = new _Request($parameters, count($parameters));
 
         $this->object($req)->isInstanceOf('\App\Library\Io\Request');
-        $this->variable($req->getAction)->isNull();
+        $this->variable($req->getAction())->isNull();
     }
 
     /**

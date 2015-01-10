@@ -58,7 +58,7 @@ class Main
             } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames($softwareType))) {
                 return Singleton::factory()->getByName($softwareName, $softwareType);
             } else {
-                return $this->help('badSoftwareName');
+                return $this->help('badSoftwareName', $softwareType);
             }
         } else {
             return $this->help('badSoftwareType');
@@ -83,7 +83,7 @@ class Main
             } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames($softwareType))) {
                 Singleton::factory()->updateByName($softwareName, $softwareType);
             } else {
-                return $this->help('badSoftwareName');
+                return $this->help('badSoftwareName', $softwareType);
             }
         } else {
             return $this->help('badSoftwareType');
@@ -97,19 +97,20 @@ class Main
     /**
      * Display help
      *
-     * @param string $query
+     * @param string $section
+     * @param string $softwareType
      *
      * @return array
      * @access private
      */
-    private function help($section = null)
+    private function help($section = null, $softwareType = null)
     {
         switch ($section) {
             case 'badSoftwareType' :
                 return Singleton::help()->badSoftwareType();
                 break;
             case 'badSoftwareName' :
-                return Singleton::help()->badSoftwareName();
+                return Singleton::help()->badSoftwareName($softwareType);
                 break;
             default:
                 return Singleton::help()->main();

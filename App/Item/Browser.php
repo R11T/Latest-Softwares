@@ -52,6 +52,8 @@ class Browser implements Interfaces\IDisplayable, Interfaces\ISoftwareGetable
      */
     private $lastUpdate;
 
+    private $release;
+
     /**
      * Construct data transport object
      *
@@ -65,7 +67,7 @@ class Browser implements Interfaces\IDisplayable, Interfaces\ISoftwareGetable
         $this->type           = (string) $data['type'];
         $this->lastUpdate     = (int)    $data['lastUpdate'];
         $this->commercialName = (string) $data['commercialName'];
-        $this->release        = (array)  $data['release'];
+        $this->release        =          $data['release'];
     }
 
     /**
@@ -107,6 +109,7 @@ class Browser implements Interfaces\IDisplayable, Interfaces\ISoftwareGetable
 
     public function getRelease()
     {
+        return $this->release;
     }
 
     /**
