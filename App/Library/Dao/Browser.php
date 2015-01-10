@@ -43,21 +43,85 @@ class Browser extends Software
      */
     public function updateOne(ISoftwareGetable $item)
     {
-        $db = \App\Singleton::db();
+        $db  = \App\Singleton::db();
+        $req = $db->prepare('SELECT software_id
+                            FROM software
+                            WHERE software_name = :name
+                            LIMIT 1
+        ');
 
-        // recuperation id lié au nom de navigateur
-        // si non existant, erreur
-        // si existant :
-        // debut transaction
+        $req->execute(['name' => $item->getName()]);
+        $res = $req->fetch($db::FETCH_ASSOC);
+
+        if (false === $res) {
+            throw new \PDOException('Software unknown');
+        } else {
+            $softwareId = $res['software_id'];
+            $db->beginTransaction();
+            $req = $db->prepare('UPDATE software
+                          SET software_last_update = :currentTime,
+                            software_commercial_name = :commercialName
+                          WHERE software_name = :name
+                          LIMIT 1
+            ');
+            $req->execute([
+                'name'           => $item->getName(),
+                'currentTime'    => time(),
+                'commercialName' => $item->getCommercialName(),
+            ]);
+
+            foreach ($item->getRelease()->display() as $platformName => $releaseData) {
+                $this->addRelease($platformName, $releaseData, $softwareId);
+            }
+            $db->commit();
+        }
         // fetch and update type
         // fetch and update developer
-        // maj ligne navigateur
-        // maj type
-        // maj plateforme
-        // maj release
-
-        
     }
 
-    // tries to update a browser. If doesn't exist, abort !
+    /**
+     * Add a new release, given a platform name and a software id
+     *
+     * If the platform doesn't exist yet, it will be created on the fly
+     *
+     * @param string $platformName
+     * @param array  $releaseData
+     * @param int    $softwareId
+     *
+     * @return void
+     * @access private
+     */
+    private function addRelease($platformName, array $releaseData, $softwareId)
+    {
+        $db = \App\Singleton::db();
+        $req = $db->prepare('SELECT platform_id
+                            FROM platform
+                            WHERE platform_name = :name
+                            LIMIT 1
+        ');
+
+        $req->execute(['name' => $platformName]);
+        $res = $req->fetch($db::FETCH_ASSOC);
+
+        if (false === $res) {
+            $req = $db->prepare('INSERT INTO platform (platform_name)
+                                VALUES (:name)
+            ');
+            $req->execute(['name' => $platformName]);
+            $platformId = $db->lastInsertId();
+        } else {
+            $platformId = $res['platform_id'];
+        }
+        $req = $db->prepare('INSERT INTO release (platform_id, software_id, release_major, release_minor, release_patch, release_timestamp)
+                            VALUES (:platform, :software, :major, :minor, :patch, :timestamp)
+        ');
+        $req->execute([
+            'platform'  => $platformId,
+            'software'  => $softwareId,
+            'major'     => $releaseData['major'],
+            'minor'     => $releaseData['minor'],
+            'patch'     => $releaseData['patch'],
+            'timestamp' => $releaseData['timestamp'],
+        ]);
+    }
 }
