@@ -30,6 +30,7 @@ try {
     \App\Singleton::daoType(new \App\Library\Dao\Type());
     \App\Singleton::dao(new \App\Library\Dao\Browser);
     \App\Singleton::factory(new \App\Library\Factory\Browser);
+    \App\Singleton::help(new \App\Library\Factory\Help);
 
 } catch (\Exception $e) {
     echo "Fatal error : " . $e->getMessage() . "\n";

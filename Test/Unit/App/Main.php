@@ -48,29 +48,15 @@ class Main extends TestCase
 	    $response    = new \mock\App\Library\Io\Response;
 	    Singleton::router($router);
 	    Singleton::response($response);
-        $mainFactory = new \mock\App\Libraries\Factory;
-        Singleton::mainFactory($mainFactory);
         $dao         = new \mock\App\Library\Dao\Type;
         $dao->getMockController()->getAllNames    = [
             ['type_name' => 'browser'],
         ];
         Singleton::daoType($dao);
-    }
-
-	/**
-	 * Tests running help
-	 *
-	 * @return void
-	 * @access public
-	 */
-	public function testRunHelp()
-	{
-        Singleton::router()->getMockController()->getAction       = 'help';
-        Singleton::router()->getMockController()->getSoftwareType = null;
-
-        $run = $this->main->run();
-
-        $this->object($run)->isInstanceOf('\App\Library\Collection');
+        $help = new \mock\App\Library\Factory\Help;
+        Singleton::help($help);
+        $factory = new \mock\App\Library\Factory\Browser;
+        Singleton::factory($factory);
     }
 
     /**
@@ -84,9 +70,9 @@ class Main extends TestCase
         Singleton::router()->getMockController()->getAction       = 'test';
         Singleton::router()->getMockController()->getSoftwareType = null;
 
-        $run  = $this->main->run();
-
-        $this->object($run)->isInstanceOf('\App\Library\Collection');
+        $this->when(function () {
+            $this->main->run();
+        })->mock(Singleton::help())->call('main')->once();
      }
 
     /**
@@ -99,11 +85,11 @@ class Main extends TestCase
     {
         Singleton::router()->getMockController()->getAction       = 'get';
         Singleton::router()->getMockController()->getSoftwareType = null;
+        Singleton::help()->getMockController()->badSoftwareName   = null;
 
-        $run = $this->main->run();
-
-        $this->object($run)->isInstanceOf('\App\Library\Collection');
-        $this->object($run->pop())->isInstanceOf('\App\Item\Help\Usage');
+        $this->when(function () {
+            $this->main->run();
+        })->mock(Singleton::help())->call('badSoftwareType')->once();
     }
 
     /**
@@ -114,13 +100,10 @@ class Main extends TestCase
      */
     public function testGetWithSoftwareNameIsAll()
     {
-        Singleton::router()->getMockController()->getAction = 'get';
+        Singleton::router()->getMockController()->getAction       = 'get';
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
         Singleton::router()->getMockController()->getSoftwareName = 'all';
-        $factory = new \mock\App\Library\Factory\Browser;
-        Singleton::mainFactory()->getMockController()->create = '';
-        $factory->getMockController()->getAll = 'test all';
-        Singleton::factory($factory);
+        Singleton::factory()->getMockController()->getAll         = 'test all';
 
         $getAll = $this->main->run();
 
@@ -135,15 +118,11 @@ class Main extends TestCase
      */
     public function testGetWithSoftwareNameGiven()
     {
-        Singleton::router()->getMockController()->getAction = 'get';
+        Singleton::router()->getMockController()->getAction       = 'get';
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
         Singleton::router()->getMockController()->getSoftwareName = 'chrome';
-        $factory = new \mock\App\Library\Factory\Browser;
-
-        Singleton::mainFactory()->getMockController()->create = '';
-        $factory->getMockController()->getByName = 'this is chrome';
-        $factory->getMockController()->getAllNames = ['chrome', 'firefox'];
-        Singleton::factory($factory);
+        Singleton::factory()->getMockController()->getByName      = 'this is chrome';
+        Singleton::factory()->getMockController()->getAllNames    = ['chrome', 'firefox'];
 
         $getAll = $this->main->run();
 
@@ -161,14 +140,11 @@ class Main extends TestCase
         Singleton::router()->getMockController()->getAction       = 'get';
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
         Singleton::router()->getMockController()->getSoftwareName = '?';
-        $factory = new \mock\App\Library\Factory\Browser;
-        Singleton::mainFactory()->getMockController()->create = '';
-        $factory->getMockController()->getAllNames = ['This is Spartaaa', 'Xerxes'];
-        Singleton::factory($factory);
+        Singleton::factory()->getMockController()->getAllNames    = ['This is Spartaaa', 'Xerxes'];
+        Singleton::help()->getMockController()->badSoftwareName   = null;
 
-        $getAll = $this->main->run();
-
-        $this->object($getAll)->isInstanceOf('\App\Library\Collection');
-        $this->object($getAll->pop())->isInstanceOf('\App\Item\Help\Usage');
+        $this->when(function () {
+            $this->main->run();
+        })->mock(Singleton::help())->call('badSoftwareName')->once();
     }
 }

@@ -55,7 +55,7 @@ class Main
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
                 return Singleton::factory()->getAll($softwareType);
-            } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames())) {
+            } elseif (isset($softwareName) && in_array($softwareName, Singleton::factory()->getAllNames($softwareType))) {
                 return Singleton::factory()->getByName($softwareName, $softwareType);
             } else {
                 return $this->help('badSoftwareName');
@@ -104,16 +104,15 @@ class Main
      */
     private function help($section = null)
     {
-        $help = new \App\Library\Factory\Help();
         switch ($section) {
             case 'badSoftwareType' :
-                return $help->badSoftwareType();
+                return Singleton::help()->badSoftwareType();
                 break;
             case 'badSoftwareName' :
-                return $help->badSoftwareName();
+                return Singleton::help()->badSoftwareName();
                 break;
             default:
-                return $help->main();
+                return Singleton::help()->main();
         }
     }
 
