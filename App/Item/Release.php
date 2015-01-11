@@ -155,10 +155,10 @@
     public function display()
     {
         return [$this->getPlatform() => [
-            'timestamp' => $this->getTimestamp(),
             'major'     => $this->getMajor(),
             'minor'     => $this->getMinor(),
             'patch'     => $this->getPatch(),
+            'timestamp' => $this->getTimestamp(),
         ]];
     }
  }

@@ -30,9 +30,10 @@ abstract class Software
      */
     public function getByName($name)
     {
-        $data = [];
-        $db   = \App\Singleton::db();
-        $req  = $db->prepare('SELECT software_name AS name,
+        $data       = [];
+        $collection = null;
+        $db         = \App\Singleton::db();
+        $req        = $db->prepare('SELECT software_name AS name,
                                 type_name as type,
                                 software_last_update AS lastUpdate,
                                 software_commercial_name AS commercialName,
@@ -45,34 +46,38 @@ abstract class Software
                                 INNER JOIN type USING (type_id)
                                 INNER JOIN release USING (software_id)
                                 INNER JOIN platform USING (platform_id)
-                              WHERE software_name = :software_name
-                                AND type_name = :type_name
+                              WHERE software_name = :name
+                                AND type_name = :type
                               GROUP BY platform_name
                               ORDER BY release_timestamp DESC, platform_id
         ');
         $req->execute([
-            'software_name' => $name,
-            'type_name'     => $this->getType()
+            'name' => $name,
+            'type' => $this->getType()
         ]);
 
         $res = $req->fetchAll($db::FETCH_ASSOC);
+        $data['name']           = (string) $res[0]['name'];
+        $data['type']           = (string) $res[0]['type'];
+        $data['lastUpdate']     = (int)    $res[0]['lastUpdate'];
+        $data['commercialName'] = (string) $res[0]['commercialName'];
 
         foreach ($res as $row) {
-            if (!isset($data['name'])) {
-                /* Given we don't have any data, common data setting */
-                $data['name']           = (string) $row['name'];
-                $data['type']           = (string) $row['type'];
-                $data['lastUpdate']     = (int) $row['lastUpdate'];
-                $data['commercialName'] = (string) $row['commercialName'];
-            }
-            $data['release'][$row['platform']] = [
-                'major'     => (int) $row['releaseMajor'],
-                'minor'     => (int) $row['releaseMinor'],
-                'patch'     => (int) $row['releasePatch'],
-                'timestamp' => (int) $row['releaseTimestamp'],
+            $dataRelease = [
+                'platform'  => (string) $row['platform'],
+                'timestamp' => (int)    $row['releaseTimestamp'],
+                'major'     => (int)    $row['releaseMajor'],
+                'minor'     => (int)    $row['releaseMinor'],
+                'patch'     => (int)    $row['releasePatch'],
             ];
+            $release = new \App\Item\Release($dataRelease);
+            if (null == $collection) {
+                $collection = new \App\Library\Collection\Release($release);
+            } else {
+                $collection->push($release);
+            }
         }
-
+        $data['release'] = $collection;
         return $data;
     }
     

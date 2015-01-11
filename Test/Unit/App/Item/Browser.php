@@ -46,6 +46,8 @@ class Browser extends TestCase
         $this->string($browser->getName())->isIdenticalTo('Spartan');
         $this->string($browser->getType())->isIdenticalTo('Human');
         $this->integer($browser->getLastUpdate())->isIdenticalTo(117);
+        $this->string($browser->getCommercialName())->isIdenticalTo('Halo');
+        $this->array($browser->getRelease())->isIdenticalTo([]);
     }
 
     /**
@@ -56,17 +58,20 @@ class Browser extends TestCase
      */
     public function testDisplay()
     {
+        $this->mockGenerator->orphanize('__construct');
+        $release = new \mock\App\Library\Collection\Release;
+        $release->getMockController()->display = [];
         $data = [
             'name'           => 'Sangheili',
             'type'           => 'Saurian',
             'lastUpdate'     => 223,
             'commercialName' => 'Elite',
-            'release'        => [],
+            'release'        => $release,
         ];
         $browser = new _Browser($data);
 
         $display = $browser->display();
 
-        $this->string($display)->isIdenticalTo('Sangheili is a software of type Saurian last updated on 223');
+        $this->string($display);
     }
 }

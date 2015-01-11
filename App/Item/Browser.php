@@ -105,6 +105,7 @@ class Browser implements Interfaces\IDisplayable, Interfaces\ISoftwareGetable
 
     public function getCommercialName()
     {
+        return $this->commercialName;
     }
 
     public function getRelease()
@@ -120,7 +121,13 @@ class Browser implements Interfaces\IDisplayable, Interfaces\ISoftwareGetable
      */
     public function display()
     {
-        //echo json_encode(['name' => $this->getName(), 'type' => $this->getType()]);
-        return $this->getName() . ' is a software of type ' . $this->getType() . ' last updated on ' . $this->getLastUpdate();
+        $data = [
+            $this->getName() => [
+                'lastUpdate'     => $this->getLastUpdate(),
+                'commercialName' => $this->getCommercialName(),
+                'release'        => $this->getRelease()->display(),
+            ],
+        ];
+        return print_r($data, true);
     }
 }

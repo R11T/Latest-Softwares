@@ -114,9 +114,6 @@ class Browser implements Interfaces\ISoftwareFactoryGetable, Interfaces\IFactory
             'commercialName' => '',
             'release'        => $fetcher->fetchRelease(),
         ];
-
-        //var_dump($fetcher->fetchRelease());
-
         $item = new \App\Item\Browser($data);
         Singleton::dao()->updateOne($item);
     }
