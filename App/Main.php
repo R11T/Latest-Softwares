@@ -50,8 +50,7 @@ class Main
      */
     private function get($softwareType)
     {
-        $itemsType = new \App\Item\Types(Singleton::daoType()->getAllNames());
-        if (in_array($softwareType, $itemsType->getNames())) {
+        if ($this->checkExistenceSoftwareType($softwareType)) {
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
                 return Singleton::factory()->getAll($softwareType);
@@ -75,8 +74,7 @@ class Main
      */
     private function update($softwareType)
     {
-        $itemsType    = new \App\Item\Types(Singleton::daoType()->getAllNames());
-        if (in_array($softwareType, $itemsType->getNames())) {
+        if ($this->checkExistenceSoftwareType($softwareType)) {
             $softwareName = Singleton::router()->getSoftwareName();
             if ('all' === $softwareName) {
                 throw new \Exception('Not available');
@@ -90,8 +88,18 @@ class Main
         }
     }
 
-    private function checkExistenceSoftwareType()
+    /**
+     * Returns boolean according to software type given presence in the list
+     *
+     * @param string $softwareType
+     *
+     * @return bool
+     * @access private
+     */
+    private function checkExistenceSoftwareType($softwareType)
     {
+        $itemsType = new \App\Item\Types(Singleton::daoType()->getAllNames());
+        return in_array($softwareType, $itemsType->getNames());
     }
 
     /**

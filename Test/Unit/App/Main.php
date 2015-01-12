@@ -76,7 +76,7 @@ class Main extends TestCase
      }
 
     /**
-     * Tests running a callable action without software type
+     * Tests getting without software type
      *
      * @return void
      * @access public
@@ -135,9 +135,81 @@ class Main extends TestCase
      * @return void
      * @access public
      */
-    public function testGetWithUnkwown()
+    public function testGetWithSoftwareNameUnkwown()
     {
         Singleton::router()->getMockController()->getAction       = 'get';
+        Singleton::router()->getMockController()->getSoftwareType = 'browser';
+        Singleton::router()->getMockController()->getSoftwareName = '?';
+        Singleton::factory()->getMockController()->getAllNames    = ['This is Spartaaa', 'Xerxes'];
+        Singleton::help()->getMockController()->badSoftwareName   = null;
+
+        $this->when(function () {
+            $this->main->run();
+        })->mock(Singleton::help())->call('badSoftwareName')->once();
+    }
+
+    /**
+     * Tests updating without software type
+     *
+     * @return void
+     * @access public
+     */
+    public function testUpdateWithSoftwareTypeNull()
+    {
+        Singleton::router()->getMockController()->getAction       = 'update';
+        Singleton::router()->getMockController()->getSoftwareType = null;
+        Singleton::help()->getMockController()->badSoftwareName   = null;
+
+        $this->when(function () {
+            $this->main->run();
+        })->mock(Singleton::help())->call('badSoftwareType')->once();
+    }
+
+    /**
+     * Tests updating with "all" as software name
+     *
+     *
+     */
+    /*public function testUpdateWithSoftwareNameIsAll()
+    {
+        Singleton::router()->getMockController()->getAction       = 'update';
+        Singleton::router()->getMockController()->getSoftwareType = 'browser';
+        Singleton::router()->getMockController()->getSoftwareName = 'all';
+        Singleton::factory()->getMockController()->updateAll      = 'test all';
+
+        $updateAll = $this->main->run();
+
+        $this->string($updateAll)->isIdenticalTo('test all');
+    }
+
+    /**
+     * Tests updating when software name is given
+     *
+     * @return void
+     * @access public
+     */
+    public function testUpdateWithSoftwareNameGiven()
+    {
+        Singleton::router()->getMockController()->getAction       = 'update';
+        Singleton::router()->getMockController()->getSoftwareType = 'browser';
+        Singleton::router()->getMockController()->getSoftwareName = 'chrome';
+        Singleton::factory()->getMockController()->updateByName   = 'this is chrome';
+        Singleton::factory()->getMockController()->getAllNames    = ['chrome', 'firefox'];
+
+        $this->when(function () {
+            $this->main->run();
+        })->mock(Singleton::factory())->call('updateByName')->once();
+    }
+
+    /**
+     * Tests updating when software name is unknown
+     *
+     * @return void
+     * @access public
+     */
+    public function testUpdateWithSoftwareNameUnknown()
+    {
+        Singleton::router()->getMockController()->getAction       = 'update';
         Singleton::router()->getMockController()->getSoftwareType = 'browser';
         Singleton::router()->getMockController()->getSoftwareName = '?';
         Singleton::factory()->getMockController()->getAllNames    = ['This is Spartaaa', 'Xerxes'];
