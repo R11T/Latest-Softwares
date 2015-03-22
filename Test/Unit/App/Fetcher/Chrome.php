@@ -87,7 +87,7 @@ class Chrome extends TestCase
     }
 
     /**
-     * Tests getting ressource link variable
+     * Tests getting resource link variable
      *
      * @return void
      * @access public
@@ -98,7 +98,7 @@ class Chrome extends TestCase
     }
 
     /**
-     * Tests fetchin release data
+     * Tests fetching release data
      *
      * @return void
      * @access public

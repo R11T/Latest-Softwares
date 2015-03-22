@@ -128,29 +128,77 @@ class Firefox implements IFetchable
         $this->fetchPlatform();
     }
 
+    /**
+     * Fetch release timestamp
+     *
+     * @return integer
+     * @access private
+     */
     private function fetchReleaseTimestamp()
     {
-        return time();
+        $regexReleaseDate = '#.*\{\{lsr.*\|latest(_| )release(_| )date ?=.*\{\{start date and age\|(?P<year>\d{4})\|(?P<month>\d{2})\|(?P<day>\d{2})\}\}#isU';
+        preg_match($regexReleaseDate, $this->data, $matches);
+        /* Avoid daylight saving time aftermaths by setting 12:00 */
+        return strtotime($matches['year'] . '-' . $matches['month'] . '-' . $matches['day'] . ' 12:00');
     }
 
+    /**
+     * Fetch release major version
+     *
+     * @return integer
+     * @access private
+     */
     private function fetchReleaseMajor()
     {
-        return 2;
+        $regexReleaseVersion = '#.*\{\{lsr.*\| ?latest(_| )release(_| )version ?= ?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)#isU';
+        preg_match($regexReleaseVersion, $this->data, $matches);
+        return (int) $matches['major'];
     }
+
+    /**
+     * Fetch release minor version
+     *
+     * @return integer
+     * @access private
+     */
     private function fetchReleaseMinor()
     {
-        return 2;
+        $regexReleaseVersion = '#.*\{\{lsr.*\| ?latest(_| )release(_| )version ?= ?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)#isU';
+        preg_match($regexReleaseVersion, $this->data, $matches);
+        return (int) $matches['minor'];
     }
+
+    /**
+     * Fetch release patch version
+     *
+     * @return integer
+     * @access private
+     */
     private function fetchReleasePatch()
     {
-        return 2;
+        $regexReleaseVersion = '#.*\{\{lsr.*\| ?latest(_| )release(_| )version ?= ?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)#isU';
+        preg_match($regexReleaseVersion, $this->data, $matches);
+        return (int) $matches['patch'];
     }
+
+    /**
+     * Fetch platform availability
+     *
+     * @return array
+     * @access public
+     */
     public function fetchPlatform()
     {
         /* Since information isn't set, sending an arbitrary : */
         return ['windows', 'os x', 'linux'];
     }
 
+    /**
+     * Fetch developer
+     *
+     * @return string
+     * @access public
+     */
     public function fetchDeveloper()
     {
         return 'Mozilla Foundation';
